@@ -40,7 +40,7 @@ export class MenuComponent {
   }
 
   openAbout() {
-  window.open('/assets/about.html', '_blank');
+  window.open('/about.html', '_blank');
 }
 
   openLoginDialog() {
