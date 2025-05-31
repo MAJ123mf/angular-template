@@ -1,0 +1,42 @@
+  <div>
+    <INPUT type="radio" id="all" name="izbira" value="all" checked (click)="setIzbira('all')">  
+    <label for="all">Select All</label> 
+    &nbsp; &nbsp; &nbsp;  <!-- trije presledki -->
+    <INPUT type="radio" id="one" name="izbira" value="one" (click)="setIzbira('one')"> 
+    <label for="one">Select One</label> 
+    &nbsp; &nbsp; &nbsp;  <!-- trije presledki -->
+    <label for="fname">ID:</label>
+    <input type="text" id="e_izb" name="e_izb" size="3" [value]="inputId" (input)="onInputIdChange($event)">
+    <hr>
+  </div> 
+  <div>       
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Id</th>
+              <th scope="col">Str_name</th>
+              <th scope="col">Administrator</th>
+              <th scope="col">Maintainer</th>
+              <th scope="col">Length</th>
+              <th scope="col">Geom</th>
+              <th scope="col">Option</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let road of RoadsArray">
+
+              <td>{{road.id}}</td>
+              <td>{{road.str_name}}</td>
+              <td>{{road.administrator}}</td>
+              <td>{{road.maintainer}}</td>
+              <td>{{road.length}}</td>
+              <td>{{road.geom_wkt}}</td>
+
+              <td>
+                <button type="button" class="btn btn-success" (click)="setUpdate(road)">Edit</button>
+                <button type="button" class="btn btn-danger" (click)="setDelete(road)">Delete</button> 
+              </td>
+            </tr>
+          </tbody>
+        </table> 
+  </div> 

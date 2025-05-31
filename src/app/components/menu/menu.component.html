@@ -1,0 +1,25 @@
+
+
+<!-- Gumbi za obrazce s hkratnim nastavljanjem načina risanja -->
+<!-- <button mat-button (click)="select('parcel')">Parcels form</button>     <!-- select poskrbi za izbiro načina risanja -->
+<!-- <button mat-button (click)="select('road')">Roads form</button>
+<button mat-button (click)="select('address')">Addresses form</button>
+<button mat-button (click)="openAbout()">About</button>  -->
+
+
+<button mat-button (click)="select('parcel')">Parcels</button>
+<button mat-button (click)="select('road')">Roads</button>
+<button mat-button (click)="select('address')">Addresses</button>
+<button mat-button (click)="openAbout()">About</button>
+
+
+<span class="spacer"></span>
+
+<ng-container *ngIf="!authService.isAuthenticated">
+   <button mat-button (click)="openLoginDialog()">Login</button>
+</ng-container>
+
+<ng-container *ngIf="authService.isAuthenticated">
+   <button mat-button (click)="openLogoutDialog()">Logout ({{ authService.username }})</button>
+</ng-container>
+

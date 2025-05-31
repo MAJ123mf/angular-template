@@ -1,0 +1,71 @@
+<div class="container mt-4">
+  <h1>Land Registry</h1>
+  <div class="card">
+    <form #form="ngForm" class="container inner">
+      <div class="row mb-2 align-items-center">
+        <label class="col-sm-2 col-form-label">Parcel number:</label>
+        <div class="col-sm-4">
+          <input
+            type="text"
+            [(ngModel)]="parcel.parc_st"
+            name="parc_st"
+            class="form-control"
+            placeholder="Parcel number"
+          />
+        </div>
+      </div>
+
+      <div class="row mb-2 align-items-center">
+        <label class="col-sm-2 col-form-label">SIFKO:</label>
+        <div class="col-sm-4">
+          <input
+            type="text"
+            [(ngModel)]="parcel.sifko"
+            name="sifko"
+            class="form-control"
+            placeholder="KO"
+          />
+        </div>
+      </div>
+
+      <div class="row mb-2 align-items-center">
+        <label class="col-sm-2 col-form-label">Area:</label>
+        <div class="col-sm-4">
+          <input
+            type="number"
+            [(ngModel)]="parcel.area"
+            name="area"
+            class="form-control"
+            placeholder=""
+            disabled
+          />
+        </div>
+      </div>
+
+      <div class="row mb-3 align-items-center">
+        <label class="col-sm-2 col-form-label">Geom:</label>
+        <div class="col-sm-10">
+          <input
+            type="text"
+            [(ngModel)]="parcel.geom_wkt"
+            name="geom_wkt"
+            class="form-control"
+            placeholder="POLYGON((...))"
+          />
+        </div>
+      </div>
+        <!-- Gumbi za dodajanje, posodabljanje in Clear forme -->
+        <button type="button" class="btn btn-primary mt-4" (click)="saveRecords()"> Insert </button>
+        &nbsp;
+        <button type="button" class="btn btn-primary mt-4" (click)="updateRecords()"> Update </button>
+        &nbsp;
+        <button type="button" class="btn btn-primary mt-4" (click)="clearForm()"> Clear </button>
+    </form>
+
+    <!--  Tukaj dodamo komponento zemljevida z dogodkom wktChange -->
+    <div class="mt-4">
+      
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,97 @@
+
+<div class="container mt-4">
+  <h1>Addresses</h1>
+  <div class="card">
+    <form #form="ngForm" class="container inner">
+      <div class="row mb-2 align-items-center">
+        <label class="col-sm-2 col-form-label">Building number:</label>
+        <div class="col-sm-4">
+          <input
+            type="number"
+            [(ngModel)]="address.building_num"
+            name="building_num"
+            class="form-control"
+            placeholder="Building number"
+          />
+        </div>
+      </div>
+
+      <div class="row mb-2 align-items-center">
+        <label class="col-sm-2 col-form-label">Street:</label>
+        <div class="col-sm-4">
+          <input
+            type="text"
+            [(ngModel)]="address.street"
+            name="street"
+            class="form-control"
+            placeholder="Street"
+          />
+        </div>
+      </div>
+
+      <div class="row mb-2 align-items-center">
+        <label class="col-sm-2 col-form-label">House number:</label>
+        <div class="col-sm-4">
+          <input
+            type="text"
+            [(ngModel)]="address.house_num"
+            name="house_num"
+            class="form-control"
+            placeholder="House number"
+          />
+        </div>
+      </div>
+
+      <div class="row mb-2 align-items-center">
+        <label class="col-sm-2 col-form-label">Post number:</label>
+        <div class="col-sm-4">
+          <input
+            type="number"
+            [(ngModel)]="address.post_num"
+            name="post_num"
+            class="form-control"
+            placeholder="Post number"
+          />
+        </div>
+      </div>
+
+      <div class="row mb-2 align-items-center">
+        <label class="col-sm-2 col-form-label">Post name:</label>
+        <div class="col-sm-4">
+          <input
+            type="text"
+            [(ngModel)]="address.post_name"
+            name="post_num"
+            class="form-control"
+            placeholder="Post name"
+          />
+        </div>
+      </div>
+
+      <div class="row mb-3 align-items-center">
+        <label class="col-sm-2 col-form-label">Geom:</label>
+        <div class="col-sm-10">
+          <input
+            type="text"
+            [(ngModel)]="address.geom_wkt"
+            name="geom_wkt"
+            class="form-control"
+            placeholder="POINT(...)"
+          />
+        </div>
+      </div>
+        <!-- Gumbi za dodajanje, posodabljanje in Clear forme -->
+        <button type="button" class="btn btn-primary mt-4" (click)="saveRecords()"> Insert </button>
+        &nbsp;
+        <button type="button" class="btn btn-primary mt-4" (click)="updateRecords()"> Update </button>
+        &nbsp;
+        <button type="button" class="btn btn-primary mt-4" (click)="clearForm()"> Clear </button>
+    </form>
+
+    <!--  Tukaj dodamo komponento zemljevida z dogodkom wktChange -->
+    <div class="mt-4">
+      
+    </div>
+  </div>
+</div>
+

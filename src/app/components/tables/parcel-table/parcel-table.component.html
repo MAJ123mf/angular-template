@@ -1,0 +1,44 @@
+        
+  <div>
+    <INPUT type="radio" id="all" name="izbira" value="all" checked (click)="setIzbira('all')">  
+    <label for="all">Select All</label> 
+    &nbsp; &nbsp; &nbsp;  <!-- trije presledki -->
+    <INPUT type="radio" id="one" name="izbira" value="one" (click)="setIzbira('one')"> 
+    <label for="one">Select One</label> 
+    &nbsp; &nbsp; &nbsp;  <!-- trije presledki -->
+    <label for="fname">ID:</label>
+    <input type="text" id="e_izb" name="e_izb" size="3" [value]="inputId" (input)="onInputIdChange($event)">
+    <hr>
+  </div>
+  <div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Id</th>
+              <th scope="col">Parc_st</th>
+              <th scope="col">Sifko</th>
+              <th scope="col">Area</th>
+              <th scope="col">Geom</th>
+              <th scope="col">Option</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let Parcel of ParcelsArray">
+
+              <td>{{Parcel.id}}</td>
+              <td>{{Parcel.parc_st}}</td>
+              <td>{{Parcel.sifko}}</td>
+              <td>{{Parcel.area}}</td>
+              <td>{{Parcel.geom_wkt}}</td>
+
+              <td>
+                <button type="button" class="btn btn-success" (click)="setUpdate(Parcel)">Edit</button>
+                <button type="button" class="btn btn-danger" (click)="setDelete(Parcel)">Delete</button> 
+              </td>
+            </tr>
+          </tbody>
+        </table> 
+  </div>  
+
+        
+
