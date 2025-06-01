@@ -2,13 +2,14 @@ import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild, ElementRef} fro
 
 //My imports
 import { MapService } from '../../services/map.service';
-import { DrawBuildingComponent } from '../draw-building/draw-building.component';
-import { DrawFlowerComponent } from '../draw-flower/draw-flower.component';
+import { DrawParcelComponent } from '../draw-parcel/draw-parcel.component';
+import { DrawRoadComponent } from '../draw-road/draw-road.component';
+import { DrawAddressComponent } from '../draw-address/draw-address.component';
 
 @Component({
   selector: 'app-map',
   standalone: true,
-  imports: [DrawBuildingComponent, DrawFlowerComponent],
+  imports: [DrawParcelComponent, DrawRoadComponent, DrawAddressComponent],
   templateUrl: './map.component.html',
   styleUrl: './map.component.scss'
 })

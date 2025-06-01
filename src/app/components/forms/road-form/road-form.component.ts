@@ -5,9 +5,10 @@ import { RoadService } from '../../../services/road.service';
 import { DrawModeService } from '../../../services/draw-mode.service'; // za brisanje forme
 import { Road } from '../../../models/roads';
 import { ChangeDetectorRef } from '@angular/core';
-import { WktService } from '../../../services/wkt.service';
+import { WktGeometryTransferService } from '../../../services/wkt-geometry-transfer.service'; 
 import { Subscription } from 'rxjs';
 import { NgZone } from '@angular/core'; // to služi za temu, da se izognemo napaki "ExpressionChangedAfterItHasBeenCheckedError" pri Angularju
+import { Inject } from '@angular/core';
 
 @Component({
   selector: 'app-road-form',
@@ -30,17 +31,19 @@ export class RoadFormComponent implements OnInit, OnDestroy {
      private roadService: RoadService,
      private drawModeService: DrawModeService,   // za brisanje forme
      private cdRef: ChangeDetectorRef,
-     private wktService: WktService,
+     @Inject(WktGeometryTransferService) private wktService: WktGeometryTransferService, // Za prenos WKT grafike
      private ngZone: NgZone        // zaznava spremembe v geom_wkt, iz leaflet karte, ki je izven Angular konteksta
    ) {}
 
    ngOnInit(): void {
-     this.wktSubscription = this.wktService.getWkt().subscribe((wkt: string) => {
-       this.ngZone.run(() => {
-         this.road.geom_wkt = wkt;
-         this.cdRef.detectChanges();
-       });
-     });
+     this.wktSubscription = this.wktService.getGeometryUpdates().subscribe((payload) => {
+      if (payload.type === 'road') {
+        console.log('ParcelFormComponent prejel WKT:', payload.wkt);
+        this.road.geom_wkt = payload.wkt;
+
+        setTimeout(() => this.cdRef.detectChanges(), 0);
+      }
+    });
 
    this.drawModeService.clearForm$.subscribe(() => {
       this.clearForm();

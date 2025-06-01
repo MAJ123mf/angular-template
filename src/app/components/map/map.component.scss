@@ -1,17 +1,15 @@
 #map {
     position: relative;
-    // width: 1200px;
-    // height: 700px;
     // background-color: #add8e6;
     z-index: 0;
     // border-radius: 5px;
-    // Round map borders
+    // Round map borders;
     overflow: hidden;
     width: 100%;                    // mapa zaseda 100% okvirja zgoraj-desno po širini
     height: 100%;                   // in po višini
     //height: calc(100vh - 150px);  // če bi rad, da je mapa večja uporabiš nekaj takega
 }
-#draw-building {     // draw-building je id html gradnika, v naši html, na katerega se tu nanašamo
+#draw-parcel {     // draw-parcel je id html gradnika, v naši html, na katerega se tu nanašamo
     position: absolute;
     left: 20px;
     top: 20px;
@@ -20,11 +18,20 @@
     opacity: 1;
 }
 
-#draw-flower {       // draw-flower je id html gradnika, v naši html, na katerega se tu nanašamo
+#draw-road {     // draw-road je id html gradnika, v naši html, na katerega se tu nanašamo
     position: absolute;
     left: 20px;
     top: 50px;
     z-index: 1;
     border-radius: 5px;
+    opacity: 1;
+}
+
+#draw-address {       // draw-address je id html gradnika, v naši html, na katerega se tu nanašamo
+    position: absolute;
+    left: 20px;
+    top: 80px;
+    z-index: 1;
+    //border-radius: 5px;
     opacity: 1;
 }

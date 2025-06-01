@@ -8,7 +8,7 @@ import { AddressTableComponent } from './components/tables/address-table/address
 import { MapComponent } from './components/map/map.component';
 import { LoginFormComponent } from './components/forms/login-form/login-form.component';
 import { LogoutFormComponent } from './components/forms/logout-form/logout-form.component';
-
+import { DrawParcelComponent } from './components/draw-parcel/draw-parcel.component';
 
 export const routes: Routes = [
     {path: '', redirectTo: '/home', pathMatch: 'full'},
@@ -21,4 +21,5 @@ export const routes: Routes = [
     {path: 'map', component:MapComponent},
     {path: 'login-form', component:LoginFormComponent},
     {path: 'logout-form', component:LogoutFormComponent},
+    {path: 'draw-parcel', component:DrawParcelComponent},  
 ];

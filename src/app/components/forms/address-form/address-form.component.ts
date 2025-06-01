@@ -5,7 +5,7 @@ import { AddressService } from '../../../services/address.service';
 import { DrawModeService } from '../../../services/draw-mode.service';
 import { Address } from '../../../models/address';
 import { ChangeDetectorRef } from '@angular/core';
-import { WktService } from '../../../services/wkt.service';
+import { WktGeometryTransferService } from '../../../services/wkt-geometry-transfer.service'; 
 import { Subscription } from 'rxjs';
 import { Inject } from '@angular/core';
 import { NgZone } from '@angular/core'; // to služi za temu, da se izognemo napaki "ExpressionChangedAfterItHasBeenCheckedError" pri Angularju
@@ -32,18 +32,20 @@ export class AddressFormComponent {
      private addressService: AddressService,       // servis za komunikacijo z backendom
      private drawModeService: DrawModeService,    // za brisanje forme
      private cdRef: ChangeDetectorRef,           // za zaznavanje sprememb v Document Object Model (DOM) (Liflet karta)
-     @Inject(WktService) private wktService: WktService,  // komunikacija znotraj Angularja med komponentami, ker so v rzličnih frame
+     @Inject(WktGeometryTransferService) private wktService: WktGeometryTransferService, // Za prenos WKT grafike  
      private ngZone: NgZone
    ) {}
 
   ngOnInit(): void {
-     this.wktSubscription = this.wktService.getWkt().subscribe((wkt: string) => {   // naročimo se na spremembe geom_wkt
-       console.log('AddressFormComponent prejel WKT:', wkt);
-       this.address.geom_wkt = wkt;
+     this.wktSubscription = this.wktService.getGeometryUpdates().subscribe((payload) => {
+      if (payload.type === 'address') {
+        console.log('ParcelFormComponent prejel WKT:', payload.wkt);
+        this.address.geom_wkt = payload.wkt;
 
-       // Zakasnjen zagon po zaključku sprememb DOM-a
-       setTimeout(() => this.cdRef.detectChanges(), 0);
-     });
+        setTimeout(() => this.cdRef.detectChanges(), 0);
+      }
+    });
+
      this.drawModeService.clearForm$.subscribe(() => {      // naročimo se na spremembo ob zamenjavi forme. Forma se počisti
        this.clearForm();
      });

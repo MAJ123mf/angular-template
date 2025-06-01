@@ -73,22 +73,45 @@ export class MapService {
   }
 
   createMyLayers(): LayerGroup {
-    var buildings= new TileLayer({
+    var parcels= new TileLayer({
         properties: {
-          title: 'Buildings WMS'
+          title: 'Parcels WMS'
         },
         source: new TileWMS({
           url: this.settingsService.GEOSERVER_URL + 'wms?',
           params: {
-            'LAYERS': 'buildings_buildings', 'VERSION': '1.3.0', 'TILED': true, 'TRANSPARENT': true, 'FORMAT': 'image/png'
+            'LAYERS': 'parcels_parcels', 'VERSION': '1.3.0', 'TILED': true, 'TRANSPARENT': true, 'FORMAT': 'image/png'
           }
         })
       });
-    var buildingsVectorSource = new VectorSource({wrapX: false}); 
-    var buildingsVectorLayer = new VectorLayer({
-      source: buildingsVectorSource,
+    
+    var roads= new TileLayer({
+        properties: {
+          title: 'Roads WMS'
+        },
+        source: new TileWMS({
+          url: this.settingsService.GEOSERVER_URL + 'wms?',
+          params: {
+            'LAYERS': 'roads_roads', 'VERSION': '1.3.0', 'TILED': true, 'TRANSPARENT': true, 'FORMAT': 'image/png'
+          }
+        })
+      });  
+
+    var parcelsVectorSource = new VectorSource({wrapX: false}); 
+    var parcelsVectorLayer = new VectorLayer({
+      source: parcelsVectorSource,
       properties: {
-        title: 'Buildings vector' // <--- Define el título aquí
+        title: 'Parcels vector' // <--- Define el título aquí
+        // Po potrebi lahko tukaj dodate še druge lastnosti po meri.
+        // Na primer: isBaseLayer: false, opis: 'Gradnja plasti'
+      }   
+    })
+    
+    var roadsVectorSource = new VectorSource({wrapX: false}); 
+    var roadsVectorLayer = new VectorLayer({
+      source: roadsVectorSource,
+      properties: {
+        title: 'Roads vector' 
         // Po potrebi lahko tukaj dodate še druge lastnosti po meri.
         // Na primer: isBaseLayer: false, opis: 'Gradnja plasti'
       }   
@@ -98,7 +121,12 @@ export class MapService {
         properties: {
           title: 'My layers'
         },
-        layers: [buildings, buildingsVectorLayer]
+        layers: [
+          parcels, 
+          parcelsVectorLayer,
+          roads, 
+          roadsVectorLayer
+        ]
       });
     return myLayersGroup;
   }
@@ -207,6 +235,7 @@ export class MapService {
   disableMapInteractions(): void {
     if (this.map) {
       this.map.getInteractions().forEach((interaction: Interaction) => {
+        console.log('[map.service] Interaction:', interaction);
         // Preveri, ali interakcija NI primerek MouseWheelZoom ali DragPan
         if (!(interaction instanceof MouseWheelZoom) && !(interaction instanceof DragPan)) {
           interaction.setActive(false);
