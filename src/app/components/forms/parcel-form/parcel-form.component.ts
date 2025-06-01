@@ -38,7 +38,7 @@ export class ParcelFormComponent {
   ngOnInit(): void {
     this.wktSubscription = this.wktService.getGeometryUpdates().subscribe((payload) => {
       if (payload.type === 'parcel') {
-        console.log('ParcelFormComponent prejel WKT:', payload.wkt);
+        console.log('[Parcel-form] ParcelFormComponent prejel WKT:', payload.wkt);
         this.parcel.geom_wkt = payload.wkt;
 
         setTimeout(() => this.cdRef.detectChanges(), 0);
@@ -57,7 +57,7 @@ export class ParcelFormComponent {
   }
 
   saveRecords() {
-    console.log('Parcel data za knjiženje:', this.parcel);
+    console.log('[Parcel-form] Parcel data za knjiženje:', this.parcel);
     const payload = {
       parc_st: this.parcel.parc_st,
       sifko: this.parcel.sifko,
@@ -68,7 +68,7 @@ export class ParcelFormComponent {
     this.parcelService.save(payload).subscribe({
       next: (res) => {
         this.statusMessage.emit(JSON.stringify(res));
-        console.log('Django response: ', res);
+        console.log('[Parcel-form] Django response: ', res);
         this.clearForm();
         this.saved.emit();
       },
@@ -114,7 +114,7 @@ export class ParcelFormComponent {
 
   onWktChange(wkt: string): void {
     alert('Funkcija se kliče');
-    console.log('Prejel WKT iz mape:', wkt);
+    console.log('[Parcel-form] Prejel WKT iz mape:', wkt);
     this.parcel.geom_wkt = wkt;
   }
 }

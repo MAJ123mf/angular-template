@@ -1,9 +1,15 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MapService } from '../../services/map.service';
+import { DrawEvent } from 'ol/interaction/Draw';
+import {Draw} from 'ol/interaction';
 import { EventService } from '../../services/event.service';
+import VectorSource from 'ol/source/Vector';
+import {WKT} from 'ol/format';
+import { Router } from '@angular/router';
 import { EventModel } from '../../models/event.model';
 import { MatTooltip } from '@angular/material/tooltip';   // če hočeš da dela Tooltip ko se z miško postaviš na gumb na karti...
+import { WktGeometryTransferService} from'../../services/wkt-geometry-transfer.service';
 
 @Component({
   selector: 'app-draw-address',
@@ -12,32 +18,94 @@ import { MatTooltip } from '@angular/material/tooltip';   // če hočeš da dela
   templateUrl: './draw-address.component.html',
   styleUrl: './draw-address.component.scss'
 })
-export class DrawAddressComponent {
-  constructor(public mapService:MapService, public eventService:EventService) {
+export class DrawAddressComponent implements AfterViewInit, OnDestroy {
+  drawMode: boolean = false;
+  drawAddress: Draw | undefined;
+
+  constructor(private wktTransfer: WktGeometryTransferService, public mapService:MapService, public router: Router, public eventService:EventService) {
     this.eventService.eventActivated$.subscribe((event:EventModel) => {
-      console.log("Event received in DrawAddressComponent:", event.type);
+      console.log("[Draw-Address] Event received in DrawAddressComponent:", event.type);
       if (event.type != 'drawAddressActivated') {
         this.drawMode = false; // Reset draw mode if a different event is received
       }
     });
   }
 
-  drawMode: boolean = false;
+  ngAfterViewInit(): void {
+    console.log("[Draw-Address] DrawAddressComponent initialized");
+    this.addDrawAddressInteraction();
+    this.disableDrawAddress();
+    this.reloadAddressWmsLayer();
+  }
   
   toggleDrawMode() {
     this.drawMode = !this.drawMode;
     if (this.drawMode) {
-      // Start drawing mode
-      console.log("Drawing mode activated");
-      // Add logic to enable drawing mode
-      this.eventService.emitEvent(new EventModel('drawAddressActivated', {}));
-    } else {
-      // Stop drawing mode
-      console.log("Drawing mode deactivated");
-      // Add logic to disable drawing mode
-      this.mapService.disableMapInteractions();
+      this.enableDrawAddress();  // Start drawing mode
+      console.log("[Draw-Address] Drawing mode activated");
     }
+    else {
+      this.disableDrawAddress();  // Stop drawing mode
+      this.clearVectorLayer();
+      this.reloadAddressWmsLayer();
+      console.log("[Draw-Address] Drawing mode deactivated");
+      }
+  }
+
+  addDrawAddressInteraction() {
+      //Add the draw interaction when the component is initialized
+      var sourceAddresses: VectorSource = this.mapService.getLayerByTitle('Address vector')?.getSource();
+      if(sourceAddresses){
+        this.drawAddress = new Draw({
+          source: sourceAddresses, //source of the layer where one POINT will be drawn
+          type: ('Point') //geometry type
+        });
+        this.drawAddress.on('drawend', this.manageDrawEnd);
+    
+        //adds the interaction to the map. This must be done only once
+        this.mapService.map!.addInteraction(this.drawAddress);
+      }else{
+        console.error("[Draw-Address] Error: Address layer not found");
+      }
+    }
+
+  //Enables the polygons draw
+  enableDrawAddress(){
+    this.mapService.disableMapInteractions(); // Disable other interactions
+    this.drawAddress!.setActive(true);
+    this.eventService.emitEvent(new EventModel('drawAddressActivated', {}));
+  }
+
+  //Disables the polygons draw
+  disableDrawAddress(){
+    this.drawAddress!.setActive(false);
+  }
+
+  //Enables clear the vector layer
+  clearVectorLayer(){
+    this.mapService.getLayerByTitle('Address vector')?.getSource().clear();
+  }
+  //Reload Address WMS Layer
+  reloadAddressWmsLayer(){
+    this.mapService.getLayerByTitle('Address WMS')?.getSource().updateParams({"time": Date.now()})
   }
 
 
+  manageDrawEnd = (e: DrawEvent) => {     // KO NEHAŠ RISAT PO KARTI, KAJ SE ZGODI POTEM POVEŠ TU !!!
+    var feature = e.feature;              //this is the feature that fired the event
+    var wktFormat = new WKT();            //an object to get the WKT format of the geometry
+    var wktRepresentation  = wktFormat.writeGeometry(feature.getGeometry()!);   //geomertry in wkt
+    console.log("[Drav-address]",wktRepresentation);                            //logs a message in console
+    this.wktTransfer.sendGeometry('address', wktRepresentation);                // Pošlje geometrijo preko servisa
+    this.disableDrawAddress();                                                  // rišemo samo eno točko, zato takoj izklopimo risanje 
+    // this.router.navigate(['/form-address'], { queryParams: {geom: wktRepresentation }});
+  }
+
+  ngOnDestroy(): void {
+    // Remove the draw interaction when the component is destroyed
+    if (this.drawAddress) {
+      this.mapService.map?.removeInteraction(this.drawAddress);
+      console.log("[Drav-Address] Draw interaction removed");
+    }
+  }  
 }

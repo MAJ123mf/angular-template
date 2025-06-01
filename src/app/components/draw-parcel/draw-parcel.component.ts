@@ -106,7 +106,7 @@ export class DrawParcelComponent implements AfterViewInit, OnDestroy{
    * It is an arow fuction in order to 'this' refer to the component class
    * and to have access to the router
    * */
-  manageDrawEnd = (e: DrawEvent) => {
+  manageDrawEnd = (e: DrawEvent) => {     // KO NEHAŠ RISAT PO KARTI, KAJ SE ZGODI POTEM POVEŠ TU !!!
     var feature = e.feature;//this is the feature that fired the event
     var wktFormat = new WKT();//an object to get the WKT format of the geometry
     var wktRepresentation  = wktFormat.writeGeometry(feature.getGeometry()!);//geomertry in wkt

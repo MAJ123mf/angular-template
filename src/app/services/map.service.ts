@@ -97,6 +97,18 @@ export class MapService {
         })
       });  
 
+    var addresses= new TileLayer({
+        properties: {
+          title: 'Addresses WMS'
+        },
+        source: new TileWMS({
+          url: this.settingsService.GEOSERVER_URL + 'wms?',
+          params: {
+            'LAYERS': 'address_address', 'VERSION': '1.3.0', 'TILED': true, 'TRANSPARENT': true, 'FORMAT': 'image/png'
+          }
+        })
+      });       
+
     var parcelsVectorSource = new VectorSource({wrapX: false}); 
     var parcelsVectorLayer = new VectorLayer({
       source: parcelsVectorSource,
@@ -115,6 +127,16 @@ export class MapService {
         // Po potrebi lahko tukaj dodate še druge lastnosti po meri.
         // Na primer: isBaseLayer: false, opis: 'Gradnja plasti'
       }   
+    })
+    
+    var addressVectorSource = new VectorSource({wrapX: false}); 
+    var addressVectorLayer = new VectorLayer({
+      source: addressVectorSource,
+      properties: {
+        title: 'Address vector' 
+        // Po potrebi lahko tukaj dodate še druge lastnosti po meri.
+        // Na primer: isBaseLayer: false, opis: 'Gradnja plasti'
+      }   
     });//The layer were we will draw
 
     var myLayersGroup = new LayerGroup({
@@ -125,7 +147,9 @@ export class MapService {
           parcels, 
           parcelsVectorLayer,
           roads, 
-          roadsVectorLayer
+          roadsVectorLayer,
+          addresses,
+          addressVectorLayer
         ]
       });
     return myLayersGroup;

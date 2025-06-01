@@ -10,6 +10,7 @@ import VectorSource from 'ol/source/Vector';
 import { Router } from '@angular/router';
 import { EventService } from '../../services/event.service';
 import { EventModel } from '../../models/event.model';
+import { WktGeometryTransferService} from'../../services/wkt-geometry-transfer.service';
 
 @Component({
   selector: 'app-draw-road',
@@ -22,10 +23,10 @@ export class DrawRoadComponent implements AfterViewInit, OnDestroy{
   drawMode: boolean = false;
   drawRoad: Draw | undefined;
 
-  constructor(public mapService: MapService, public router: Router, public eventService: EventService) {
+  constructor(private wktTransfer: WktGeometryTransferService, public mapService: MapService, public router: Router, public eventService: EventService) {
     // Subscribe to events if needed
     this.eventService.eventActivated$.subscribe((event: EventModel) => {
-      console.log("Event received in DrawRoadComponent:", event.type);
+      console.log("[Draw-road] Event received in DrawRoadComponent:", event.type);
       if (event.type != 'drawRoadActivated') {
         this.drawMode = false; // Reset draw mode if a different event is received
       }
@@ -34,7 +35,7 @@ export class DrawRoadComponent implements AfterViewInit, OnDestroy{
   }
 
   ngAfterViewInit(): void {
-    console.log("DrawRoadComponent initialized");
+    console.log("[Draw-road] DrawRoadComponent initialized");
     this.addDrawRoadInteraction();
     this.disableDrawRoads();
     this.reloadRoadsWmsLayer();
@@ -45,17 +46,17 @@ export class DrawRoadComponent implements AfterViewInit, OnDestroy{
     if(this.drawMode){
       // Start drawing mode
       this.enableDrawRoads();
-      console.log("Drawing mode activated");
+      console.log("[Draw-road] Drawing mode activated");
     } else {
       // Stop drawing mode
       this.disableDrawRoads();
       this.clearVectorLayer();
       this.reloadRoadsWmsLayer();
-      console.log("Drawing mode deactivated");
+      console.log("[Draw-road] Drawing mode deactivated");
     }
   }
 
-  
+
   addDrawRoadInteraction() {
     //Add the draw interaction when the component is initialized
     var sourceRoads: VectorSource = this.mapService.getLayerByTitle('Roads vector')?.getSource();
@@ -106,16 +107,16 @@ export class DrawRoadComponent implements AfterViewInit, OnDestroy{
     var feature = e.feature;//this is the feature that fired the event
     var wktFormat = new WKT();//an object to get the WKT format of the geometry
     var wktRepresentation  = wktFormat.writeGeometry(feature.getGeometry()!);//geomertry in wkt
-    console.log(wktRepresentation);//logs a message
-    this.router.navigate(['/road-form'], { queryParams: {geom: wktRepresentation }});
-
+    console.log("[Drav-road]",wktRepresentation);//logs a message
+    this.wktTransfer.sendGeometry('road', wktRepresentation);
+    // this.router.navigate(['/road-form'], { queryParams: {geom: wktRepresentation }});
   }
 
   ngOnDestroy(): void {
     // Remove the draw interaction when the component is destroyed
     if (this.drawRoad) {
       this.mapService.map?.removeInteraction(this.drawRoad);
-      console.log("Draw interaction removed");
+      console.log("[Draw-road] Draw interaction removed");
     }
   }
 }

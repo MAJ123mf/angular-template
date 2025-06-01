@@ -37,9 +37,9 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy{
   // the div with the id map is created
   //and the map can be created
   ngAfterViewInit(): void {
-    console.log('mapComponent initialized');
+    console.log('[Map] mapComponent initialized');
     this.mapService.map.setTarget(this.mapContainer.nativeElement);
-    console.log('Karta, ponovno povezana z novim DOM-om');   // DOM = Document Object Model
+    console.log('[Map] Karta, ponovno povezana z novim DOM-om');   // DOM = Document Object Model
   }
 
 
@@ -52,7 +52,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy{
       // kar lahko povzroči napake v programu, ali izgubo spomina (pomnilnika) (dokler ga ne resetiramo)
       this.mapService.map.setTarget(undefined);
 
-      console.log('Karta se odklopi od DOM-a pred uničenjem komponente');
+      console.log('[Map] Karta se odklopi od DOM-a pred uničenjem komponente');
     }
   }
 }

@@ -35,20 +35,21 @@ export class RoadFormComponent implements OnInit, OnDestroy {
      private ngZone: NgZone        // zaznava spremembe v geom_wkt, iz leaflet karte, ki je izven Angular konteksta
    ) {}
 
+   
    ngOnInit(): void {
      this.wktSubscription = this.wktService.getGeometryUpdates().subscribe((payload) => {
       if (payload.type === 'road') {
-        console.log('ParcelFormComponent prejel WKT:', payload.wkt);
+        console.log('[Road-form] RoadFormComponent prejel WKT:', payload.wkt);
         this.road.geom_wkt = payload.wkt;
 
         setTimeout(() => this.cdRef.detectChanges(), 0);
       }
     });
 
-   this.drawModeService.clearForm$.subscribe(() => {
-      this.clearForm();
-    });
-}
+    this.drawModeService.clearForm$.subscribe(() => {
+        this.clearForm();
+      });
+   }
     
 
    ngOnDestroy(): void {
@@ -58,7 +59,7 @@ export class RoadFormComponent implements OnInit, OnDestroy {
    }
 
    saveRecords() {
-     console.log('Road data:', this.road);  
+     console.log('[Road-form] Road data:', this.road);  
      const payload = {
        str_name: this.road.str_name,
        administrator: this.road.administrator,
@@ -115,7 +116,7 @@ export class RoadFormComponent implements OnInit, OnDestroy {
 
    onWktChange(wkt: string): void {
      alert('Funkcija se kliče');
-     console.log('Prejel WKT iz mape:', wkt);
+     console.log('[Road-form] Prejel WKT iz mape:', wkt);
      this.road.geom_wkt = wkt;
    }
 }
