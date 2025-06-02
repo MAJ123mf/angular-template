@@ -12,7 +12,7 @@ export class SettingsService {
   constructor() { 
     if (this.mode== 1) {
       this.API_URL='http://localhost:8000/';
-      this.GEOSERVER_URL='http://localhost:7002/geoserver/';
+      this.GEOSERVER_URL='http://localhost:8080/geoserver/';
       this.WEB_URL='http://localhost:4200/';
 
     } else if (this.mode== 2) {

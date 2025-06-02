@@ -17,7 +17,7 @@ import DragPan from 'ol/interaction/DragPan';             // Uvoz DragPan
 
 //vector layers
 import { Vector as VectorLayer} from 'ol/layer';
-import { Vector as VectorSource } from 'ol/source';
+import { sourcesFromTileGrid, Vector as VectorSource } from 'ol/source';
 //layerswitcher
 import LayerSwitcher from 'ol-layerswitcher';
 import { SettingsService } from './settings.service';
@@ -104,7 +104,7 @@ export class MapService {
         source: new TileWMS({
           url: this.settingsService.GEOSERVER_URL + 'wms?',
           params: {
-            'LAYERS': 'address_address', 'VERSION': '1.3.0', 'TILED': true, 'TRANSPARENT': true, 'FORMAT': 'image/png'
+            'LAYERS': 'addresses_addresses', 'VERSION': '1.3.0', 'TILED': true, 'TRANSPARENT': true, 'FORMAT': 'image/png'
           }
         })
       });       
