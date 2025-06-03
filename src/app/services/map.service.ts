@@ -299,7 +299,7 @@ export class MapService {
   }
 
 
-
+  // ta funkcija nariše enoparcelo, ko kliknemo na ID v tabeli parcel
   public addParcelsGeoJsonToLayer(geojsonStr: string) {
     console.log('[addParcelsGeoJsonToLayer] Prejeto GeoJSON:', geojsonStr);
     const format = new GeoJSON();
@@ -317,7 +317,7 @@ export class MapService {
     }
   }
 
-  
+  // ta funkcija nariše vse ceste ki so prikazane v tabeli na Karto
   public addRoadsGeoJsonToLayer(roads: any[]) {
     const validGeoJSONs = roads
       .map(road => {
@@ -351,5 +351,39 @@ export class MapService {
     }
   }
 
+    // funkcija izriše vse točke ki so prikazane v tabeli na Karto.
+    // namenjena je tabeli naslovov
+    public addAddressesGeoJsonToLayer(address: any[]) {
+    const validGeoJSONs = address
+      .map(address => {
+        try {
+          return JSON.parse(address.geom_geojson);
+        } catch (e) {
+          console.warn('Neveljaven GeoJSON za address ID:', address.id);
+          return null;
+        }
+      })
+      .filter(g => g !== null);
+
+    if (validGeoJSONs.length === 0) return;
+
+    const featureCollection = {
+      type: 'FeatureCollection',
+      features: validGeoJSONs
+    };
+
+    const format = new GeoJSON();
+    const features = format.readFeatures(featureCollection, {
+      featureProjection: 'EPSG:25830'
+    });
+
+    const source = this.addressesLayer?.getSource();
+    if (source) {
+      source.clear();
+      source.addFeatures(features);
+    } else {
+      console.warn('addressLayer ali njegov source ne obstaja!');
+    }
+  }
 
 }

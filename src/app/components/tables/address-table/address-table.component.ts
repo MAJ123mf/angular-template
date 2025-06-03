@@ -2,6 +2,7 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AddressService } from '../../../services/address.service';
+import { MapService } from '../../../services/map.service'; 
 
 
 @Component({
@@ -20,7 +21,10 @@ export class AddressTableComponent implements OnInit {
    inputId: number =1;  // spremenljivka za shranjevanje izbranega naslova, na začetku je 2
 
 
-  constructor(private addressService: AddressService) {}
+  constructor(
+    private addressService: AddressService,
+    private mapService: MapService
+  ) {}
 
   ngOnInit() {
     this.loadAddresses();
@@ -32,6 +36,9 @@ export class AddressTableComponent implements OnInit {
         next: (data: any[]) => {
           console.log('Prejeti naslovi:', data);  
           this.AddressArray = data;
+
+          this.mapService.addAddressesGeoJsonToLayer(data);
+
         },
         error: (error: any) => {
           console.error('Napaka pri pridobivanju naslova:', error);
@@ -42,6 +49,9 @@ export class AddressTableComponent implements OnInit {
       this.addressService.getOne(this.inputId).subscribe({       // getOne je metoda v address.service.ts
         next: (address: any) => {
           this.AddressArray = [address];  // samo en naslov v tabeli
+
+          this.mapService.addAddressesGeoJsonToLayer(address);
+
         },
         error: (error: any) => {
           console.error('Napaka pri pridobivanju naslovov:', error);
