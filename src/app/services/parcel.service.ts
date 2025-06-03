@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------------
+// Servis služi za pridobivanje podatkov iz postgres tabele parcels_parcels
+// ---------------------------------------------------------------------
+
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';

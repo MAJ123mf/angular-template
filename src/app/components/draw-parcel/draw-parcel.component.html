@@ -5,8 +5,19 @@ https://www.angularjswiki.com/angular/angular-material-icons-list-mat-icon-list/
 
 
 @if (drawMode) {
-    <button mat-button (click)="toggleDrawMode()" matTooltip="Stop drawing parcels"><mat-icon>clear</mat-icon></button>
+  <button 
+    mat-button 
+    (click)="toggleDrawMode()" 
+    matTooltip="Stop drawing parcels">
+    <mat-icon>clear</mat-icon>
+  </button>
 } @else {
-    <button mat-button (click)="toggleDrawMode()" matTooltip="Start drawing parcels"><mat-icon>format_shapes</mat-icon></button>
+  <button 
+    mat-button 
+    (click)="toggleDrawMode()" 
+    [disabled]="!canDraw"
+    matTooltip="Start drawing parcels">
+    <mat-icon>format_shapes</mat-icon>
+  </button>
 }
 

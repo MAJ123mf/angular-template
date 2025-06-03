@@ -40,6 +40,13 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy{
     console.log('[Map] mapComponent initialized');
     this.mapService.map.setTarget(this.mapContainer.nativeElement);
     console.log('[Map] Karta, ponovno povezana z novim DOM-om');   // DOM = Document Object Model
+
+    // Počakamo na target, potem dodamo kontrolnik!
+  
+    setTimeout(() => {
+       this.mapService.map.updateSize();
+       this.mapService.addLayerSwitcherControl();
+    }, 500); 
   }
 
 

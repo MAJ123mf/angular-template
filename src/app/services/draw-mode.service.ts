@@ -1,3 +1,8 @@
+// ---------------------------------------------------------------------------------
+//  To je servis, ki nam pove na katerem zavihku smo. Od tega je odvisno katere operacije so dovoljene,
+// kateri gumbi na karti so omogočeni, ... Je moja verzija Event servisa...
+// ---------------------------------------------------------------------------------
+
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 

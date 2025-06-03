@@ -11,7 +11,7 @@
 }
 #draw-parcel {     // draw-parcel je id html gradnika, v naši html, na katerega se tu nanašamo
     position: absolute;
-    left: 20px;
+    left: 10px;
     top: 20px;
     z-index: 1;
     border-radius: 5px;
@@ -20,7 +20,7 @@
 
 #draw-road {     // draw-road je id html gradnika, v naši html, na katerega se tu nanašamo
     position: absolute;
-    left: 20px;
+    left: 10px;
     top: 50px;
     z-index: 1;
     border-radius: 5px;
@@ -29,9 +29,10 @@
 
 #draw-address {       // draw-address je id html gradnika, v naši html, na katerega se tu nanašamo
     position: absolute;
-    left: 20px;
+    left: 10px;
     top: 80px;
     z-index: 1;
     //border-radius: 5px;
     opacity: 1;
 }
+

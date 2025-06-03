@@ -1,3 +1,9 @@
+// ---------------------------------------------------------------------
+// TO je servis za globalne nastavitve. Tu recimo imamo povezavo za 
+// geoserver, ki jo potem uporabimo v map.service, ko podajamo url za 
+// naš WMS servis
+// ---------------------------------------------------------------------
+
 import { Injectable } from '@angular/core';
 
 @Injectable({

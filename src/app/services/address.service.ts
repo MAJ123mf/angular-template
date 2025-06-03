@@ -1,3 +1,7 @@
+// --------------------------------------------------------------------------------------
+// Je servis za pridobivanje podatkov o naslovih iz postgres tabele addresses-addresses
+// --------------------------------------------------------------------------------------
+
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';

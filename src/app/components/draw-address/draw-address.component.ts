@@ -4,6 +4,7 @@ import { MapService } from '../../services/map.service';
 import { DrawEvent } from 'ol/interaction/Draw';
 import {Draw} from 'ol/interaction';
 import { EventService } from '../../services/event.service';
+import { DrawModeService } from '../../services/draw-mode.service';
 import VectorSource from 'ol/source/Vector';
 import {WKT} from 'ol/format';
 import { Router } from '@angular/router';
@@ -20,9 +21,22 @@ import { WktGeometryTransferService} from'../../services/wkt-geometry-transfer.s
 })
 export class DrawAddressComponent implements AfterViewInit, OnDestroy {
   drawMode: boolean = false;
+  canDraw: boolean = false;
   drawAddress: Draw | undefined;
 
-  constructor(private wktTransfer: WktGeometryTransferService, public mapService:MapService, public router: Router, public eventService:EventService) {
+  constructor(
+    private wktTransfer: WktGeometryTransferService, 
+    public mapService:MapService, 
+    public router: Router, 
+    public eventService:EventService,
+    private drawModeService: DrawModeService
+    ) {
+    // Spremljaj spremembe načina risanja
+    this.drawModeService.currentMode$.subscribe((mode) => {
+      this.canDraw = (mode === 'address'); // omogoči risanje samo, če je način "parcel"
+    });
+
+    // Dogodki iz EventService 
     this.eventService.eventActivated$.subscribe((event:EventModel) => {
       console.log("[Draw-Address] Event received in DrawAddressComponent:", event.type);
       if (event.type != 'drawAddressActivated') {
@@ -30,6 +44,7 @@ export class DrawAddressComponent implements AfterViewInit, OnDestroy {
       }
     });
   }
+
 
   ngAfterViewInit(): void {
     console.log("[Draw-Address] DrawAddressComponent initialized");

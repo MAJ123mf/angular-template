@@ -1,3 +1,10 @@
+// ------------------------------------------------------------------------------------------
+// Je profesorjev servis,
+// Ta Angular ApiService služi kot splošni servis za pošiljanje HTTP zahtevkov (GET in POST) 
+// do zunanjega API-ja (do back-enda tvoje aplikacije). Uporablja HttpClient in 
+// centralno API_URL vrednost, definirano v SettingsService.
+// --------------------------------------------------------------------------------------------
+
 import { Injectable } from '@angular/core';
 
 //To be able to set http requests

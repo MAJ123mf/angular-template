@@ -1,3 +1,8 @@
+// ------------------------------------------------------------------------------
+// je profesorjev servis, ki se uporablja za ugotavljanje ali smo logirani ali ne.
+// klicanj je iz login forme.
+// -------------------------------------------------------------------------------
+
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 import { ServerAnswerModel } from '../models/server-answer.model';

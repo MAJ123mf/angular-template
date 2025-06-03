@@ -1,3 +1,9 @@
+// ---------------------------------------------------------------------
+// To je profesorjev servis, za delo z karto na zaslonu. V njej podamo katere sloje imamo,
+// od kod se polnijo WMS sloji, na katere sloje rišemo kakšno geometrijo,....
+// ---------------------------------------------------------------------
+
+
 import { Injectable } from '@angular/core';
 
 //OpenLayers
@@ -32,17 +38,20 @@ export class MapService {
   myLayersGroup:LayerGroup;
 
   constructor(public settingsService: SettingsService) { 
+      // Najprej ustvarimo sloje
       this.baseLayersGroup= this.createBaseLayers();
       this.myLayersGroup= this.createMyLayers();
+
       this.map= this.createMap();//Create the map and store it in the mapService
-      this.addLayerSwitcherControl();
+      // this.addLayerSwitcherControl();  // to sem prestavil v map.component v ngAfterViewInit()
       this.addMousePositionControl();
   }
 
   createBaseLayers(): LayerGroup {
     var pnoa = new TileLayer({
       properties: {
-            title: 'Cadastre WMS'
+            title: 'Cadastre WMS',
+            // type: 'base'
           },
       source: new TileWMS(({
         url: "https://www.ign.es/wms-inspire/pnoa-ma?",
@@ -86,6 +95,7 @@ export class MapService {
       });
     
     var roads= new TileLayer({
+        // visible: true,
         properties: {
           title: 'Roads WMS'
         },
@@ -180,15 +190,15 @@ export class MapService {
     const layerSwitcher = new LayerSwitcher(
       {
         activationMode: 'mouseover',
-        startActive: true,
+        startActive: false,
         tipLabel: 'Show-hide layers',
         groupSelectStyle: 'group',
         reverse: false
       }
     );
     this.map.addControl(layerSwitcher); //! --> tells typescript that map is not undefined
-    
   }
+
   addMousePositionControl(){
       //Adds the mouse coordinate position to the map
       const mousePositionControl = new MousePosition({

@@ -5,8 +5,22 @@ https://www.angularjswiki.com/angular/angular-material-icons-list-mat-icon-list/
 
 
 @if (drawMode) {
-    <button mat-button (click)="toggleDrawMode()" matTooltip="Stop drawing road"><mat-icon>clear</mat-icon></button>
+    <button 
+        mat-button 
+        (click)="toggleDrawMode()" 
+        matTooltip="Stop drawing road">
+        <mat-icon>clear</mat-icon>
+    </button>
 } @else {
-    <button mat-button (click)="toggleDrawMode()" matTooltip="Start drawing road"><mat-icon>timeline</mat-icon></button>
+    <button 
+        mat-button 
+        (click)="toggleDrawMode()" 
+        [disabled]="!canDraw"         
+        matTooltip="Start drawing road">
+        <mat-icon>timeline</mat-icon>
+    </button>
 }
+
+
+
 

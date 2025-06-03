@@ -1,3 +1,12 @@
+// ------------------------------------------------------------------------------------------------------
+// To je profesorjev servis.
+// Ta Angular servis z imenom EventService deluje kot centralni komunikacijski mehanizem znotraj aplikacije 
+// posebej za prenos podatkov o dogodkih med komponentami. Lahko si ga predstavljaš kot 
+// dogodkovni oddajnik in poslušalec.
+// Subject omogoča tako oddajanje kot poslušanje dogodkov (podatkov)
+// -------------------------------------------------------------------------------------------------------
+
+
 import { Injectable } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 import { EventModel } from '../models/event.model';

@@ -9,6 +9,7 @@ import {WKT} from 'ol/format';
 import VectorSource from 'ol/source/Vector';
 import { Router } from '@angular/router';
 import { EventService } from '../../services/event.service';
+import { DrawModeService } from '../../services/draw-mode.service';
 import { EventModel } from '../../models/event.model';
 import { WktGeometryTransferService} from'../../services/wkt-geometry-transfer.service';
 
@@ -21,18 +22,30 @@ import { WktGeometryTransferService} from'../../services/wkt-geometry-transfer.s
 })
 export class DrawRoadComponent implements AfterViewInit, OnDestroy{
   drawMode: boolean = false;
+  canDraw: boolean = false;
   drawRoad: Draw | undefined;
 
-  constructor(private wktTransfer: WktGeometryTransferService, public mapService: MapService, public router: Router, public eventService: EventService) {
-    // Subscribe to events if needed
+  constructor(
+    private wktTransfer: WktGeometryTransferService, 
+    public mapService: MapService, 
+    public router: Router, 
+    public eventService: EventService,
+    private drawModeService: DrawModeService
+    ) {
+    // Spremljaj spremembe načina risanja
+    this.drawModeService.currentMode$.subscribe((mode) => {
+      this.canDraw = (mode === 'road'); // omogoči risanje samo, če je način "parcel"
+    });
+
     this.eventService.eventActivated$.subscribe((event: EventModel) => {
       console.log("[Draw-road] Event received in DrawRoadComponent:", event.type);
       if (event.type != 'drawRoadActivated') {
         this.drawMode = false; // Reset draw mode if a different event is received
       }
-      // Handle the event as needed
     });
   }
+
+
 
   ngAfterViewInit(): void {
     console.log("[Draw-road] DrawRoadComponent initialized");
