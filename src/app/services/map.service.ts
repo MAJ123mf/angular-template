@@ -22,11 +22,21 @@ import MouseWheelZoom from 'ol/interaction/MouseWheelZoom'; // uvoz razreda za Z
 import DragPan from 'ol/interaction/DragPan';             // Uvoz DragPan
 
 //vector layers
-import { Vector as VectorLayer} from 'ol/layer';
-import { sourcesFromTileGrid, Vector as VectorSource } from 'ol/source';
+
+
+import { sourcesFromTileGrid } from 'ol/source';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 //layerswitcher
 import LayerSwitcher from 'ol-layerswitcher';
 import { SettingsService } from './settings.service';
+
+import WKT from 'ol/format/WKT';
+import { Feature } from 'ol';
+import { Geometry } from 'ol/geom';
+
+import GeoJSON from 'ol/format/GeoJSON';
+
 
 @Injectable({
   providedIn: 'root'
@@ -36,6 +46,9 @@ export class MapService {
   map: Map;
   baseLayersGroup:LayerGroup;
   myLayersGroup:LayerGroup;
+  parcelsLayer!: VectorLayer;
+  roadsLayer!: VectorLayer;
+  addressesLayer!: VectorLayer;
 
   constructor(public settingsService: SettingsService) { 
       // Najprej ustvarimo sloje
@@ -65,12 +78,13 @@ export class MapService {
           },
           source: new TileWMS({
           url: 'https://ovc.catastro.meh.es/Cartografia/WMS/ServidorWMS.aspx?',
-          // crossOrigin: '*', (V slojih crossOrigin ni nastavljen)
+             // crossOrigin: '*', (V slojih crossOrigin ni nastavljen)
           params: {
             'LAYERS': 'Catastro', 'VERSION': '1.1.1', 'TILED': true, 'TRANSPARENT': true, 'FORMAT': 'image/png'
           }
         })
       });
+
 
     const baseLayersGroup = new LayerGroup({
         properties: {
@@ -78,7 +92,7 @@ export class MapService {
         },
         layers: [pnoa, catastro]
       });
-     return baseLayersGroup;
+    return baseLayersGroup;
   }
 
   createMyLayers(): LayerGroup {
@@ -129,6 +143,8 @@ export class MapService {
       }   
     })
     
+    this.parcelsLayer = parcelsVectorLayer;
+
     var roadsVectorSource = new VectorSource({wrapX: false}); 
     var roadsVectorLayer = new VectorLayer({
       source: roadsVectorSource,
@@ -138,6 +154,8 @@ export class MapService {
         // Na primer: isBaseLayer: false, opis: 'Gradnja plasti'
       }   
     })
+
+    this.roadsLayer = roadsVectorLayer;                               
     
     var addressVectorSource = new VectorSource({wrapX: false}); 
     var addressVectorLayer = new VectorLayer({
@@ -148,6 +166,8 @@ export class MapService {
         // Na primer: isBaseLayer: false, opis: 'Gradnja plasti'
       }   
     });//The layer were we will draw
+
+    this.addressesLayer = addressVectorLayer;                         
 
     var myLayersGroup = new LayerGroup({
         properties: {
@@ -277,4 +297,59 @@ export class MapService {
       });
     }
   }
+
+
+
+  public addParcelsGeoJsonToLayer(geojsonStr: string) {
+    console.log('[addParcelsGeoJsonToLayer] Prejeto GeoJSON:', geojsonStr);
+    const format = new GeoJSON();
+    const features = format.readFeatures(geojsonStr, {
+      featureProjection: 'EPSG:25830'
+    });
+    console.log(`[addParcelsGeoJsonToLayer] Parsed features count: ${features.length}`);
+    features.forEach((f, i) => console.log(`Feature ${i}:`, f));
+    const source = this.parcelsLayer?.getSource();
+    if (source) {
+      source.clear();
+      source.addFeatures(features);
+    } else {
+      console.warn('parcelsLayer ali njegov source ne obstaja!');
+    }
+  }
+
+  
+  public addRoadsGeoJsonToLayer(roads: any[]) {
+    const validGeoJSONs = roads
+      .map(road => {
+        try {
+          return JSON.parse(road.geom_geojson);
+        } catch (e) {
+          console.warn('Neveljaven GeoJSON za cestni ID:', road.id);
+          return null;
+        }
+      })
+      .filter(g => g !== null);
+
+    if (validGeoJSONs.length === 0) return;
+
+    const featureCollection = {
+      type: 'FeatureCollection',
+      features: validGeoJSONs
+    };
+
+    const format = new GeoJSON();
+    const features = format.readFeatures(featureCollection, {
+      featureProjection: 'EPSG:25830'
+    });
+
+    const source = this.roadsLayer?.getSource();
+    if (source) {
+      source.clear();
+      source.addFeatures(features);
+    } else {
+      console.warn('roadsLayer ali njegov source ne obstaja!');
+    }
+  }
+
+
 }

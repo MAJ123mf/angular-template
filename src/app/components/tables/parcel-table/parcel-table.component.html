@@ -6,7 +6,7 @@
     <INPUT type="radio" id="one" name="izbira" value="one" (click)="setIzbira('one')"> 
     <label for="one">Select One</label> 
     &nbsp; &nbsp; &nbsp;  <!-- trije presledki -->
-    <label for="fname">ID:</label>
+    <label for="e_izb">ID:</label>
     <input type="text" id="e_izb" name="e_izb" size="3" [value]="inputId" (input)="onInputIdChange($event)">
     <hr>
   </div>
@@ -23,9 +23,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let Parcel of ParcelsArray">
-
-              <td>{{Parcel.id}}</td>
+            <tr *ngFor="let Parcel of ParcelsArray" style="cursor: pointer;">
+              <a href="#" (click)="drawParcelGeometry(Parcel); $event.preventDefault()">{{ Parcel.id }}</a>
               <td>{{Parcel.parc_st}}</td>
               <td>{{Parcel.sifko}}</td>
               <td>{{Parcel.area}}</td>

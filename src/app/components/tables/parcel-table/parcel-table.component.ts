@@ -1,6 +1,8 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ParcelService } from '../../../services/parcel.service';
+import { MapService } from '../../../services/map.service'; 
+
 
 @Component({
   standalone: true,
@@ -18,7 +20,10 @@ export class ParcelTableComponent implements OnInit {
   inputId: number =1;  // spremenljivka za shranjevanje izbrane parcele
 
 
-  constructor(private parcelService: ParcelService) {}
+  constructor(
+    private parcelService: ParcelService,
+    private mapService: MapService
+  ) {}
 
   ngOnInit() {
     this.loadParcels();
@@ -78,4 +83,14 @@ export class ParcelTableComponent implements OnInit {
       }
     });
   }
+
+  drawParcelGeometry(parcel: any) {
+    console.log('[drawParcelGeometry] Parcel:', parcel);
+    if (!parcel?.geom_geojson) {
+      console.warn('[drawParcelGeometry] geom_geojson manjka!');
+      return;
+    }
+    this.mapService.addParcelsGeoJsonToLayer(parcel.geom_geojson);
+  }
+
 }

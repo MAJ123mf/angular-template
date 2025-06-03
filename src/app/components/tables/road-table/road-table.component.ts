@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RoadService } from '../../../services/road.service';
+import { MapService } from '../../../services/map.service'; 
 
 @Component({
    selector: 'app-road-table',
@@ -18,7 +19,10 @@ export class RoadTableComponent implements OnInit {
   inputId: number =1;  // spremenljivka za shranjevanje izbrane parcele
 
 
-  constructor(private roadService: RoadService) {}
+  constructor(
+    private roadService: RoadService,
+    private mapService: MapService
+  ) {}
 
   ngOnInit() {
     this.loadRoads();
@@ -29,6 +33,9 @@ export class RoadTableComponent implements OnInit {
       this.roadService.getAll().subscribe({   // getAll je metoda v road.service.ts
         next: (data: any[]) => {
           this.RoadsArray = data;
+
+          this.mapService.addRoadsGeoJsonToLayer(data);
+
         },
         error: (error: any) => {
           console.error('Napaka pri pridobivanju cest:', error);
@@ -39,6 +46,7 @@ export class RoadTableComponent implements OnInit {
       this.roadService.getOne(this.inputId).subscribe({               // getOne je metoda v road.service.ts
         next: (road: any) => {
           this.RoadsArray = [road];  // samo ena cesta v tabeli
+          this.mapService.addRoadsGeoJsonToLayer([road]);
         },
         error: (error: any) => {
           console.error('Napaka pri pridobivanju cest:', error);
@@ -79,5 +87,15 @@ export class RoadTableComponent implements OnInit {
       }
     });
   }
+
+  drawRoadGeometry(road: any) {
+    console.log('[drawRoadGeometry] Road:', road);
+    if (!road?.geom_geojson) {
+      console.warn('[drawRoadGeometry] geom_geojson manjka!');
+      return;
+    }
+    this.mapService.addRoadsGeoJsonToLayer(road.geom_geojson);
+  }
+
 }
 
