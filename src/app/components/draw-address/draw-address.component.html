@@ -13,5 +13,14 @@
         matTooltip="Start pointing addresses">
         <mat-icon >mail_outline</mat-icon>
     </button>
+
+    <button 
+        id="select-address"
+        mat-button 
+        (click)="selectAddress()" 
+        [disabled]="!canDraw"
+        [matTooltip]="selectMode ? 'Stop selecting addresses' : 'Select a address'">
+        <mat-icon>{{ selectMode ? 'select_all' : 'near_me' }}</mat-icon>
+    </button>
 }
 

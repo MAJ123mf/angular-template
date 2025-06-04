@@ -19,6 +19,18 @@ https://www.angularjswiki.com/angular/angular-material-icons-list-mat-icon-list/
         matTooltip="Start drawing road">
         <mat-icon>timeline</mat-icon>
     </button>
+
+
+    <!--  Tu se začne dogodek za izbiro ceste ob pritisku na gumb za izbiranje ceste,  -->    
+    <!--  Nadaljuje se z SelectRoad() funkcijo, 4 vrstice dol Ta je v draw-road.component.ts vrstica 73-->
+    <button 
+        id="select-road"
+        mat-button 
+        (click)="selectRoad()" 
+        [disabled]="!canDraw"
+        [matTooltip]="selectMode ? 'Stop selecting roads' : 'Select a road'">
+        <mat-icon>{{ selectMode ? 'select_all' : 'near_me' }}</mat-icon>
+    </button>
 }
 
 

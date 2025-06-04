@@ -1,16 +1,17 @@
-import { AfterViewInit, Component, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MapService } from '../../services/map.service';
 import { DrawEvent } from 'ol/interaction/Draw';
-import {Draw} from 'ol/interaction';
+import { Draw } from 'ol/interaction';
 import { EventService } from '../../services/event.service';
 import { DrawModeService } from '../../services/draw-mode.service';
 import VectorSource from 'ol/source/Vector';
-import {WKT} from 'ol/format';
+import { WKT } from 'ol/format';
 import { Router } from '@angular/router';
 import { EventModel } from '../../models/event.model';
 import { MatTooltip } from '@angular/material/tooltip';   // če hočeš da dela Tooltip ko se z miško postaviš na gumb na karti...
 import { WktGeometryTransferService} from'../../services/wkt-geometry-transfer.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-draw-address',
@@ -19,10 +20,12 @@ import { WktGeometryTransferService} from'../../services/wkt-geometry-transfer.s
   templateUrl: './draw-address.component.html',
   styleUrl: './draw-address.component.scss'
 })
-export class DrawAddressComponent implements AfterViewInit, OnDestroy {
+export class DrawAddressComponent implements AfterViewInit, OnDestroy, OnInit {
   drawMode: boolean = false;
   canDraw: boolean = false;
   drawAddress: Draw | undefined;
+  selectMode: boolean = false;
+  modeSubscription!: Subscription; 
 
   constructor(
     private wktTransfer: WktGeometryTransferService, 
@@ -45,6 +48,16 @@ export class DrawAddressComponent implements AfterViewInit, OnDestroy {
     });
   }
 
+  ngOnInit(): void {
+    this.modeSubscription = this.drawModeService.currentMode$.subscribe((mode) => {
+      this.canDraw = (mode === 'address');
+
+      // Če ni več address način in je risanje aktivno, ga izklopi
+      if (mode !== 'address' && this.drawMode) {
+        this.toggleDrawMode(); // ta metoda že ustavi risanje
+      }
+    });
+  }
 
   ngAfterViewInit(): void {
     console.log("[Draw-Address] DrawAddressComponent initialized");
@@ -66,6 +79,15 @@ export class DrawAddressComponent implements AfterViewInit, OnDestroy {
       console.log("[Draw-Address] Drawing mode deactivated");
       }
   }
+
+  // ta funkcija posluša eventService od prfesorja 
+  // ko pride event, preklopi v select mode
+  selectAddress(): void {
+    this.selectMode = !this.selectMode;   // preklopi v selectMode prej je bil false, zdaj je true  (selectMode definiran v vrstici 26)
+    const mode = this.selectMode ? 'select-address' : 'address'; 
+    this.eventService.emitEvent(new EventModel('modeChange', mode));    // delamo z event-service!!! 0.5 točke :) V map.service je funkcija
+  }                                                                   // handleModeChange ki posluša spremembo v zgornji vrsici. (v vrstici 78 v map.service)
+
 
   addDrawAddressInteraction() {
       //Add the draw interaction when the component is initialized
@@ -121,6 +143,9 @@ export class DrawAddressComponent implements AfterViewInit, OnDestroy {
     if (this.drawAddress) {
       this.mapService.map?.removeInteraction(this.drawAddress);
       console.log("[Drav-Address] Draw interaction removed");
+    }
+    if (this.modeSubscription) {
+      this.modeSubscription.unsubscribe();
     }
   }  
 }

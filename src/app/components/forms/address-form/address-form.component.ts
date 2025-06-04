@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AddressService } from '../../../services/address.service';
@@ -9,7 +9,8 @@ import { WktGeometryTransferService } from '../../../services/wkt-geometry-trans
 import { Subscription } from 'rxjs';
 import { Inject } from '@angular/core';
 import { NgZone } from '@angular/core'; // to služi za temu, da se izognemo napaki "ExpressionChangedAfterItHasBeenCheckedError" pri Angularju
-
+import { EventService } from '../../../services/event.service';
+import { EventModel } from '../../../models/event.model';
 
 @Component({
   selector: 'app-address-form',
@@ -21,7 +22,7 @@ import { NgZone } from '@angular/core'; // to služi za temu, da se izognemo nap
   templateUrl: './address-form.component.html',
   styleUrl: './address-form.component.scss'
 })
-export class AddressFormComponent {
+export class AddressFormComponent implements OnInit {
    @Output() saved = new EventEmitter<void>();
    @Output() statusMessage = new EventEmitter<string>();
 
@@ -31,7 +32,8 @@ export class AddressFormComponent {
   constructor(
      private addressService: AddressService,       // servis za komunikacijo z backendom
      private drawModeService: DrawModeService,    // za brisanje forme
-     private cdRef: ChangeDetectorRef,           // za zaznavanje sprememb v Document Object Model (DOM) (Liflet karta)
+     private cdRef: ChangeDetectorRef,           // za zaznavanje sprememb v Document Object Model (DOM) ne vem če še rabim to!
+     public eventService: EventService,         // vključimo profesorjev event-service
      @Inject(WktGeometryTransferService) private wktService: WktGeometryTransferService, // Za prenos WKT grafike  
      private ngZone: NgZone
    ) {}
@@ -39,12 +41,21 @@ export class AddressFormComponent {
   ngOnInit(): void {
      this.wktSubscription = this.wktService.getGeometryUpdates().subscribe((payload) => {
       if (payload.type === 'address') {
-        console.log('ParcelFormComponent prejel WKT:', payload.wkt);
+        console.log('AddressFormComponent prejel WKT:', payload.wkt);
         this.address.geom_wkt = payload.wkt;
 
         setTimeout(() => this.cdRef.detectChanges(), 0);
-      }
-    });
+        }
+     });
+
+     // Dogodek iz eventService. Prejeli smo obvestilo, da je bil izbran naslov, in samo napolnimo polje z WKT vsebino
+     this.eventService.eventActivated$.subscribe(event => {
+       if (event.type === 'address-selected') {
+          console.log('[Address-form] Prejel address-selected event:', event.data);
+          this.address.geom_wkt = event.data;       // tu dejansko polnimo vsebino html obrazca !
+          setTimeout(() => this.cdRef.detectChanges(), 0);
+       }
+     });
 
      this.drawModeService.clearForm$.subscribe(() => {      // naročimo se na spremembo ob zamenjavi forme. Forma se počisti
        this.clearForm();

@@ -55,14 +55,16 @@ export class MapService {
   addressesLayer!: VectorLayer;
   private selectInteraction!: Select;
 
-  constructor(public settingsService: SettingsService, private eventService: EventService) { 
+  constructor(
+    public settingsService: SettingsService, 
+    private eventService: EventService) { 
       // Najprej ustvarimo sloje
       this.baseLayersGroup= this.createBaseLayers();
       this.myLayersGroup= this.createMyLayers();
 
       this.eventService.eventActivated$.subscribe((event: EventModel) => {
         if (event.type === 'modeChange') {
-          this.handleModeChange(event.data);  // tukaj je 'select-parcel' ali 'parcel' itd.
+          this.handleModeChange(event.data);  // tukaj je 'select-parcel' ali 'select-road' itd.
         }
       });
 
@@ -71,11 +73,25 @@ export class MapService {
       this.addMousePositionControl();
   }
 
-
+  // poslušamo spremembe v event-service, da to deluje moramo importirat event service, dopolnit konstruktor za map in mu povedat,
+  // da je ta funkcija odgovorna za spremembe. glej vrstico 67 (malo višje) Tisto zgoraj kliče to funkcijo
   private handleModeChange(mode: string): void {
-    // odstrani stare interakcije in aktiviraj nove
+    // odstrani stare interakcije 
+    this.clearInteractions();    // funkcija je takoj za to. 10 vrstic nižje
+    // in aktiviraj nove
     if (mode === 'select-parcel') {
       this.activateSelectParcel();
+    } else if (mode === 'select-road') {
+      this.activateSelectRoad(); // če selektiramo ceste, potem bomo uredili to v funkciji activateSelectRoad pojdi dol v vrstico 446
+    } else if (mode === 'select-address') {
+      this.activateSelectAddress(); // če selektiramo naslove, potem bomo uredili to v funkciji activateSelectAddress pojdi dol v vrstico 478 
+    }
+  }
+
+  private clearInteractions(): void {
+    if (this.selectInteraction) {
+      this.map.removeInteraction(this.selectInteraction);
+      this.selectInteraction = undefined!;
     }
   }
 
@@ -423,7 +439,8 @@ export class MapService {
         const geometry = feature.getGeometry() as Geometry;
         const wkt = wktFormat.writeGeometry(geometry);
 
-        // Sporoči naprej ( z EventService)
+        // Sporoči naprej ( z EventService), da je parcela izbrana. Treba jo bo prenest v vnosno formo.
+        // Tisti, ki mu je namenjeno to sporočilo že ve, in čaka nanj. To je seveda parcel-form.component.
         this.eventService.emitEvent(new EventModel('parcel-selected', wkt));
         console.log('[Map-service] activateSelectParcel: ',wkt)
       }
@@ -431,5 +448,59 @@ export class MapService {
 
     this.map.addInteraction(this.selectInteraction);
   }
+
+  // SELECT road
+  private activateSelectRoad(): void {
+    if (this.selectInteraction) {
+      this.map.removeInteraction(this.selectInteraction);
+    }
+
+    this.selectInteraction = new Select({
+      condition: click,
+      layers: [this.roadsLayer]
+    });
+
+    this.selectInteraction.on('select', (e) => {
+      const feature = e.selected[0];
+      if (feature) {
+        const wktFormat = new WKT();
+        const geometry = feature.getGeometry() as Geometry;
+        const wkt = wktFormat.writeGeometry(geometry);
+
+        // Sporoči naprej ( z EventService), da je cesta izbrana. Torej jo bo treba prenest v vnosno formo
+        this.eventService.emitEvent(new EventModel('road-selected', wkt));
+        console.log('[Map-service] activateSelectRoad: ',wkt)    // samo izpis na konzolo za kontrolo
+      }
+    });
+
+    this.map.addInteraction(this.selectInteraction);
+  }  
+
+  // SELECT naslov oz. address
+  private activateSelectAddress(): void {
+    if (this.selectInteraction) {
+      this.map.removeInteraction(this.selectInteraction);
+    }
+
+    this.selectInteraction = new Select({
+      condition: click,
+      layers: [this.addressesLayer]
+    });
+
+    this.selectInteraction.on('select', (e) => {
+      const feature = e.selected[0];
+      if (feature) {
+        const wktFormat = new WKT();
+        const geometry = feature.getGeometry() as Geometry;
+        const wkt = wktFormat.writeGeometry(geometry);
+
+        // Sporoči naprej ( z EventService), da je naslov izbran. Torej ga je treba prenest v vnosno formo...
+        this.eventService.emitEvent(new EventModel('address-selected', wkt));  // tu sporočamo (emitiramo) naprej
+        console.log('[Map-service] activateSelectAddress: ',wkt)    // samo izpis na konzolo za kontrolo ob razvoju, se lahko briše...
+      }
+    });
+
+    this.map.addInteraction(this.selectInteraction);
+  }  
 
 }

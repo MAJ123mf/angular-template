@@ -9,6 +9,8 @@ import { WktGeometryTransferService } from '../../../services/wkt-geometry-trans
 import { Subscription } from 'rxjs';
 import { NgZone } from '@angular/core'; // to služi za temu, da se izognemo napaki "ExpressionChangedAfterItHasBeenCheckedError" pri Angularju
 import { Inject } from '@angular/core';
+import { EventService } from '../../../services/event.service';
+import { EventModel } from '../../../models/event.model';
 
 @Component({
   selector: 'app-road-form',
@@ -31,6 +33,7 @@ export class RoadFormComponent implements OnInit, OnDestroy {
      private roadService: RoadService,
      private drawModeService: DrawModeService,   // za brisanje forme
      private cdRef: ChangeDetectorRef,
+     public eventService: EventService,
      @Inject(WktGeometryTransferService) private wktService: WktGeometryTransferService, // Za prenos WKT grafike
      private ngZone: NgZone        // zaznava spremembe v geom_wkt, iz leaflet karte, ki je izven Angular konteksta
    ) {}
@@ -48,9 +51,18 @@ export class RoadFormComponent implements OnInit, OnDestroy {
 
     this.drawModeService.clearForm$.subscribe(() => {
         this.clearForm();
-      });
-   }
+    });       
     
+    // Dogodek iz eventService
+    this.eventService.eventActivated$.subscribe(event => {
+      if (event.type === 'road-selected') {
+        console.log('[Road-form] Prejel road-selected event:', event.data);
+        this.road.geom_wkt = event.data;
+        setTimeout(() => this.cdRef.detectChanges(), 0);
+      }
+    });
+   }
+
 
    ngOnDestroy(): void {
      if (this.wktSubscription) {

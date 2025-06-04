@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import {MatIconModule} from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MapService } from '../../services/map.service';
@@ -12,6 +12,7 @@ import { EventService } from '../../services/event.service';
 import { DrawModeService } from '../../services/draw-mode.service';
 import { EventModel } from '../../models/event.model';
 import { WktGeometryTransferService} from'../../services/wkt-geometry-transfer.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-draw-road',
@@ -20,10 +21,12 @@ import { WktGeometryTransferService} from'../../services/wkt-geometry-transfer.s
   templateUrl: './draw-road.component.html',
   styleUrl: './draw-road.component.scss'
 })
-export class DrawRoadComponent implements AfterViewInit, OnDestroy{
+export class DrawRoadComponent implements AfterViewInit, OnDestroy, OnInit {
   drawMode: boolean = false;
   canDraw: boolean = false;
   drawRoad: Draw | undefined;
+  selectMode: boolean = false;
+  modeSubscription!: Subscription; 
 
   constructor(
     private wktTransfer: WktGeometryTransferService, 
@@ -45,7 +48,16 @@ export class DrawRoadComponent implements AfterViewInit, OnDestroy{
     });
   }
 
+  ngOnInit(): void {
+    this.modeSubscription = this.drawModeService.currentMode$.subscribe((mode) => {
+      this.canDraw = (mode === 'road');
 
+      // Če ni risanja na road, (če smo preklopili na parcele...) in je risanje aktivno, ga izklopi
+      if (mode !== 'road' && this.drawMode) {
+        this.toggleDrawMode(); // ta metoda že ustavi risanje
+      }
+    });
+  }
 
   ngAfterViewInit(): void {
     console.log("[Draw-road] DrawRoadComponent initialized");
@@ -69,6 +81,13 @@ export class DrawRoadComponent implements AfterViewInit, OnDestroy{
     }
   }
 
+    // ta funkcija posluša eventService od prfesorja 
+    // ko pride event, preklopi v select mode
+    selectRoad(): void {
+      this.selectMode = !this.selectMode;   // preklopi v selectMode
+      const mode = this.selectMode ? 'select-road' : 'road'; 
+      this.eventService.emitEvent(new EventModel('modeChange', mode));    // delamo z event-service!!! 0.5 točke :) V map.service je funkcija
+    }                                                                   // handleModeChange ki posluša spremembo v zgornji vrsici. v vrstici 75
 
   addDrawRoadInteraction() {
     //Add the draw interaction when the component is initialized
@@ -130,6 +149,9 @@ export class DrawRoadComponent implements AfterViewInit, OnDestroy{
     if (this.drawRoad) {
       this.mapService.map?.removeInteraction(this.drawRoad);
       console.log("[Draw-road] Draw interaction removed");
+    }
+    if (this.modeSubscription) {
+      this.modeSubscription.unsubscribe();
     }
   }
 }

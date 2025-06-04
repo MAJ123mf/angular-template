@@ -11,7 +11,7 @@
     <hr>
   </div>
   <div>
-        <table class="table">
+        <table class="table table-sm">
           <thead>
             <tr>
               <th scope="col">Id</th>
@@ -30,9 +30,11 @@
               <td>{{Parcel.area}}</td>
               <td>{{Parcel.geom_wkt}}</td>
 
-              <td>
-                <button type="button" class="btn btn-success" (click)="setUpdate(Parcel)">Edit</button>
-                <button type="button" class="btn btn-danger" (click)="setDelete(Parcel)">Delete</button> 
+              <td style="white-space: nowrap; width: 120px;">
+                <div class="d-flex justify-content-between">
+                  <button type="button" class="btn btn-success btn-sm me-1" (click)="setUpdate(Parcel)">Edit</button>
+                  <button type="button" class="btn btn-danger btn-sm" (click)="setDelete(Parcel)">Delete</button>
+                </div>
               </td>
             </tr>
           </tbody>

@@ -10,7 +10,7 @@
     <hr>
   </div>
   <div>
-        <table class="table">
+        <table class="table table-sm">
           <thead>
             <tr>  <!-- imena polj v tabeli (vrstica z imeni polj) -->
               <th scope="col">Id</th>
@@ -34,10 +34,13 @@
               <td>{{address.post_name}}</td>
               <td>{{address.geom_wkt}}</td>
 
-              <td>                              <!-- Gumba Edit in Delete ob zapisih v tabeli -->
-                <button type="button" class="btn btn-success" (click)="setUpdate(address)">Edit</button>
-                <button type="button" class="btn btn-danger" (click)="setDelete(address)">Delete</button> 
+              <td style="white-space: nowrap; width: 120px;">
+                <div class="d-flex justify-content-between">
+                  <button type="button" class="btn btn-success btn-sm me-1" (click)="setUpdate(address)">Edit</button>
+                  <button type="button" class="btn btn-danger btn-sm" (click)="setDelete(address)">Delete</button>
+                </div>
               </td>
+
             </tr>
           </tbody>
         </table> 

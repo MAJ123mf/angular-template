@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import {MatIconModule} from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MapService } from '../../services/map.service';
@@ -14,6 +14,7 @@ import { WktGeometryTransferService} from'../../services/wkt-geometry-transfer.s
 
 import { EventService } from '../../services/event.service';
 import { EventModel } from '../../models/event.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-draw-parcel',
@@ -22,11 +23,12 @@ import { EventModel } from '../../models/event.model';
   templateUrl: './draw-parcel.component.html',
   styleUrl: './draw-parcel.component.scss'
 })
-export class DrawParcelComponent implements AfterViewInit, OnDestroy{
+export class DrawParcelComponent implements AfterViewInit, OnDestroy, OnInit {
   drawMode: boolean = false;
   canDraw: boolean = false;
   drawParcel: Draw | undefined;
   selectMode: boolean = false;
+  modeSubscription!: Subscription; 
 
   // v konstruktorju imamo na primer WktGeometryTransfer service  (servis je najavljen tudi pod import)
   // parcel-form posluša ta service, sam servis najdeš seveda med servisi...
@@ -50,6 +52,18 @@ export class DrawParcelComponent implements AfterViewInit, OnDestroy{
       }
     });
   }
+  
+  ngOnInit(): void {
+    this.modeSubscription = this.drawModeService.currentMode$.subscribe((mode) => {
+      this.canDraw = (mode === 'parcel');
+
+      // Če ni več parcelni način in je risanje aktivno, ga izklopi
+      if (mode !== 'parcel' && this.drawMode) {
+        this.toggleDrawMode(); // ta metoda že ustavi risanje
+      }
+    });
+  }
+
 
   ngAfterViewInit(): void {
     console.log("DrawParcelComponent initialized");
@@ -142,6 +156,9 @@ export class DrawParcelComponent implements AfterViewInit, OnDestroy{
     if (this.drawParcel) {
       this.mapService.map?.removeInteraction(this.drawParcel);
       console.log("[Drav-parcel] Draw interaction removed");
+    }
+    if (this.modeSubscription) {
+      this.modeSubscription.unsubscribe();
     }
   }
 }

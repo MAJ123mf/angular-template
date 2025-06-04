@@ -58,13 +58,13 @@
       <div class="row mb-3 align-items-center">
         <label class="col-sm-2 col-form-label">Geom:</label>
         <div class="col-sm-10">
-          <input
-            type="text"
+          <textarea
             [(ngModel)]="road.geom_wkt"
             name="geom_wkt"
             class="form-control"
+            rows="4"
             placeholder="LINESTRING(...)"
-          />
+          ></textarea>
         </div>
       </div>
         <!-- Gumbi za dodajanje, posodabljanje in Clear forme -->
