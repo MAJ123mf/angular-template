@@ -36,3 +36,11 @@
     opacity: 1;
 }
 
+#select-parcel {
+  position: absolute;
+  left: 40px;
+  top: 20px; // ali nekaj več kot draw-parcel, da je spodaj
+  z-index: 1;
+  border-radius: 5px;
+  opacity: 1;
+}

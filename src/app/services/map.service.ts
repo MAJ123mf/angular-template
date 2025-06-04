@@ -21,9 +21,10 @@ import Interaction from 'ol/interaction/Interaction'; // Uvozimo razred interakc
 import MouseWheelZoom from 'ol/interaction/MouseWheelZoom'; // uvoz razreda za Zoom z kolesom miške
 import DragPan from 'ol/interaction/DragPan';             // Uvoz DragPan
 
+import { EventService } from '../services/event.service';
+import { EventModel } from '../models/event.model';
+
 //vector layers
-
-
 import { sourcesFromTileGrid } from 'ol/source';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
@@ -33,10 +34,13 @@ import { SettingsService } from './settings.service';
 
 import WKT from 'ol/format/WKT';
 import { Feature } from 'ol';
-import { Geometry } from 'ol/geom';
+import Geometry from 'ol/geom/Geometry'; // rabim za pretvorbo iz geometrije v WKT
 
 import GeoJSON from 'ol/format/GeoJSON';
 
+// knjižnice za izbiranje gradnikov:
+import Select from 'ol/interaction/Select';
+import { click } from 'ol/events/condition';
 
 @Injectable({
   providedIn: 'root'
@@ -49,15 +53,30 @@ export class MapService {
   parcelsLayer!: VectorLayer;
   roadsLayer!: VectorLayer;
   addressesLayer!: VectorLayer;
+  private selectInteraction!: Select;
 
-  constructor(public settingsService: SettingsService) { 
+  constructor(public settingsService: SettingsService, private eventService: EventService) { 
       // Najprej ustvarimo sloje
       this.baseLayersGroup= this.createBaseLayers();
       this.myLayersGroup= this.createMyLayers();
 
+      this.eventService.eventActivated$.subscribe((event: EventModel) => {
+        if (event.type === 'modeChange') {
+          this.handleModeChange(event.data);  // tukaj je 'select-parcel' ali 'parcel' itd.
+        }
+      });
+
       this.map= this.createMap();//Create the map and store it in the mapService
       // this.addLayerSwitcherControl();  // to sem prestavil v map.component v ngAfterViewInit()
       this.addMousePositionControl();
+  }
+
+
+  private handleModeChange(mode: string): void {
+    // odstrani stare interakcije in aktiviraj nove
+    if (mode === 'select-parcel') {
+      this.activateSelectParcel();
+    }
   }
 
   createBaseLayers(): LayerGroup {
@@ -384,6 +403,33 @@ export class MapService {
     } else {
       console.warn('addressLayer ali njegov source ne obstaja!');
     }
+  }
+
+  // SELECT parcel
+  private activateSelectParcel(): void {
+    if (this.selectInteraction) {
+      this.map.removeInteraction(this.selectInteraction);
+    }
+
+    this.selectInteraction = new Select({
+      condition: click,
+      layers: [this.parcelsLayer]
+    });
+
+    this.selectInteraction.on('select', (e) => {
+      const feature = e.selected[0];
+      if (feature) {
+        const wktFormat = new WKT();
+        const geometry = feature.getGeometry() as Geometry;
+        const wkt = wktFormat.writeGeometry(geometry);
+
+        // Sporoči naprej ( z EventService)
+        this.eventService.emitEvent(new EventModel('parcel-selected', wkt));
+        console.log('[Map-service] activateSelectParcel: ',wkt)
+      }
+    });
+
+    this.map.addInteraction(this.selectInteraction);
   }
 
 }

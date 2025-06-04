@@ -1,7 +1,11 @@
 <!--
 Icon list:
 https://www.angularjswiki.com/angular/angular-material-icons-list-mat-icon-list/
+
+oblikovanje gumbov je v map.component.scss (tam je določen položaj gumba na karti)
+
 -->
+
 
 
 @if (drawMode) {
@@ -19,5 +23,14 @@ https://www.angularjswiki.com/angular/angular-material-icons-list-mat-icon-list/
     matTooltip="Start drawing parcels">
     <mat-icon>format_shapes</mat-icon>
   </button>
+
+<button 
+  id="select-parcel"
+  mat-button 
+  (click)="selectParcel()" 
+  [disabled]="!canDraw"
+  [matTooltip]="selectMode ? 'Stop selecting parcels' : 'Select a parcel'">
+  <mat-icon>{{ selectMode ? 'select_all' : 'near_me' }}</mat-icon>
+</button>
 }
 

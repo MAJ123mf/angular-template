@@ -8,12 +8,12 @@ import { DrawEvent } from 'ol/interaction/Draw';
 import {WKT} from 'ol/format';
 import VectorSource from 'ol/source/Vector';
 import { Router } from '@angular/router';
-import { EventService } from '../../services/event.service';
+
 import { DrawModeService } from '../../services/draw-mode.service';
 import { WktGeometryTransferService} from'../../services/wkt-geometry-transfer.service';
+
+import { EventService } from '../../services/event.service';
 import { EventModel } from '../../models/event.model';
-
-
 
 @Component({
   selector: 'app-draw-parcel',
@@ -26,6 +26,7 @@ export class DrawParcelComponent implements AfterViewInit, OnDestroy{
   drawMode: boolean = false;
   canDraw: boolean = false;
   drawParcel: Draw | undefined;
+  selectMode: boolean = false;
 
   // v konstruktorju imamo na primer WktGeometryTransfer service  (servis je najavljen tudi pod import)
   // parcel-form posluša ta service, sam servis najdeš seveda med servisi...
@@ -71,7 +72,14 @@ export class DrawParcelComponent implements AfterViewInit, OnDestroy{
       console.log("[Drav-parcel] Drawing mode deactivated");
     }
   }
-
+   
+  // od tu se sproži selektiranje parcdel s pomočjo proferorjevega event-service  (0.5 točke :) )
+  selectParcel(): void {
+    this.selectMode = !this.selectMode;   // preklopi v selectMode
+    const mode = this.selectMode ? 'select-parcel' : 'parcel'; 
+    this.eventService.emitEvent(new EventModel('modeChange', mode));
+    }
+  
 
   addDrawParcelInteraction() {
     //Add the draw interaction when the component is initialized

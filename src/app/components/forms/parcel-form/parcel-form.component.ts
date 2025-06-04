@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, Input } from '@angular/core';
+import { Component, EventEmitter, Output, OnInit, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ParcelService } from '../../../services/parcel.service';
@@ -9,6 +9,8 @@ import { WktGeometryTransferService } from '../../../services/wkt-geometry-trans
 import { Subscription } from 'rxjs';
 import { Inject } from '@angular/core';
 import { NgZone } from '@angular/core';
+import { EventService } from '../../../services/event.service';
+import { EventModel } from '../../../models/event.model';
 
 @Component({
   standalone: true,
@@ -20,7 +22,7 @@ import { NgZone } from '@angular/core';
   templateUrl: './parcel-form.component.html',
   styleUrls: ['./parcel-form.component.scss']
 })
-export class ParcelFormComponent {
+export class ParcelFormComponent implements OnInit {
   @Output() saved = new EventEmitter<void>();
   @Output() statusMessage = new EventEmitter<string>();
 
@@ -31,22 +33,28 @@ export class ParcelFormComponent {
     private parcelService: ParcelService,
     private drawModeService: DrawModeService,
     private cdRef: ChangeDetectorRef,
+    public eventService: EventService,
     @Inject(WktGeometryTransferService) private wktService: WktGeometryTransferService, // Za prenos WKT grafike
     private ngZone: NgZone
   ) {}
 
   ngOnInit(): void {
+    // WKT iz storitve
     this.wktSubscription = this.wktService.getGeometryUpdates().subscribe((payload) => {
       if (payload.type === 'parcel') {
         console.log('[Parcel-form] ParcelFormComponent prejel WKT:', payload.wkt);
         this.parcel.geom_wkt = payload.wkt;
-
         setTimeout(() => this.cdRef.detectChanges(), 0);
       }
     });
 
-    this.drawModeService.clearForm$.subscribe(() => {
-      this.clearForm();
+    // Dogodek iz eventService
+    this.eventService.eventActivated$.subscribe(event => {
+      if (event.type === 'parcel-selected') {
+        console.log('[Parcel-form] Prejel parcel-selected event:', event.data);
+        this.parcel.geom_wkt = event.data;
+        setTimeout(() => this.cdRef.detectChanges(), 0);
+      }
     });
   }
 
