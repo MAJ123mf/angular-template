@@ -61,9 +61,25 @@ export class RoadFormComponent implements OnInit, OnDestroy {
     // Dogodek iz eventService
     this.eventService.eventActivated$.subscribe(event => {
       if (event.type === 'road-selected') {
-        console.log('[Road-form] Prejel road-selected event:', event.data);
-        this.road.geom_wkt = event.data;
+        const podatki = event.data;
+        this.road.id = podatki.id;
+        this.road.str_name = podatki.str_name;
+        this.road.administrator = podatki.administrator;
+        this.road.maintainer = podatki.maintainer;
+        this.road.length = podatki.length;
+        this.road.geom_wkt = podatki.geom_wkt;
+        console.log('[road-form] Prejel road-selected event:', podatki);
         setTimeout(() => this.cdRef.detectChanges(), 0);
+      }
+    });
+
+
+    // Dogodek iz eventService
+    this.eventService.eventActivated$.subscribe((event: EventModel) => {
+      if (event.type === 'roadEdited') {
+        console.log('[road-form] Strežem event sporočilo roadEdited')
+        const wkt = event.data;
+        this.loadGeometryFromWkt(wkt);
       }
     });
 
@@ -74,6 +90,15 @@ export class RoadFormComponent implements OnInit, OnDestroy {
     } else {
       console.log('[RoadForm] Uporabnik je prijavljen.');
     }
+  }
+
+
+  loadGeometryFromWkt(wkt: string): void {
+    console.log('[road-form] Nalagam geometrijo iz WKT:', wkt);
+    this.road.geom_wkt = wkt;
+
+    // Če je treba prisiliti Angular, da zazna spremembo:
+    setTimeout(() => this.cdRef.detectChanges(), 0);
   }
 
 

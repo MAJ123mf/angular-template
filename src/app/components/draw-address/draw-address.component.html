@@ -22,5 +22,14 @@
         [matTooltip]="selectMode ? 'Stop selecting addresses' : 'Select a address'">
         <mat-icon>{{ selectMode ? 'select_all' : 'near_me' }}</mat-icon>
     </button>
+
+    <button 
+        id="edit-address"
+        mat-button 
+        (click)="editAddress()" 
+        [disabled]="!canDraw"
+        [matTooltip]="editMode ? 'Stop editing addresses' : 'Edit a address'">
+        <mat-icon>{{ editMode ? 'done_outline' : 'create' }}</mat-icon>
+  </button>
 }
 

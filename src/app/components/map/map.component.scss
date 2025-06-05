@@ -66,10 +66,28 @@
   opacity: 1;
 }
 
+#edit-road {
+  position: absolute;
+  left: 70px;
+  top: 50px; // desno od ikone za selektiranje cest, ki je na 40,50  gumg je širok 30px (pixels)
+  z-index: 1;
+  border-radius: 5px;
+  opacity: 1;
+}
+
 #select-address {
   position: absolute;
   left: 40px;
   top: 80px; // desno od ikone za risanje cest, ki je na 10,80  gumg je širok 30px (pixels), torej smo na 40,80
+  z-index: 1;
+  border-radius: 5px;
+  opacity: 1;
+}
+
+#edit-address {
+  position: absolute;
+  left: 70px;
+  top: 80px; // desno od ikone za selektiranje cest, ki je na 40,80  gumg je širok 30px (pixels), torej smo na 70,80
   z-index: 1;
   border-radius: 5px;
   opacity: 1;

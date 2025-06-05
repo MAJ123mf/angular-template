@@ -88,14 +88,7 @@ export class RoadTableComponent implements OnInit {
     });
   }
 
-  // drawRoadGeometry(road: any) {
-  //   console.log('[drawRoadGeometry] Road:', road);
-  //   if (!road?.geom_geojson) {
-  //     console.warn('[drawRoadGeometry] geom_geojson manjka!');
-  //     return;
-  //   }
-  //   this.mapService.addRoadsGeoJsonToLayer(road.geom_geojson);
-  // }
+
 
 }
 

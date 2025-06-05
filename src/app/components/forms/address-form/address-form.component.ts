@@ -56,9 +56,26 @@ export class AddressFormComponent implements OnInit {
      // Dogodek iz eventService. Prejeli smo obvestilo, da je bil izbran naslov, in samo napolnimo polje z WKT vsebino
      this.eventService.eventActivated$.subscribe(event => {
        if (event.type === 'address-selected') {
-          console.log('[Address-form] Prejel address-selected event:', event.data);
-          this.address.geom_wkt = event.data;       // tu dejansko polnimo vsebino html obrazca !
+          const podatki = event.data;
+          this.address.id = podatki.id;
+          this.address.building_num = podatki.building_num;
+          this.address.street = podatki.street;
+          this.address.house_num = podatki.house_num;
+          this.address.post_num = podatki.post_num;
+          this.address.post_name = podatki.post_name;
+          this.address.geom_wkt = podatki.geom_wkt;
+          console.log('[Address-form] Prejel address-selected event:', podatki);
           setTimeout(() => this.cdRef.detectChanges(), 0);
+       }
+     });
+
+
+     // Dogodek iz eventService
+     this.eventService.eventActivated$.subscribe((event: EventModel) => {
+       if (event.type === 'addressEdited') {
+          console.log('[parcel-form] Strežem event sporočilo addressEdited')
+          const wkt = event.data;
+          this.loadGeometryFromWkt(wkt);
        }
      });
 
@@ -72,6 +89,11 @@ export class AddressFormComponent implements OnInit {
        disableClose: true
       });
     }
+  }
+
+  loadGeometryFromWkt(wkt: string): void {
+    console.log('[Parcel-form] Nalagam geometrijo iz WKT:', wkt);
+    this.address.geom_wkt = wkt;
   }
 
   ngOnDestroy(): void {

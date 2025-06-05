@@ -45,6 +45,7 @@ import Select from 'ol/interaction/Select';
 import { click } from 'ol/events/condition';
 
 import Modify from 'ol/interaction/Modify';  // za editiranje geometrij
+import { Parcel } from '../models/parcel';
 
 @Injectable({
   providedIn: 'root'
@@ -72,7 +73,13 @@ export class MapService {
           this.handleModeChange(event.data); // 'select-parcel', 'edit-parcel', 'parcel' itd.
         } else if (event.type === 'requestParcelWkt') {
           this.sendParcelWkt();
-          console.log('[Map service] Event Handler: Sproži zahtevo za WKT', event.type);
+          console.log('[Map service] Event Handler: Sproži zahtevo za WKT parcel', event.type);
+        } else if (event.type === 'requestRoadWkt') {
+          this.sendRoadWkt();
+          console.log('[Map service] Event Handler: Sproži zahtevo za WKT cest', event.type);
+        } else if (event.type === 'requestAddressWkt') {
+          this.sendAddressWkt();
+          console.log('[Map service] Event Handler: Sproži zahtevo za WKT naslovov', event.type);
         }
         // lahko dodajaš še druge event tipe, če bo treba
       });
@@ -97,6 +104,12 @@ export class MapService {
     } else if (mode === 'edit-parcel') {
       this.activateEditParcel(); // za editiranje parcel
       console.log('[Map service]: Smo v urejanju parcel!', mode);
+    } else if (mode === 'edit-road') {
+      this.activateEditRoad(); // za editiranje cest
+      console.log('[Map service]: Smo v urejanju cest!', mode);
+    } else if (mode === 'edit-address') {
+      this.activateEditAddress(); // za editiranje cest
+      console.log('[Map service]: Smo v urejanju naslovov!', mode);
     } 
   }
 
@@ -346,7 +359,7 @@ export class MapService {
   }
 
 
-  // ta funkcija nariše enoparcelo, ko kliknemo na ID v tabeli parcel
+  // ta funkcija nariše eno parcelo, ko kliknemo na ID v tabeli parcel
   public addParcelsGeoJsonToLayer(geojsonStr: string) {
     console.log('[addParcelsGeoJsonToLayer] Prejeto GeoJSON:', geojsonStr);
     const format = new GeoJSON();
@@ -363,6 +376,56 @@ export class MapService {
       console.warn('parcelsLayer ali njegov source ne obstaja!');
     }
   }
+
+
+
+  // ta funkcija nariše vse parcele ki so prikazane v tabeli na Karto
+  public addAllParcelsGeoJsonToLayer(parcels: any[]) {
+    const validGeoJSONs = parcels
+      .map(Parcel => {
+        try {
+          return JSON.parse(Parcel.geom_geojson);
+        } catch (e) {
+          console.warn('Neveljaven GeoJSON za parcelni ID:', Parcel.id);
+          return null;
+        }
+      })
+      .filter(g => g !== null);
+
+    if (validGeoJSONs.length === 0) return;
+
+    const featureCollection = {
+      type: 'FeatureCollection',
+      features: validGeoJSONs
+    };
+
+    const format = new GeoJSON();
+    const features = format.readFeatures(featureCollection, {
+      featureProjection: 'EPSG:25830'
+    });
+
+    features.forEach((feature, i) => {
+      const parcelData = parcels[i]; // ustrezni zapis iz tabele
+      feature.setProperties({
+        id: parcelData.id,
+        parc_st: parcelData.parc_st,
+        sifko: parcelData.sifko,
+        area: parcelData.area,
+        geom_wkt: parcelData.geom_wkt
+      });
+    });
+
+    const source = this.parcelsLayer?.getSource();
+    if (source) {
+      source.clear();
+      source.addFeatures(features);
+    } else {
+      console.warn('parcelsLayer ali njegov source ne obstaja!');
+    }
+  }
+
+
+
 
   // ta funkcija nariše vse ceste ki so prikazane v tabeli na Karto
   public addRoadsGeoJsonToLayer(roads: any[]) {
@@ -387,6 +450,18 @@ export class MapService {
     const format = new GeoJSON();
     const features = format.readFeatures(featureCollection, {
       featureProjection: 'EPSG:25830'
+    });
+
+    features.forEach((feature, i) => {
+      const roadData = roads[i]; // ustrezni zapis iz tabele
+      feature.setProperties({
+        id: roadData.id,
+        str_name: roadData.str_name,
+        administrator: roadData.administrator,
+        maintainer: roadData.maintainer,
+        length: roadData.length,
+        geom_wkt: roadData.geom_wkt
+      });
     });
 
     const source = this.roadsLayer?.getSource();
@@ -424,6 +499,19 @@ export class MapService {
       featureProjection: 'EPSG:25830'
     });
 
+    features.forEach((feature, i) => {
+      const addressData = address[i]; // ustrezni zapis iz tabele
+      feature.setProperties({
+        id: addressData.id,
+        building_num: addressData.building_num,
+        street: addressData.street,
+        house_num: addressData.house_num,
+        post_num: addressData.post_num,
+        post_name: addressData.post_name,
+        geom_wkt: addressData.geom_wkt
+      });
+    });
+
     const source = this.addressesLayer?.getSource();
     if (source) {
       source.clear();
@@ -447,17 +535,17 @@ export class MapService {
     this.selectInteraction.on('select', (e) => {
       const feature = e.selected[0];
       if (feature) {
-        const wktFormat = new WKT();
-        const geometry = feature.getGeometry() as Geometry;
-        const wkt = wktFormat.writeGeometry(geometry);
+        // const wktFormat = new WKT();
+        // const geometry = feature.getGeometry() as Geometry;
+        // const wkt = wktFormat.writeGeometry(geometry);
 
         // Sporoči naprej ( z EventService), da je parcela izbrana. Treba jo bo prenest v vnosno formo.
         // Tisti, ki mu je namenjeno to sporočilo že ve, in čaka nanj. To je seveda parcel-form.component.
-        this.eventService.emitEvent(new EventModel('parcel-selected', wkt));
-        console.log('[Map-service] activateSelectParcel: ',wkt)
+        const podatki = feature.getProperties();
+        console.log('[map.service] activateSelectParcel, podatki so: ', podatki)
+        this.eventService.emitEvent(new EventModel('parcel-selected', podatki));
       }
     });
-
     this.map.addInteraction(this.selectInteraction);
   }
 
@@ -475,16 +563,16 @@ export class MapService {
     this.selectInteraction.on('select', (e) => {
       const feature = e.selected[0];
       if (feature) {
-        const wktFormat = new WKT();
-        const geometry = feature.getGeometry() as Geometry;
-        const wkt = wktFormat.writeGeometry(geometry);
+        // const wktFormat = new WKT();
+        // const geometry = feature.getGeometry() as Geometry;
+        // const wkt = wktFormat.writeGeometry(geometry);
 
         // Sporoči naprej ( z EventService), da je cesta izbrana. Torej jo bo treba prenest v vnosno formo
-        this.eventService.emitEvent(new EventModel('road-selected', wkt));
-        console.log('[Map-service] activateSelectRoad: ',wkt)    // samo izpis na konzolo za kontrolo
+        const podatki = feature.getProperties();
+        console.log('[map.service] activateSelectRoad, podatki so: ', podatki)
+        this.eventService.emitEvent(new EventModel('road-selected', podatki));
       }
     });
-
     this.map.addInteraction(this.selectInteraction);
   }  
 
@@ -502,16 +590,16 @@ export class MapService {
     this.selectInteraction.on('select', (e) => {
       const feature = e.selected[0];
       if (feature) {
-        const wktFormat = new WKT();
-        const geometry = feature.getGeometry() as Geometry;
-        const wkt = wktFormat.writeGeometry(geometry);
+        // const wktFormat = new WKT();
+        // const geometry = feature.getGeometry() as Geometry;
+        // const wkt = wktFormat.writeGeometry(geometry);
 
         // Sporoči naprej ( z EventService), da je naslov izbran. Torej ga je treba prenest v vnosno formo...
-        this.eventService.emitEvent(new EventModel('address-selected', wkt));  // tu sporočamo (emitiramo) naprej
-        console.log('[Map-service] activateSelectAddress: ',wkt)    // samo izpis na konzolo za kontrolo ob razvoju, se lahko briše...
+        const podatki = feature.getProperties();
+        console.log('[map.service] activateSelectAddress, podatki so: ', podatki)
+        this.eventService.emitEvent(new EventModel('address-selected', podatki));  // tu sporočamo (emitiramo) naprej
       }
     });
-
     this.map.addInteraction(this.selectInteraction);
   }  
 
@@ -537,6 +625,57 @@ export class MapService {
       const wkt = wktFormat.writeFeature(features[0]);
       console.log('[Map service] sendParcelWKT: Sending parcel WKT:', wkt);
       this.eventService.emitEvent(new EventModel('parcelEdited', wkt));
+    }
+  }
+
+
+  private activateEditRoad(): void {
+    const vectorSource: VectorSource = this.roadsLayer.getSource() as VectorSource;
+
+    this.modifyInteraction = new Modify({ source: vectorSource });
+
+    this.modifyInteraction.on('modifyend', (e) => {
+      console.log('Road spremenjen:', e.features.getArray());
+    });
+
+    this.map.addInteraction(this.modifyInteraction);
+  }
+
+  private sendRoadWkt(): void {
+    const vectorSource = this.roadsLayer.getSource() as VectorSource;
+    const features = vectorSource.getFeatures();
+
+    if (features.length > 0) {
+      const wktFormat = new WKT();
+      const wkt = wktFormat.writeFeature(features[0]);
+      console.log('[Map service] sendRoadWKT: Sending road WKT:', wkt);
+      this.eventService.emitEvent(new EventModel('roadEdited', wkt));
+    }
+  }
+
+
+  private activateEditAddress(): void {
+    const vectorSource: VectorSource = this.addressesLayer.getSource() as VectorSource;
+
+    this.modifyInteraction = new Modify({ source: vectorSource });
+
+    this.modifyInteraction.on('modifyend', (e) => {
+      console.log('Address spremenjen:', e.features.getArray());
+    });
+
+    this.map.addInteraction(this.modifyInteraction);
+  }
+
+
+  private sendAddressWkt(): void {
+    const vectorSource = this.addressesLayer.getSource() as VectorSource;
+    const features = vectorSource.getFeatures();
+
+    if (features.length > 0) {
+      const wktFormat = new WKT();
+      const wkt = wktFormat.writeFeature(features[0]);
+      console.log('[Map service] sendAddressWKT: Sending address WKT:', wkt);
+      this.eventService.emitEvent(new EventModel('addressEdited', wkt));
     }
   }
 

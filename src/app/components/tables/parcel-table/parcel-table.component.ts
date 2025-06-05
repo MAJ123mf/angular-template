@@ -29,11 +29,13 @@ export class ParcelTableComponent implements OnInit {
     this.loadParcels();
   }
 
+
   loadParcels() {
     if (this.izbira === 'all') {
       this.parcelService.getAll().subscribe({    // getAll je metoda v parcel.service.ts
         next: (data: any[]) => {
           this.ParcelsArray = data;
+          this.mapService.addAllParcelsGeoJsonToLayer(data);
         },
         error: (error: any) => {
           console.error('Napaka pri pridobivanju parcel:', error);
@@ -44,6 +46,7 @@ export class ParcelTableComponent implements OnInit {
       this.parcelService.getOne(this.inputId).subscribe({       // getOne je metoda v parcel.service.ts
         next: (parcel: any) => {
           this.ParcelsArray = [parcel];  // samo ena parcela v tabeli
+          this.mapService.addAllParcelsGeoJsonToLayer([parcel]);
         },
         error: (error: any) => {
           console.error('Napaka pri pridobivanju parcele:', error);
@@ -53,6 +56,7 @@ export class ParcelTableComponent implements OnInit {
       });
     }
   }
+
 
   setIzbira(value: 'all' | 'one') {
     this.izbira = value;

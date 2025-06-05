@@ -56,8 +56,13 @@ export class ParcelFormComponent implements OnInit {
     // Dogodek iz eventService
     this.eventService.eventActivated$.subscribe(event => {
       if (event.type === 'parcel-selected') {
+        const podatki = event.data;
+        this.parcel.id = podatki.id;
+        this.parcel.parc_st = podatki.parc_st,
+        this.parcel.sifko = podatki.sifko,
+        this.parcel.area = podatki.area,
+        this.parcel.geom_wkt = podatki.geom_wkt;
         console.log('[Parcel-form] Prejel parcel-selected event:', event.data);
-        this.parcel.geom_wkt = event.data;
         setTimeout(() => this.cdRef.detectChanges(), 0);
       }
     });

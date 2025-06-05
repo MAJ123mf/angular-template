@@ -31,6 +31,15 @@ https://www.angularjswiki.com/angular/angular-material-icons-list-mat-icon-list/
         [matTooltip]="selectMode ? 'Stop selecting roads' : 'Select a road'">
         <mat-icon>{{ selectMode ? 'select_all' : 'near_me' }}</mat-icon>
     </button>
+
+    <button 
+        id="edit-road"
+        mat-button 
+        (click)="editRoad()" 
+        [disabled]="!canDraw"
+        [matTooltip]="editMode ? 'Stop editing roads' : 'Edit a road'">
+        <mat-icon>{{ editMode ? 'done_outline' : 'create' }}</mat-icon>
+    </button>
 }
 
 

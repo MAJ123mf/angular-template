@@ -27,6 +27,7 @@ export class DrawRoadComponent implements AfterViewInit, OnDestroy, OnInit {
   drawRoad: Draw | undefined;
   selectMode: boolean = false;
   modeSubscription!: Subscription; 
+  editMode = false;
 
   constructor(
     private wktTransfer: WktGeometryTransferService, 
@@ -83,11 +84,24 @@ export class DrawRoadComponent implements AfterViewInit, OnDestroy, OnInit {
 
     // ta funkcija posluša eventService od prfesorja 
     // ko pride event, preklopi v select mode
-    selectRoad(): void {
-      this.selectMode = !this.selectMode;   // preklopi v selectMode
-      const mode = this.selectMode ? 'select-road' : 'road'; 
-      this.eventService.emitEvent(new EventModel('modeChange', mode));    // delamo z event-service!!! 0.5 točke :) V map.service je funkcija
-    }                                                                   // handleModeChange ki posluša spremembo v zgornji vrsici. v vrstici 75
+  selectRoad(): void {
+    this.selectMode = !this.selectMode;   // preklopi v selectMode
+    const mode = this.selectMode ? 'select-road' : 'road'; 
+    this.eventService.emitEvent(new EventModel('modeChange', mode));    // delamo z event-service!!! 0.5 točke :) V map.service je funkcija
+  }
+  
+  editRoad(): void {
+    this.editMode = !this.editMode;
+    console.log('[draw-roads] editRoad: ', this.editMode);
+    const mode = this.editMode ? 'edit-road' : 'road';
+    this.eventService.emitEvent(new EventModel('modeChange', mode));
+
+    if (!this.editMode) {   // kliknili smo gumb za konec urejanja, editMode=false
+      // urejanje je končano, sproži zahtevo za WKT, ki bo postrežena v map.service najprej v eventhandlerju
+      console.log('[draw-road] Kliknil si gumb za konec urejanja!')
+      this.eventService.emitEvent(new EventModel('requestRoadWkt', null));
+    }
+  }
 
   addDrawRoadInteraction() {
     //Add the draw interaction when the component is initialized

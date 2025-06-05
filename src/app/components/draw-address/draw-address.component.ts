@@ -26,6 +26,7 @@ export class DrawAddressComponent implements AfterViewInit, OnDestroy, OnInit {
   drawAddress: Draw | undefined;
   selectMode: boolean = false;
   modeSubscription!: Subscription; 
+  editMode = false;
 
   constructor(
     private wktTransfer: WktGeometryTransferService, 
@@ -86,7 +87,20 @@ export class DrawAddressComponent implements AfterViewInit, OnDestroy, OnInit {
     this.selectMode = !this.selectMode;   // preklopi v selectMode prej je bil false, zdaj je true  (selectMode definiran v vrstici 26)
     const mode = this.selectMode ? 'select-address' : 'address'; 
     this.eventService.emitEvent(new EventModel('modeChange', mode));    // delamo z event-service!!! 0.5 točke :) V map.service je funkcija
-  }                                                                   // handleModeChange ki posluša spremembo v zgornji vrsici. (v vrstici 78 v map.service)
+  }   
+  
+  editAddress(): void {
+    this.editMode = !this.editMode;
+    console.log('[draw-address] editAddress: ', this.editMode);
+    const mode = this.editMode ? 'edit-address' : 'address';
+    this.eventService.emitEvent(new EventModel('modeChange', mode));
+
+    if (!this.editMode) {   // kliknili smo gumb za konec urejanja, editMode=false
+      // urejanje je končano, sproži zahtevo za WKT, ki bo postrežena v map.service najprej v eventhandlerju
+      console.log('[draw-address] Kliknil si gumb za konec urejanja!')
+      this.eventService.emitEvent(new EventModel('requestAddressWkt', null));
+    }
+  }
 
 
   addDrawAddressInteraction() {
