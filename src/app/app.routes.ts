@@ -9,17 +9,18 @@ import { MapComponent } from './components/map/map.component';
 import { LoginFormComponent } from './components/forms/login-form/login-form.component';
 import { LogoutFormComponent } from './components/forms/logout-form/logout-form.component';
 import { DrawParcelComponent } from './components/draw-parcel/draw-parcel.component';
+import { AuthGuard } from './guards/auth.guard'; // pot do guard datoteke (za centralno varovanje)
 
 export const routes: Routes = [
     {path: '', redirectTo: '/home', pathMatch: 'full'},
-    {path: 'form-parcel', component:ParcelFormComponent},
-    {path: 'form-road', component:RoadFormComponent},
-    {path: 'form-address', component:AddressFormComponent},
-    {path: 'table-parcel', component:ParcelTableComponent},
-    {path: 'table-road', component:RoadTableComponent},
-    {path: 'table-address', component:AddressTableComponent},
-    {path: 'map', component:MapComponent},
+    {path: 'form-parcel', component:ParcelFormComponent, canActivate: [AuthGuard] },   // te ki imajo AuthGuard, se ne odpro brez prijave
+    {path: 'form-road', component:RoadFormComponent, canActivate: [AuthGuard] },
+    {path: 'form-address', component:AddressFormComponent, canActivate: [AuthGuard] },
+    {path: 'table-parcel', component:ParcelTableComponent, canActivate: [AuthGuard] },
+    {path: 'table-road', component:RoadTableComponent, canActivate: [AuthGuard] },
+    {path: 'table-address', component:AddressTableComponent, canActivate: [AuthGuard] },
+    {path: 'map', component:MapComponent, canActivate: [AuthGuard] },
     {path: 'login-form', component:LoginFormComponent},
     {path: 'logout-form', component:LogoutFormComponent},
-    {path: 'draw-parcel', component:DrawParcelComponent},  
+    {path: 'draw-parcel', component:DrawParcelComponent, canActivate: [AuthGuard] },  
 ];

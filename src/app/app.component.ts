@@ -9,6 +9,8 @@ import { RoadTableComponent } from './components/tables/road-table/road-table.co
 import { AddressTableComponent } from './components/tables/address-table/address-table.component';
 import { AddressFormComponent } from './components/forms/address-form/address-form.component';
 import { MapComponent } from './components/map/map.component';
+import { AuthService } from './services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -37,6 +39,8 @@ export class AppComponent {
   @ViewChild(AddressFormComponent) addressForm!: AddressFormComponent;
   title = 'web';
 
+
+  constructor(public authService: AuthService, private router: Router) {}
   statusText = '';
 
   updateStatus(message: string) {
@@ -45,7 +49,14 @@ export class AppComponent {
 
   selectedType: 'parcel' | 'road' | 'address' = 'parcel';
 
-  
+  ngOnInit() {
+  this.authService.checkIsLoggedInInServer().subscribe(() => {
+    if (!this.authService.isAuthenticated) {
+      this.router.navigate(['/login-form']);
+    }
+  });
+}
+
   switchForm(module: 'parcel' | 'road' | 'address') {                     // v module je izbira !
     console.log('Preklapljam:', module); // Dodaj to vrstico za debug      // izbilo izpišem na conolo
     this.selectedType = module;

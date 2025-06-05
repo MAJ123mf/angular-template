@@ -11,6 +11,9 @@ import { Inject } from '@angular/core';
 import { NgZone } from '@angular/core'; // to služi za temu, da se izognemo napaki "ExpressionChangedAfterItHasBeenCheckedError" pri Angularju
 import { EventService } from '../../../services/event.service';
 import { EventModel } from '../../../models/event.model';
+import { AuthService } from '../../../services/auth.service';  // bomo preverjali če smo prijavljeni!
+import { MatDialog } from '@angular/material/dialog';
+import { LoginFormComponent } from '../login-form/login-form.component';
 
 @Component({
   selector: 'app-address-form',
@@ -35,7 +38,9 @@ export class AddressFormComponent implements OnInit {
      private cdRef: ChangeDetectorRef,           // za zaznavanje sprememb v Document Object Model (DOM) ne vem če še rabim to!
      public eventService: EventService,         // vključimo profesorjev event-service
      @Inject(WktGeometryTransferService) private wktService: WktGeometryTransferService, // Za prenos WKT grafike  
-     private ngZone: NgZone
+     private ngZone: NgZone,
+     private authService: AuthService,
+     private dialog: MatDialog
    ) {}
 
   ngOnInit(): void {
@@ -60,6 +65,13 @@ export class AddressFormComponent implements OnInit {
      this.drawModeService.clearForm$.subscribe(() => {      // naročimo se na spremembo ob zamenjavi forme. Forma se počisti
        this.clearForm();
      });
+
+     if (!this.authService.isAuthenticated) {
+      console.warn('[AddressForm] Dostop zavrnjen ker uporabnik ni prijavljen');
+      this.dialog.open(LoginFormComponent, {
+       disableClose: true
+      });
+    }
   }
 
   ngOnDestroy(): void {

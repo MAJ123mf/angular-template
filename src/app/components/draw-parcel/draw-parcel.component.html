@@ -32,5 +32,14 @@ oblikovanje gumbov je v map.component.scss (tam je določen položaj gumba na ka
     [matTooltip]="selectMode ? 'Stop selecting parcels' : 'Select a parcel'">
     <mat-icon>{{ selectMode ? 'select_all' : 'near_me' }}</mat-icon>
   </button>
+
+  <button 
+    id="edit-parcel"
+    mat-button 
+    (click)="editParcel()" 
+    [disabled]="!canDraw"
+    [matTooltip]="editMode ? 'Stop editing parcels' : 'Edit a parcel'">
+    <mat-icon>{{ editMode ? 'done_outline' : 'create' }}</mat-icon>
+  </button>
 }
 

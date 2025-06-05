@@ -29,6 +29,7 @@ export class DrawParcelComponent implements AfterViewInit, OnDestroy, OnInit {
   drawParcel: Draw | undefined;
   selectMode: boolean = false;
   modeSubscription!: Subscription; 
+  editMode = false;
 
   // v konstruktorju imamo na primer WktGeometryTransfer service  (servis je najavljen tudi pod import)
   // parcel-form posluša ta service, sam servis najdeš seveda med servisi...
@@ -87,12 +88,28 @@ export class DrawParcelComponent implements AfterViewInit, OnDestroy, OnInit {
     }
   }
    
-  // od tu se sproži selektiranje parcdel s pomočjo proferorjevega event-service  (0.5 točke :) )
+  // od tu se sproži selektiranje parcdel s pomočjo proferorjevega event-service  )
   selectParcel(): void {
     this.selectMode = !this.selectMode;   // preklopi v selectMode
+    console.log('[draw-parcel] selectParcel: ',this.editMode);
     const mode = this.selectMode ? 'select-parcel' : 'parcel'; 
     this.eventService.emitEvent(new EventModel('modeChange', mode));
+  }
+
+
+  // od tu se sproži editiranje parcdel s pomočjo proferorjevega event-service  )
+  editParcel(): void {
+    this.editMode = !this.editMode;
+    console.log('[draw-parcel] editParcel: ', this.editMode);
+    const mode = this.editMode ? 'edit-parcel' : 'parcel';
+    this.eventService.emitEvent(new EventModel('modeChange', mode));
+
+    if (!this.editMode) {   // kliknili smo gumb za konec urejanja, editMode=false
+      // urejanje je končano, sproži zahtevo za WKT, ki bo postrežena v map.service najprej v eventhandlerju
+      console.log('[draw-parcel] Kliknil si gumb za konec urejanja!')
+      this.eventService.emitEvent(new EventModel('requestParcelWkt', null));
     }
+  }
   
 
   addDrawParcelInteraction() {
@@ -161,4 +178,6 @@ export class DrawParcelComponent implements AfterViewInit, OnDestroy, OnInit {
       this.modeSubscription.unsubscribe();
     }
   }
+
+
 }

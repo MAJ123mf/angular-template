@@ -11,6 +11,9 @@ import { NgZone } from '@angular/core'; // to služi za temu, da se izognemo nap
 import { Inject } from '@angular/core';
 import { EventService } from '../../../services/event.service';
 import { EventModel } from '../../../models/event.model';
+import { AuthService } from '../../../services/auth.service';  // bomo preverjali če smo prijavljeni!
+import { MatDialog } from '@angular/material/dialog';
+import { LoginFormComponent } from '../login-form/login-form.component';
 
 @Component({
   selector: 'app-road-form',
@@ -35,7 +38,9 @@ export class RoadFormComponent implements OnInit, OnDestroy {
      private cdRef: ChangeDetectorRef,
      public eventService: EventService,
      @Inject(WktGeometryTransferService) private wktService: WktGeometryTransferService, // Za prenos WKT grafike
-     private ngZone: NgZone        // zaznava spremembe v geom_wkt, iz leaflet karte, ki je izven Angular konteksta
+     private ngZone: NgZone,        // zaznava spremembe v geom_wkt, iz leaflet karte, ki je izven Angular konteksta
+     private authService: AuthService,
+     private dialog: MatDialog
    ) {}
 
    
@@ -61,7 +66,15 @@ export class RoadFormComponent implements OnInit, OnDestroy {
         setTimeout(() => this.cdRef.detectChanges(), 0);
       }
     });
-   }
+
+    if (!this.authService.isAuthenticated) {
+      console.warn('[RoadForm] Dostop zavrnjen ker uporabnik ni prijavljen');
+      console.log('[RoadForm] Odpri login modal...');
+      this.dialog.open(LoginFormComponent, {disableClose: true});
+    } else {
+      console.log('[RoadForm] Uporabnik je prijavljen.');
+    }
+  }
 
 
    ngOnDestroy(): void {

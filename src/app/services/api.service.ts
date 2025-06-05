@@ -21,8 +21,7 @@ export class ApiService {
   get(endPointUrl:string, getParams:HttpParams=new HttpParams({})){
     return this.httpClient.get<any>(this.settingsService.API_URL + endPointUrl,
       {
-        headers: {}, responseType : 'json', reportProgress: false,
-        params: getParams
+        headers: {}, responseType : 'json', reportProgress: false, params: getParams, withCredentials: true
       })
   }
 
@@ -40,7 +39,7 @@ post(endPointUrl: string, postParams: { [key: string]: any } = {}) {
   return this.httpClient.post<any>(
     this.settingsService.API_URL + endPointUrl,
     body.toString(),  // Obvezno pretvori HttpParams v string
-    { headers: headers, responseType: 'json', reportProgress: false }
+    { headers: headers, responseType: 'json', reportProgress: false, withCredentials: true }
   );
 }
 }

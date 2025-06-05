@@ -9,6 +9,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { ServerAnswerModel } from '../../../models/server-answer.model';
 import { ApiService } from '../../../services/api.service';
 import { AuthService } from '../../../services/auth.service';
+import { Router } from '@angular/router';
+import { MatDialogRef } from '@angular/material/dialog';   // za login modalno okno, da se bo zaprlo
 
 @Component({
   selector: 'app-logout-form',
@@ -19,19 +21,31 @@ import { AuthService } from '../../../services/auth.service';
 })
 export class LogoutFormComponent {
   serverMessage = '';
-  constructor(private apiService:ApiService, private authService: AuthService){}
+  constructor(
+    private router: Router, 
+    private apiService:ApiService, 
+    private authService: AuthService,
+    private dialogRef: MatDialogRef<LogoutFormComponent>
+  ){}
   logout(){
+    console.log('[Logout] Logout triggered');
     this.apiService.post('core/logout/', {}).subscribe({
           next: (response: ServerAnswerModel) => {
+            console.log('[Logout] Server response:', response);
             if (response.ok){
               this.authService.username = '';
               this.authService.isAuthenticated = false;
+              this.authService.userGroups = [];
+              this.authService.checkIsLoggedInInServer();
+              console.log('[Logout] Uporabnik odjavljen !');
+
+              this.dialogRef.close();
+
             }
             this.serverMessage=response.message;
           },
           error: (error:any)=>{
-            console.log(error.description)
-            this
+            console.error('[Logout] Napaka pri odjavi:', error.description);
           }
         })//subscribe
   }

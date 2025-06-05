@@ -60,6 +60,11 @@ login() {
         console.log('[login-form] Login success:', response);
         this.authService.username = this.username.value!;
         this.authService.isAuthenticated = true;
+
+        // Ponovno preveri stanje s strežnikom
+        this.authService.checkIsLoggedInInServer();
+       
+
         // Počakamo 2 sekundi, da si uporabnik prebere sporočilo
         setTimeout(() => {
           this.dialogRef.close(true); // zapri modal

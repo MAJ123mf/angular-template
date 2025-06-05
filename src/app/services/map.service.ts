@@ -16,7 +16,7 @@ import TileWMS from 'ol/source/TileWMS';
 import { Projection } from 'ol/proj';
 import LayerGroup from 'ol/layer/Group';
 import MousePosition from 'ol/control/MousePosition.js';
-import {createStringXY} from 'ol/coordinate.js';
+import { createStringXY } from 'ol/coordinate.js';
 import Interaction from 'ol/interaction/Interaction'; // Uvozimo razred interakcija
 import MouseWheelZoom from 'ol/interaction/MouseWheelZoom'; // uvoz razreda za Zoom z kolesom miške
 import DragPan from 'ol/interaction/DragPan';             // Uvoz DragPan
@@ -25,9 +25,11 @@ import { EventService } from '../services/event.service';
 import { EventModel } from '../models/event.model';
 
 //vector layers
-import { sourcesFromTileGrid } from 'ol/source';
+// import { sourcesFromTileGrid } from 'ol/source';
+
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
+
 //layerswitcher
 import LayerSwitcher from 'ol-layerswitcher';
 import { SettingsService } from './settings.service';
@@ -42,6 +44,8 @@ import GeoJSON from 'ol/format/GeoJSON';
 import Select from 'ol/interaction/Select';
 import { click } from 'ol/events/condition';
 
+import Modify from 'ol/interaction/Modify';  // za editiranje geometrij
+
 @Injectable({
   providedIn: 'root'
 })
@@ -50,10 +54,11 @@ export class MapService {
   map: Map;
   baseLayersGroup:LayerGroup;
   myLayersGroup:LayerGroup;
-  parcelsLayer!: VectorLayer;
+  parcelsLayer!: VectorLayer<VectorSource>;
   roadsLayer!: VectorLayer;
   addressesLayer!: VectorLayer;
   private selectInteraction!: Select;
+  private modifyInteraction?: Modify;
 
   constructor(
     public settingsService: SettingsService, 
@@ -62,10 +67,14 @@ export class MapService {
       this.baseLayersGroup= this.createBaseLayers();
       this.myLayersGroup= this.createMyLayers();
 
-      this.eventService.eventActivated$.subscribe((event: EventModel) => {
+      this.eventService.eventActivated$.subscribe(event => {
         if (event.type === 'modeChange') {
-          this.handleModeChange(event.data);  // tukaj je 'select-parcel' ali 'select-road' itd.
+          this.handleModeChange(event.data); // 'select-parcel', 'edit-parcel', 'parcel' itd.
+        } else if (event.type === 'requestParcelWkt') {
+          this.sendParcelWkt();
+          console.log('[Map service] Event Handler: Sproži zahtevo za WKT', event.type);
         }
+        // lahko dodajaš še druge event tipe, če bo treba
       });
 
       this.map= this.createMap();//Create the map and store it in the mapService
@@ -85,7 +94,10 @@ export class MapService {
       this.activateSelectRoad(); // če selektiramo ceste, potem bomo uredili to v funkciji activateSelectRoad pojdi dol v vrstico 446
     } else if (mode === 'select-address') {
       this.activateSelectAddress(); // če selektiramo naslove, potem bomo uredili to v funkciji activateSelectAddress pojdi dol v vrstico 478 
-    }
+    } else if (mode === 'edit-parcel') {
+      this.activateEditParcel(); // za editiranje parcel
+      console.log('[Map service]: Smo v urejanju parcel!', mode);
+    } 
   }
 
   private clearInteractions(): void {
@@ -502,5 +514,30 @@ export class MapService {
 
     this.map.addInteraction(this.selectInteraction);
   }  
+
+  private activateEditParcel(): void {
+    const vectorSource: VectorSource = this.parcelsLayer.getSource() as VectorSource;
+
+    this.modifyInteraction = new Modify({ source: vectorSource });
+
+    this.modifyInteraction.on('modifyend', (e) => {
+      console.log('Parcela spremenjena:', e.features.getArray());
+    });
+
+    this.map.addInteraction(this.modifyInteraction);
+  }
+
+
+  private sendParcelWkt(): void {
+    const vectorSource = this.parcelsLayer.getSource() as VectorSource;
+    const features = vectorSource.getFeatures();
+
+    if (features.length > 0) {
+      const wktFormat = new WKT();
+      const wkt = wktFormat.writeFeature(features[0]);
+      console.log('[Map service] sendParcelWKT: Sending parcel WKT:', wkt);
+      this.eventService.emitEvent(new EventModel('parcelEdited', wkt));
+    }
+  }
 
 }

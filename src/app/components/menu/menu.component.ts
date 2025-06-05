@@ -44,9 +44,14 @@ export class MenuComponent {
 }
 
   openLoginDialog() {
-    this.dialog.open(LoginFormComponent, {
+    const dialogRef = this.dialog.open(LoginFormComponent, {
       width: '400px'
     });
+
+    dialogRef.afterClosed().subscribe(() => {
+    // Preusmeri na login-form po zaprtju logout modala
+    window.location.href = '/login-form'; // <-- najzanesljiveje, če `router.navigateByUrl` ne deluje zaradi standalone routerja
+  });
   }
 
   openLogoutDialog() {

@@ -10,7 +10,10 @@ import { Subscription } from 'rxjs';
 import { Inject } from '@angular/core';
 import { NgZone } from '@angular/core';
 import { EventService } from '../../../services/event.service';
-import { EventModel } from '../../../models/event.model';
+import { EventModel } from '../../../models/event.model';   
+import { AuthService } from '../../../services/auth.service';  // bomo preverjali če smo prijavljeni!
+import { MatDialog } from '@angular/material/dialog';
+import { LoginFormComponent } from '../login-form/login-form.component';
 
 @Component({
   standalone: true,
@@ -35,7 +38,9 @@ export class ParcelFormComponent implements OnInit {
     private cdRef: ChangeDetectorRef,
     public eventService: EventService,
     @Inject(WktGeometryTransferService) private wktService: WktGeometryTransferService, // Za prenos WKT grafike
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private authService: AuthService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -56,6 +61,30 @@ export class ParcelFormComponent implements OnInit {
         setTimeout(() => this.cdRef.detectChanges(), 0);
       }
     });
+
+    // Dogodek iz eventService
+    this.eventService.eventActivated$.subscribe((event: EventModel) => {
+      if (event.type === 'parcelEdited') {
+        console.log('[parcel-form] Strežem event sporočilo parcelEdited')
+        const wkt = event.data;
+        this.loadGeometryFromWkt(wkt);
+      }
+    });
+
+    if (!this.authService.isAuthenticated) {
+      console.warn('[ParcelForm] Dostop zavrnjen ker uporabnik ni prijavljen');
+      this.dialog.open(LoginFormComponent, {
+        disableClose: true
+      });
+    }
+  }
+
+  loadGeometryFromWkt(wkt: string): void {
+    console.log('[Parcel-form] Nalagam geometrijo iz WKT:', wkt);
+    this.parcel.geom_wkt = wkt;
+
+    // Če je treba prisiliti Angular, da zazna spremembo:
+    setTimeout(() => this.cdRef.detectChanges(), 0);
   }
 
   ngOnDestroy(): void {
