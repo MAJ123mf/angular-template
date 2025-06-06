@@ -117,8 +117,8 @@ export class DrawParcelComponent implements AfterViewInit, OnDestroy, OnInit {
 
       this.mapService.sendParcelWkt();
 
-      this.eventService.emitEvent(new EventModel('requestRoadWkt', null));
-      console.log('[draw-parcel] Poslal event "requestRoadWkt"');
+      this.eventService.emitEvent(new EventModel('requestParcelWkt', null));
+      console.log('[draw-parcel] Poslal event "requestParcelWkt"');
     }
   }
   

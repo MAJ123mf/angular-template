@@ -63,7 +63,7 @@ export class ParcelService {
     geom: string;
   }): Observable<any> {
     console.log(`ParcelService: posodabljam parcelo z ID=${id}`, parcel);
-    return this.http.put(`${this.baseUrl}${id}/`, parcel).pipe(
+    return this.http.post(`${this.updateUrl}${id}/`, parcel).pipe(
       tap(res => console.log('Odgovor po posodobitvi parcele:', res))
     );
   }
