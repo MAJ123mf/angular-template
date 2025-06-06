@@ -66,6 +66,9 @@ export class MapService {
   private shouldEmitWkt: boolean = false;
   private editedFeature: Feature | null = null;
   private shouldEmitParcelWkt = false;
+  private modifyAddressInteraction?: Modify;
+  private modifyParcelInteraction?: Modify;
+  private shouldEmitAddressWkt = false;
 
   constructor(
     public settingsService: SettingsService, 
@@ -611,8 +614,8 @@ export class MapService {
 
   private activateEditParcel(): void {
     const vectorSource: VectorSource = this.parcelsLayer.getSource() as VectorSource;
-    this.modifyInteraction = new Modify({ source: vectorSource });
-    this.modifyInteraction.on('modifyend', (e) => {
+    this.modifyParcelInteraction = new Modify({ source: vectorSource });
+    this.modifyParcelInteraction.on('modifyend', (e) => {
       const feature = e.features.item(0);
       if (feature) {
          this.editedFeature = feature;
@@ -629,7 +632,7 @@ export class MapService {
         }
       }
     });
-    this.map.addInteraction(this.modifyInteraction);
+    this.map.addInteraction(this.modifyParcelInteraction);
   }
 
 
@@ -742,43 +745,75 @@ export class MapService {
 
   private activateEditAddress(): void {
     const vectorSource: VectorSource = this.addressesLayer.getSource() as VectorSource;
+    this.modifyAddressInteraction = new Modify({ source: vectorSource });
 
-    this.modifyInteraction = new Modify({ source: vectorSource });
-
-    this.modifyInteraction.on('modifyend', (e) => {
+    this.modifyAddressInteraction.on('modifyend', (e) => {
       const feature = e.features.item(0);
       if (feature) {
+         this.editedFeature = feature;
          const props = feature.getProperties();
          console.log('[Map service] Naslov spremenjen, podatki:', props);
+
+         if (this.shouldEmitWkt) {
+           console.log('[Map service] shouldEmitWkt = true. Kličem sendRoadWkt()');
+           this.sendRoadWkt();
+           this.shouldEmitWkt = false;
+        } else {
+           console.log('[Map service] shouldEmitWkt = false. Ne pošiljam.');
+        }
       }
     });
-    this.map.addInteraction(this.modifyInteraction);
+    this.map.addInteraction(this.modifyAddressInteraction);
   }
   
+
+
+
+
   // mora poslati podatke v Feture + predelani WKT (ker smo premikali točke)
-  private sendAddressWkt(): void {
-    const vectorSource = this.addressesLayer.getSource() as VectorSource<Feature<Geometry>>;
-    const features = vectorSource.getFeatures();
-    if (features.length > 0) {
-      const feature = features[0] as Feature<Geometry>;
-      // Izračunaj WKT iz trenutne geometrije
-      const wktFormat = new WKT();
-      const geometry = feature.getGeometry();
-      if (!geometry) {
-        console.warn('[Map service] Feature nima geometrije!');
-        return;
-      }
-      const wkt = wktFormat.writeGeometry(geometry);
-      // Vzemi vse lastnosti
-      const podatki = { ...feature.getProperties() } as Address;
-      // Odstrani OpenLayers geometry referenco iz podatkov
-      delete (podatki as any).geometry;
-      // Posodobi WKT
-      podatki.geom_wkt = wkt;
-      console.log('[Map service] sendAddressWKT: Pošiljam posodobljene podatke:', podatki);
-      this.eventService.emitEvent(new EventModel('addressEdited', podatki));
-    } else {
-      console.warn('[Map service] Ni najdenih geometrij za naslov.');
+  public sendAddressWkt(): void {
+    if (!this.addressesLayer) {
+      console.warn('[Map service] addressesLayer ni inicializiran!');
+      return;
     }
+    const source = this.addressesLayer.getSource();
+    if (!source) {
+      console.warn('[Map service] addressesLayer.getSource() vrnil null!');
+      return;
+    }
+    const features = source.getFeatures();
+    if (features.length === 0) {
+      console.warn('[Map service] Ni najdenih geometrij za naslov.');
+      return;
+    }
+    if (!this.editedFeature) {
+      console.warn('[Map service] Ni izbrane editedFeature!');
+      return;
+    }
+    const geometry = this.editedFeature.getGeometry();
+    if (!geometry) {
+      console.warn('[Map service] editedFeature nima geometrije!');
+      return;
+    }
+    const wktFormat = new WKT();
+    const wkt = wktFormat.writeGeometry(geometry);
+    const podatki = {
+      id: this.editedFeature.get('id'),
+      building_num: this.editedFeature.get('building_num'),
+      street: this.editedFeature.get('street'),
+      house_num: this.editedFeature.get('house_num'),
+      post_num: this.editedFeature.get('post_num'),
+      post_name: this.editedFeature.get('post_name'),
+      geom_wkt: wkt
+    };
+  console.log('[Map service] sendAddressWKT: Pošiljam posodobljene podatke:', wkt);
+  this.eventService.emitEvent(new EventModel('addressEdited', podatki));
+}
+
+
+  public setShouldEmitAddressWkt(value: boolean): void {
+    this.shouldEmitAddressWkt = value;
   }
+
+
 }

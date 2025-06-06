@@ -96,16 +96,6 @@ export class AddressFormComponent implements OnInit {
         }
       });
 
-
-     // Dogodek iz eventService
-     this.eventService.eventActivated$.subscribe((event: EventModel) => {
-       if (event.type === 'addressEdited') {
-          console.log('[parcel-form] Strežem event sporočilo addressEdited')
-          const wkt = event.data;
-          this.loadGeometryFromWkt(wkt);
-       }
-     });
-
      this.drawModeService.clearForm$.subscribe(() => {      // naročimo se na spremembo ob zamenjavi forme. Forma se počisti
        this.clearForm();
      });

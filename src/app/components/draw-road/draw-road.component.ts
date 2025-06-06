@@ -54,8 +54,13 @@ export class DrawRoadComponent implements AfterViewInit, OnDestroy, OnInit {
       this.canDraw = (mode === 'road');
 
       // Če ni risanja na road, (če smo preklopili na parcele...) in je risanje aktivno, ga izklopi
-      if (mode !== 'road' && this.drawMode) {
-        this.toggleDrawMode(); // ta metoda že ustavi risanje
+      if (mode !== 'parcel') {
+        // Če zapustimo parcelni sloj, izklopi risanje in ponastavi vse režime
+        if (this.drawMode) {
+          this.toggleDrawMode(); // to že ustavi risanje
+        }
+        this.editMode = false;
+        this.selectMode = false;
       }
     });
   }
@@ -78,6 +83,8 @@ export class DrawRoadComponent implements AfterViewInit, OnDestroy, OnInit {
       this.disableDrawRoads();
       this.clearVectorLayer();
       this.reloadRoadsWmsLayer();
+      this.editMode = false;
+      this.selectMode = false;
       console.log("[Draw-road] Drawing mode deactivated");
     }
   }

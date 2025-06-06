@@ -54,8 +54,13 @@ export class DrawAddressComponent implements AfterViewInit, OnDestroy, OnInit {
       this.canDraw = (mode === 'address');
 
       // Če ni več address način in je risanje aktivno, ga izklopi
-      if (mode !== 'address' && this.drawMode) {
-        this.toggleDrawMode(); // ta metoda že ustavi risanje
+      if (mode !== 'parcel') {
+        // Če zapustimo parcelni sloj, izklopi risanje in ponastavi vse režime
+        if (this.drawMode) {
+          this.toggleDrawMode(); // to že ustavi risanje
+        }
+        this.editMode = false;
+        this.selectMode = false;
       }
     });
   }
@@ -77,6 +82,8 @@ export class DrawAddressComponent implements AfterViewInit, OnDestroy, OnInit {
       this.disableDrawAddress();  // Stop drawing mode
       this.clearVectorLayer();
       this.reloadAddressWmsLayer();
+      this.editMode = false;
+      this.selectMode = false;
       console.log("[Draw-Address] Drawing mode deactivated");
       }
   }
@@ -97,8 +104,13 @@ export class DrawAddressComponent implements AfterViewInit, OnDestroy, OnInit {
 
     if (!this.editMode) {   // kliknili smo gumb za konec urejanja, editMode=false
       // urejanje je končano, sproži zahtevo za WKT, ki bo postrežena v map.service najprej v eventhandlerju
-      console.log('[draw-address] Kliknil si gumb za konec urejanja!')
+      this.mapService.setShouldEmitAddressWkt(true);
+      console.log('[draw-address] Kliknil si gumb za konec urejanja!');
+
+      this.mapService.sendAddressWkt();
+
       this.eventService.emitEvent(new EventModel('requestAddressWkt', null));
+      console.log('[draw-parcel] Poslal event "RequestRoadWkt"');
     }
   }
 

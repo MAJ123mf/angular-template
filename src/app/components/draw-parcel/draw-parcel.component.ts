@@ -3,9 +3,9 @@ import {MatIconModule} from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MapService } from '../../services/map.service';
 
-import {Draw} from 'ol/interaction';
+import { Draw } from 'ol/interaction';
 import { DrawEvent } from 'ol/interaction/Draw';
-import {WKT} from 'ol/format';
+import { WKT } from 'ol/format';
 import VectorSource from 'ol/source/Vector';
 import { Router } from '@angular/router';
 
@@ -59,8 +59,13 @@ export class DrawParcelComponent implements AfterViewInit, OnDestroy, OnInit {
       this.canDraw = (mode === 'parcel');
 
       // Če ni več parcelni način in je risanje aktivno, ga izklopi
-      if (mode !== 'parcel' && this.drawMode) {
-        this.toggleDrawMode(); // ta metoda že ustavi risanje
+      if (mode !== 'parcel') {
+        // Če zapustimo parcelni sloj, izklopi risanje in ponastavi vse režime
+        if (this.drawMode) {
+          this.toggleDrawMode(); // to že ustavi risanje
+        }
+        this.editMode = false;
+        this.selectMode = false;
       }
     });
   }
@@ -84,6 +89,8 @@ export class DrawParcelComponent implements AfterViewInit, OnDestroy, OnInit {
       this.disableDrawParcels();
       this.clearVectorLayer();
       this.reloadParcelsWmsLayer();
+      this.editMode = false;
+      this.selectMode = false;
       console.log("[Drav-parcel] Drawing mode deactivated");
     }
   }
@@ -105,7 +112,7 @@ export class DrawParcelComponent implements AfterViewInit, OnDestroy, OnInit {
     this.eventService.emitEvent(new EventModel('modeChange', mode));
 
     if (!this.editMode) {   // kliknili smo gumb za konec urejanja, editMode=false
-      this.mapService.setShouldEmitWkt(true);
+      this.mapService.setShouldEmitParcelWkt(true);
       console.log('[draw-parcel] Gumb "končaj urejanje" kliknjen.');
 
       this.mapService.sendParcelWkt();
