@@ -55,7 +55,7 @@ export class AddressFormComponent implements OnInit {
 
      // Dogodek iz eventService. Prejeli smo obvestilo, da je bil izbran naslov, in samo napolnimo polje z WKT vsebino
      this.eventService.eventActivated$.subscribe(event => {
-       if (event.type === 'address-selected') {
+       if (event.type === 'address-selected') {   
           const podatki = event.data;
           this.address.id = podatki.id;
           this.address.building_num = podatki.building_num;
@@ -65,9 +65,36 @@ export class AddressFormComponent implements OnInit {
           this.address.post_name = podatki.post_name;
           this.address.geom_wkt = podatki.geom_wkt;
           console.log('[Address-form] Prejel address-selected event:', podatki);
+          console.log('Tip podatki.geom_wkt:', typeof podatki.geom_wkt, podatki.geom_wkt);
           setTimeout(() => this.cdRef.detectChanges(), 0);
        }
      });
+
+     // Dogodek iz eventService. Prejeli smo obvestilo, da je bil editiran naslov, in samo napolnimo polje z WKT vsebino
+     this.eventService.eventActivated$.subscribe(event => {
+       if (event.type === 'addressEdited') {
+          const podatki = event.data;
+          // Preveri, ali je podatki objekt z vsemi polji, ne samo string geom_wkt
+          if (typeof podatki === 'object' && podatki !== null) {
+            this.address.id = podatki.id;
+            this.address.building_num = podatki.building_num;
+            this.address.street = podatki.street;
+            this.address.house_num = podatki.house_num;
+            this.address.post_num = podatki.post_num;
+            this.address.post_name = podatki.post_name;
+            this.address.geom_wkt = podatki.geom_wkt;
+            console.log('[Address-form] Prejel addressEdited event:', podatki);
+            console.log('Tip podatki.geom_wkt:', typeof podatki.geom_wkt, podatki.geom_wkt);
+          } else {
+            console.warn('[Address-form] Prejeli smo addressEdited event, a podatki niso objekt:', podatki);
+            // Če želiš, lahko tukaj posodobimo samo geom_wkt, če je podatki string:
+            if (typeof podatki === 'string') {
+              this.address.geom_wkt = podatki;
+            }
+          }
+          setTimeout(() => this.cdRef.detectChanges(), 0);
+        }
+      });
 
 
      // Dogodek iz eventService

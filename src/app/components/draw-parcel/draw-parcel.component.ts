@@ -105,9 +105,13 @@ export class DrawParcelComponent implements AfterViewInit, OnDestroy, OnInit {
     this.eventService.emitEvent(new EventModel('modeChange', mode));
 
     if (!this.editMode) {   // kliknili smo gumb za konec urejanja, editMode=false
-      // urejanje je končano, sproži zahtevo za WKT, ki bo postrežena v map.service najprej v eventhandlerju
-      console.log('[draw-parcel] Kliknil si gumb za konec urejanja!')
-      this.eventService.emitEvent(new EventModel('requestParcelWkt', null));
+      this.mapService.setShouldEmitWkt(true);
+      console.log('[draw-parcel] Gumb "končaj urejanje" kliknjen.');
+
+      this.mapService.sendParcelWkt();
+
+      this.eventService.emitEvent(new EventModel('requestRoadWkt', null));
+      console.log('[draw-parcel] Poslal event "requestRoadWkt"');
     }
   }
   

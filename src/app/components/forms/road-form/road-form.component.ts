@@ -14,6 +14,7 @@ import { EventModel } from '../../../models/event.model';
 import { AuthService } from '../../../services/auth.service';  // bomo preverjali če smo prijavljeni!
 import { MatDialog } from '@angular/material/dialog';
 import { LoginFormComponent } from '../login-form/login-form.component';
+import { WKT } from 'ol/format';
 
 @Component({
   selector: 'app-road-form',
@@ -49,7 +50,6 @@ export class RoadFormComponent implements OnInit, OnDestroy {
       if (payload.type === 'road') {
         console.log('[Road-form] RoadFormComponent prejel WKT:', payload.wkt);
         this.road.geom_wkt = payload.wkt;
-
         setTimeout(() => this.cdRef.detectChanges(), 0);
       }
     });
@@ -73,16 +73,33 @@ export class RoadFormComponent implements OnInit, OnDestroy {
       }
     });
 
-
-    // Dogodek iz eventService
-    this.eventService.eventActivated$.subscribe((event: EventModel) => {
+    // Dogodek iz eventService. Prejeli smo obvestilo, da je bila editirana cesta, in samo napolnimo polje z WKT vsebino
+    this.eventService.eventActivated$.subscribe(event => {
       if (event.type === 'roadEdited') {
-        console.log('[road-form] Strežem event sporočilo roadEdited')
-        const wkt = event.data;
-        this.loadGeometryFromWkt(wkt);
+        const podatki = event.data;
+        console.log('[Road-form] PREJEL event roadEdited s podatki:', podatki);
+        console.log('[Road-form] geom_wkt =', podatki.geom_wkt);
+        this.road.id = podatki.id;
+        this.road.str_name = podatki.str_name;
+        this.road.administrator = podatki.administrator;
+        this.road.maintainer = podatki.maintainer;
+        this.road.length = podatki.length;
+        // Če geom_wkt ni string, ga pretvori
+        if (podatki.geom_wkt && typeof podatki.geom_wkt !== 'string') {
+          // Poskušaj ročno serializirati v string
+          this.road.geom_wkt = JSON.stringify(podatki.geom_wkt);
+          console.warn('[Road-form] geom_wkt ni string, je pretvorjen:', this.road.geom_wkt);
+        } else {
+          this.road.geom_wkt = podatki.geom_wkt;
+        }
+        console.log('[Road-form] Prejel roadEdited event:', podatki);
+        setTimeout(() => this.cdRef.detectChanges(), 0);
       }
     });
 
+
+
+    // ne moreš se neprijavljen sprehajat po vnosni formi za ceste 
     if (!this.authService.isAuthenticated) {
       console.warn('[RoadForm] Dostop zavrnjen ker uporabnik ni prijavljen');
       console.log('[RoadForm] Odpri login modal...');

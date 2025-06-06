@@ -67,15 +67,28 @@ export class ParcelFormComponent implements OnInit {
       }
     });
 
-    // Dogodek iz eventService
-    this.eventService.eventActivated$.subscribe((event: EventModel) => {
+    // Dogodek iz eventService. Prejeli smo obvestilo, da je bila editirana cesta, in samo napolnimo polje z WKT vsebino
+    this.eventService.eventActivated$.subscribe(event => {
       if (event.type === 'parcelEdited') {
-        console.log('[parcel-form] Strežem event sporočilo parcelEdited')
-        const wkt = event.data;
-        this.loadGeometryFromWkt(wkt);
+        const podatki = event.data;
+        this.parcel.id = podatki.id;
+        this.parcel.parc_st = podatki.parc_st;
+        this.parcel.sifko = podatki.sifko;
+        this.parcel.area = podatki.area;
+        // Če geom_wkt ni string, ga pretvori
+        if (podatki.geom_wkt && typeof podatki.geom_wkt !== 'string') {
+          // Poskušaj ročno serializirati v string
+          this.parcel.geom_wkt = JSON.stringify(podatki.geom_wkt);
+          console.warn('[Road-form] geom_wkt ni string, je pretvorjen:', this.parcel.geom_wkt);
+        } else {
+          this.parcel.geom_wkt = podatki.geom_wkt;
+        }
+        console.log('[Parcel-form] Prejel roadEdited event:', podatki);
+        setTimeout(() => this.cdRef.detectChanges(), 0);
       }
     });
 
+    // po obrazcu za vnašanje parcel se ne moreš sprehajat neprijavljen
     if (!this.authService.isAuthenticated) {
       console.warn('[ParcelForm] Dostop zavrnjen ker uporabnik ni prijavljen');
       this.dialog.open(LoginFormComponent, {

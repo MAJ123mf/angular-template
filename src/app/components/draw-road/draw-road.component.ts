@@ -92,14 +92,21 @@ export class DrawRoadComponent implements AfterViewInit, OnDestroy, OnInit {
   
   editRoad(): void {
     this.editMode = !this.editMode;
+    console.log('[draw-roads] editRoad toggled. Novi mode:', this.editMode ? 'edit-road' : 'road');
     console.log('[draw-roads] editRoad: ', this.editMode);
     const mode = this.editMode ? 'edit-road' : 'road';
     this.eventService.emitEvent(new EventModel('modeChange', mode));
-
+ 
     if (!this.editMode) {   // kliknili smo gumb za konec urejanja, editMode=false
       // urejanje je končano, sproži zahtevo za WKT, ki bo postrežena v map.service najprej v eventhandlerju
-      console.log('[draw-road] Kliknil si gumb za konec urejanja!')
+      // Pred oddajo zahtevka za WKT, povemo mapService, da sme poslati WKT
+      this.mapService.setShouldEmitWkt(true);
+      console.log('[draw-road] Gumb "končaj urejanje" kliknjen.');
+
+      this.mapService.sendRoadWkt();
+
       this.eventService.emitEvent(new EventModel('requestRoadWkt', null));
+      console.log('[draw-road] Poslal event "requestRoadWkt"');
     }
   }
 
