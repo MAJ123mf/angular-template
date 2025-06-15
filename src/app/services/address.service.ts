@@ -76,6 +76,6 @@ export class AddressService {
   /** Izbriši naslov */
   delete(id: number): Observable<any> {
     console.log(`AddressService: brišem naslov z ID=${id}/`);
-    return this.http.delete(`${this.baseUrl}${id}`);
+    return this.http.delete(`${this.baseUrl}${id}/`);
   }
 }
