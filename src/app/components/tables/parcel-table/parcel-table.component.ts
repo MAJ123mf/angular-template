@@ -2,7 +2,8 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ParcelService } from '../../../services/parcel.service';
 import { MapService } from '../../../services/map.service'; 
-
+import { AuthService } from '../../../services/auth.service';  // bomo preverjali če smo prijavljeni!
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   standalone: true,
@@ -22,7 +23,9 @@ export class ParcelTableComponent implements OnInit {
 
   constructor(
     private parcelService: ParcelService,
-    private mapService: MapService
+    private mapService: MapService,
+    private authService: AuthService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -74,7 +77,15 @@ export class ParcelTableComponent implements OnInit {
     this.editParcel.emit(parcel);
   }
 
+
+
   setDelete(parcel: any) {
+    // preverimo ali imamo pravice za brisanje parcel, torej ali smo v grupi editors ali admin
+    if (!this.authService.ensureCanEdit()) {
+      this.statusMessage.emit('You do not have permission to delete data.');
+    return;
+    }
+
     this.parcelService.delete(parcel.id).subscribe({
       next: () => {
         // Namesto alerta pošljemo sporočilo v statusno vrstico

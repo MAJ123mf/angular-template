@@ -13,7 +13,7 @@ import { EventService } from '../../../services/event.service';
 import { EventModel } from '../../../models/event.model';
 import { AuthService } from '../../../services/auth.service';  // bomo preverjali če smo prijavljeni!
 import { MatDialog } from '@angular/material/dialog';
-import { LoginFormComponent } from '../login-form/login-form.component';
+// import { LoginFormComponent } from '../login-form/login-form.component';
 import { WKT } from 'ol/format';
 
 @Component({
@@ -96,17 +96,6 @@ export class RoadFormComponent implements OnInit, OnDestroy {
         setTimeout(() => this.cdRef.detectChanges(), 0);
       }
     });
-
-
-
-    // ne moreš se neprijavljen sprehajat po vnosni formi za ceste 
-    if (!this.authService.isAuthenticated) {
-      console.warn('[RoadForm] Dostop zavrnjen ker uporabnik ni prijavljen');
-      console.log('[RoadForm] Odpri login modal...');
-      this.dialog.open(LoginFormComponent, {disableClose: true});
-    } else {
-      console.log('[RoadForm] Uporabnik je prijavljen.');
-    }
   }
 
 
@@ -126,6 +115,13 @@ export class RoadFormComponent implements OnInit, OnDestroy {
    }
 
    saveRecords() {
+
+     // preveri če imaš pravice za shrajevanje cest
+     if (!this.authService.ensureCanEdit()) {
+       this.statusMessage.emit('You do not have permission to save data.');
+      return;
+     }
+
      console.log('[Road-form] Road data:', this.road);  
      const payload = {
        str_name: this.road.str_name,
@@ -146,7 +142,15 @@ export class RoadFormComponent implements OnInit, OnDestroy {
      });
    }
 
+
    updateRecords() {
+
+     // preveri če imaš pravice za update cest
+     if (!this.authService.ensureCanEdit()) {
+        this.statusMessage.emit('You do not have permission to update data.');
+        return;
+     }
+
      const payload = {
        str_name: this.road.str_name,
        administrator: this.road.administrator,

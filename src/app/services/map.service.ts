@@ -50,6 +50,9 @@ import { Road } from '../models/roads';
 import { Parcel } from '../models/parcel';
 import { LineString } from 'ol/geom';
 
+import Draw from 'ol/interaction/Draw';
+import Snap from 'ol/interaction/Snap';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -58,6 +61,7 @@ export class MapService {
   map: Map;
   baseLayersGroup:LayerGroup;
   myLayersGroup:LayerGroup;
+  myWorkingLayersGroup:LayerGroup;
   parcelsLayer!: VectorLayer<VectorSource>;
   roadsLayer!: VectorLayer;
   addressesLayer!: VectorLayer;
@@ -71,6 +75,9 @@ export class MapService {
   private modifyAddressInteraction?: Modify;
   private modifyParcelInteraction?: Modify;
   private shouldEmitAddressWkt = false;
+  private drawInteraction: Draw | null = null;
+  private snapInteraction: Snap | null = null;
+
 
   constructor(
     public settingsService: SettingsService, 
@@ -78,6 +85,7 @@ export class MapService {
       // Najprej ustvarimo sloje
       this.baseLayersGroup= this.createBaseLayers();
       this.myLayersGroup= this.createMyLayers();
+      this.myWorkingLayersGroup= this.createMyWorkingLayers();
 
       this.eventService.eventActivated$.subscribe(event => {
         if (event.type === 'modeChange') {
@@ -202,8 +210,24 @@ export class MapService {
             'LAYERS': 'addresses_addresses', 'VERSION': '1.3.0', 'TILED': true, 'TRANSPARENT': true, 'FORMAT': 'image/png'
           }
         })
-      });       
+      });    
 
+      var myLayersGroup = new LayerGroup({
+        properties: {
+          title: 'My WMS layers'
+        },
+        layers: [
+          parcels, 
+          roads, 
+          addresses
+        ]
+      });
+    return myLayersGroup;
+  }
+      
+      
+
+  createMyWorkingLayers(): LayerGroup {
     var parcelsVectorSource = new VectorSource({wrapX: false}); 
     var parcelsVectorLayer = new VectorLayer({
       source: parcelsVectorSource,
@@ -240,20 +264,18 @@ export class MapService {
 
     this.addressesLayer = addressVectorLayer;                         
 
-    var myLayersGroup = new LayerGroup({
+    var myWorkingLayersGroup = new LayerGroup({
         properties: {
-          title: 'My layers'
+          title: 'My Working layers'
         },
         layers: [
-          parcels, 
           parcelsVectorLayer,
-          roads, 
           roadsVectorLayer,
-          addresses,
           addressVectorLayer
         ]
       });
-    return myLayersGroup;
+    return myWorkingLayersGroup;
+
   }
 
 
@@ -271,7 +293,7 @@ export class MapService {
         zoom: 14,
         projection: epsg25830,
       }),
-      layers: [this.baseLayersGroup, this.myLayersGroup],
+      layers: [this.baseLayersGroup, this.myLayersGroup, this.myWorkingLayersGroup],
       target: undefined
     }); 
     return map;
@@ -392,48 +414,52 @@ export class MapService {
 
   // ta funkcija nariše vse parcele ki so prikazane v tabeli na Karto
   public addAllParcelsGeoJsonToLayer(parcels: any[]) {
-    const validGeoJSONs = parcels
-      .map(Parcel => {
-        try {
-          return JSON.parse(Parcel.geom_geojson);
-        } catch (e) {
-          console.warn('Neveljaven GeoJSON za parcelni ID:', Parcel.id);
-          return null;
-        }
-      })
-      .filter(g => g !== null);
+  const validGeoJSONs = parcels
+    .map(Parcel => {
+      try {
+        return JSON.parse(Parcel.geom_geojson);
+      } catch (e) {
+        console.warn('Neveljaven GeoJSON za parcelni ID:', Parcel.id);
+        return null;
+      }
+    })
+    .filter(g => g !== null);
 
-    if (validGeoJSONs.length === 0) return;
+  if (validGeoJSONs.length === 0) return;
 
-    const featureCollection = {
-      type: 'FeatureCollection',
-      features: validGeoJSONs
-    };
+  const featureCollection = {
+    type: 'FeatureCollection',
+    features: validGeoJSONs
+  };
 
-    const format = new GeoJSON();
-    const features = format.readFeatures(featureCollection, {
-      featureProjection: 'EPSG:25830'
+  const format = new GeoJSON();
+  const features = format.readFeatures(featureCollection, {
+    featureProjection: 'EPSG:25830'
+  });
+
+  features.forEach((feature, i) => {
+    const parcelData = parcels[i];
+    feature.setProperties({
+      id: parcelData.id,
+      parc_st: parcelData.parc_st,
+      sifko: parcelData.sifko,
+      area: parcelData.area,
+      geom_wkt: parcelData.geom_wkt
     });
+  });
 
-    features.forEach((feature, i) => {
-      const parcelData = parcels[i]; // ustrezni zapis iz tabele
-      feature.setProperties({
-        id: parcelData.id,
-        parc_st: parcelData.parc_st,
-        sifko: parcelData.sifko,
-        area: parcelData.area,
-        geom_wkt: parcelData.geom_wkt
-      });
-    });
+  const source = this.parcelsLayer?.getSource();
+  if (source) {
+    source.clear();
+    source.addFeatures(features);
 
-    const source = this.parcelsLayer?.getSource();
-    if (source) {
-      source.clear();
-      source.addFeatures(features);
-    } else {
-      console.warn('parcelsLayer ali njegov source ne obstaja!');
-    }
+    // Tukaj emit-aš dogodek PO tem, ko so feature-ji dodani
+    this.eventService.emitEvent(new EventModel('parcelsAddedToMap', null));
+
+  } else {
+    console.warn('parcelsLayer ali njegov source ne obstaja!');
   }
+}
 
 
 
@@ -781,6 +807,121 @@ export class MapService {
   public setShouldEmitAddressWkt(value: boolean): void {
     this.shouldEmitAddressWkt = value;
   }
+
+
+
+  
+  public clearDrawInteraction(): void {
+    if (this.drawInteraction) {
+      this.map?.removeInteraction(this.drawInteraction);
+      this.drawInteraction = null;
+    }
+
+    if (this.snapInteraction) {
+      this.map?.removeInteraction(this.snapInteraction);
+      this.snapInteraction = null;
+    }
+  }
+
+  
+  public getWktFromFeature(feature: any): string {
+    const wkt = new WKT();
+    return wkt.writeFeature(feature);
+  }
+
+
+
+  public startDrawingParcels(): void {
+    if (!this.map || !this.parcelsLayer) {
+      console.warn('Map ali parcelsLayer ni inicializiran');
+      return;
+    }
+
+    const source = this.parcelsLayer.getSource();
+    if (!source) {
+      console.warn('Manjka parcelsLayer source');
+      return;
+    }
+
+    this.clearDrawInteraction(); // najprej počistimo prejšnje
+
+    this.drawInteraction = new Draw({
+      source: source,
+      type: 'Polygon',
+    });
+
+    this.snapInteraction = new Snap({
+      source: source,
+    });
+
+    this.map.addInteraction(this.drawInteraction);
+    this.map.addInteraction(this.snapInteraction);
+
+    this.drawInteraction.on('drawend', (event) => {
+      const feature = event.feature;
+      const wkt = this.getWktFromFeature(feature);
+      console.log('Risanje zaključeno. WKT:', wkt);
+      // this.sendParcelWkt(wkt);
+    });
+  }
+
+
+
+  //  ZA SNAP-anje v urejanju parcel
+  // public addModifyParcelInteraction(): void {
+  //   const map = this.map!;
+  //   const sourceParcels = this.getLayerByTitle('Parcels vector')?.getSource();
+
+  //   if (!sourceParcels) {
+  //     console.error('[addModifyParcelInteraction] Napaka: Parcelni layer ni najden!');
+  //     return;
+  //   }
+
+  //   // Odstrani stare interakcije (če obstajajo)
+  //   if (this.modifyParcelInteraction) {
+  //     map.removeInteraction(this.modifyParcelInteraction);
+  //     console.log('[addModifyParcelInteraction] Odstranjena Modify interakcija');
+  //   }
+  //   if (this.snapInteraction) {
+  //     map.removeInteraction(this.snapInteraction);
+  //     console.log('[addModifyParcelInteraction] Odstranjena Snap interakcija');
+  //   }
+
+  //   // Dodaj novo Modify interakcijo
+  //   this.modifyParcelInteraction = new Modify({ source: sourceParcels });
+
+  //   // 🔁 Dodaj listener za spremembo geometrije
+  //   this.modifyParcelInteraction.on('modifyend', () => {
+  //     console.log('[addModifyParcelInteraction] Modify končan – pošiljam posodobljen WKT');
+  //     this.sendParcelWkt();
+  //   });
+
+  //   map.addInteraction(this.modifyParcelInteraction);
+  //   console.log('[addModifyParcelInteraction] Dodana Modify interakcija');
+
+  //   // Ponovno dodaj Snap
+  //   this.snapInteraction = new Snap({ source: sourceParcels });
+  //   map.addInteraction(this.snapInteraction);
+  //   console.log('[addModifyParcelInteraction] Dodana Snap interakcija');
+  // }
+
+
+
+
+  // Odstrani Modify in Snap interakciji, če obstajata
+  // public removeModifyParcelInteraction(): void {
+  //   const map = this.map!;
+  //   if (this.modifyParcelInteraction) {
+  //     map.removeInteraction(this.modifyParcelInteraction);
+  //     this.modifyParcelInteraction = undefined;
+  //     console.log('[removeModifyParcelInteraction] Modify interakcija odstranjena');
+  //   }
+  //   if (this.snapInteraction) {
+  //     map.removeInteraction(this.snapInteraction);
+  //     this.snapInteraction = null;
+  //     console.log('[removeModifyParcelInteraction] Snap interakcija odstranjena');
+  //   }
+  // }
 
 
 }

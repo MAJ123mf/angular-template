@@ -11,6 +11,9 @@ import { AddressFormComponent } from './components/forms/address-form/address-fo
 import { MapComponent } from './components/map/map.component';
 import { AuthService } from './services/auth.service';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { LoginFormComponent } from './components/forms/login-form/login-form.component';
+
 
 @Component({
   selector: 'app-root',
@@ -40,7 +43,11 @@ export class AppComponent {
   title = 'web';
 
 
-  constructor(public authService: AuthService, private router: Router) {}
+  constructor(
+    public authService: AuthService, 
+    private router: Router,
+    private dialog: MatDialog 
+  ) {}
   statusText = '';
 
   updateStatus(message: string) {
@@ -49,13 +56,34 @@ export class AppComponent {
 
   selectedType: 'parcel' | 'road' | 'address' = 'parcel';
 
-  ngOnInit() {
-  this.authService.checkIsLoggedInInServer().subscribe(() => {
-    if (!this.authService.isAuthenticated) {
-      this.router.navigate(['/login-form']);
-    }
-  });
-}
+
+
+
+  // Če hočemo prijavo na začetku odkomentiramo, sicer lahko delamo tudi brez prijave
+  ngOnInit(): void {
+    this.authService.statusMessage$.subscribe(message => {      // Za sporočila iz authService  (kdo je prijavljen s kakšnimi pravicami)
+      this.statusText = message;
+    });
+        //  TO SPODAJ ODKOMENTIRAMO, če želimo prijavo takoj na začetku
+    // this.authService.checkIsLoggedInInServer().subscribe(() => {
+    //   if (!this.authService.isAuthenticated) {
+    //     this.dialog.open(LoginFormComponent, {
+    //       disableClose: true
+    //     });
+    //   } else {
+    //     console.log('[AppComponent] Uporabnik je že prijavljen:', this.authService.username);
+    //   }
+    // });
+  }
+
+
+  openLoginDialog(): void {
+    this.dialog.open(LoginFormComponent, {
+      disableClose: true, // Ne dovoli zapreti brez prijave
+    });
+  }
+
+
 
   switchForm(module: 'parcel' | 'road' | 'address') {                     // v module je izbira !
     console.log('Preklapljam:', module); // Dodaj to vrstico za debug      // izbilo izpišem na conolo

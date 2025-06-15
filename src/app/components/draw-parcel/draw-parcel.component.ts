@@ -15,6 +15,15 @@ import { WktGeometryTransferService} from'../../services/wkt-geometry-transfer.s
 import { EventService } from '../../services/event.service';
 import { EventModel } from '../../models/event.model';
 import { Subscription } from 'rxjs';
+import Snap from 'ol/interaction/Snap';
+
+import { getDistance } from 'ol/sphere';
+import Geometry from 'ol/geom/Geometry';
+import Point from 'ol/geom/Point';
+import Feature from 'ol/Feature';
+import Polygon from 'ol/geom/Polygon';
+import Modify from 'ol/interaction/Modify';
+
 
 @Component({
   selector: 'app-draw-parcel',
@@ -30,6 +39,7 @@ export class DrawParcelComponent implements AfterViewInit, OnDestroy, OnInit {
   selectMode: boolean = false;
   modeSubscription!: Subscription; 
   editMode = false;
+  snapInteraction?: Snap;
 
   // v konstruktorju imamo na primer WktGeometryTransfer service  (servis je najavljen tudi pod import)
   // parcel-form posluša ta service, sam servis najdeš seveda med servisi...
@@ -46,13 +56,31 @@ export class DrawParcelComponent implements AfterViewInit, OnDestroy, OnInit {
       this.canDraw = (mode === 'parcel'); // omogoči risanje samo, če je način "parcel"
     });
 
-    // Dogodki iz EventService 
+    // Enotno spremljanje vseh EventService dogodkov
     this.eventService.eventActivated$.subscribe((event: EventModel) => {
-      if (event.type !== 'drawParcelActivated') {
-        this.drawMode = false;
+      if (event.type === 'parcelsAddedToMap') {
+        const sourceParcels = this.mapService.getLayerByTitle('Parcels vector')?.getSource();
+
+        if (sourceParcels) {
+          // Poslušaj, kdaj so feature-ji fizično dodani
+          const handle = () => {
+            console.log('[DrawParcel] Features now added. Initializing drawing interaction...');
+            sourceParcels.un('addfeature', handle); // odstranimo listener, da se ne ponavlja
+            // this.addDrawParcelInteraction(); // zdaj je snap varen
+          };
+
+          // Če so že dodani (preveri dolžino), lahko takoj aktiviraš
+          if (sourceParcels.getFeatures().length > 0) {
+            handle();
+          } else {
+            sourceParcels.on('addfeature', handle); // sicer čakamo na dodajanje
+          }
+        }
       }
     });
   }
+
+
   
   ngOnInit(): void {
     this.modeSubscription = this.drawModeService.currentMode$.subscribe((mode) => {
@@ -71,27 +99,102 @@ export class DrawParcelComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
 
+  // ngAfterViewInit(): void {
+  //   console.log("DrawParcelComponent initialized");
+  //   this.addDrawParcelInteraction();
+  //   this.disableDrawParcels();
+  //   this.reloadParcelsWmsLayer();
+  //   // Dodamo spremembo kurzorja za snapanje, ko smo dovolj blizu
+  //   this.addSnapCursorFeedback();
+  // }
+
   ngAfterViewInit(): void {
     console.log("DrawParcelComponent initialized");
-    this.addDrawParcelInteraction();
-    this.disableDrawParcels();
+
+    this.disableDrawParcels();              // poskrbi, da se ne riše
+    this.mapService.clearDrawInteraction(); // počisti vsa stanja na začetku
     this.reloadParcelsWmsLayer();
+
+    this.addSnapCursorFeedback(); // to je v redu za UX
   }
 
-  toggleDrawMode(){
+  // tu spreminjamo kurzor ob SNAP-anju
+  addSnapCursorFeedback() {
+    const map = this.mapService.map!;
+    const source = this.mapService.getLayerByTitle('Parcels vector')?.getSource();
+    if (!map || !source) return;
+
+    map.on('pointermove', (event) => {
+      const coordinate = event.coordinate;
+      const features = source.getFeatures();
+      const thresholdMeters = 5; // občutljivost (približek oglišču)
+
+      let nearVertex = false;
+
+      features.forEach((f: Feature) => {
+        const geom = f.getGeometry();
+        if (!geom) return;
+
+        if (geom instanceof Polygon) {
+          const coords = geom.getCoordinates(); // [ [ [x,y], [x,y], ... ] ]
+          const ring = coords[0];
+
+          for (const vertex of ring) {
+            const dx = coordinate[0] - vertex[0];
+            const dy = coordinate[1] - vertex[1];
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist < thresholdMeters) {
+              nearVertex = true;
+              break;
+            }
+          }
+        }
+      });
+
+      const targetEl = map.getTargetElement() as HTMLElement;
+      targetEl.style.cursor = nearVertex ? 'pointer' : 'crosshair';
+    });
+  }
+
+
+
+
+
+  // toggleDrawMode(){
+  //   this.drawMode = !this.drawMode;
+  //   if(this.drawMode){
+  //     // Start drawing mode
+  //     this.enableDrawParcels();
+  //     console.log("[Drav-parcel] Drawing mode activated");
+  //   } else {
+  //     // Stop drawing mode
+  //     this.disableDrawParcels();
+  //     // this.clearVectorLayer();
+  //     this.reloadParcelsWmsLayer();
+  //     this.editMode = false;
+  //     this.selectMode = false;
+  //     console.log("[Drav-parcel] Drawing mode deactivated");
+  //   }
+  // }
+
+  toggleDrawMode() {
     this.drawMode = !this.drawMode;
-    if(this.drawMode){
-      // Start drawing mode
-      this.enableDrawParcels();
-      console.log("[Drav-parcel] Drawing mode activated");
+
+    if (this.drawMode) {
+      // Vključi risanje - aktiviraj interakcijo
+      this.drawParcel?.setActive(true);
+      this.addDrawParcelInteraction();
+      this.snapInteraction?.setActive(true);
+      console.log('[DrawParcel] Risanje vključeno');
     } else {
-      // Stop drawing mode
-      this.disableDrawParcels();
-      this.clearVectorLayer();
+      // Izključi risanje - deaktiviraj interakcijo
+      this.drawParcel?.setActive(false);
+      this.snapInteraction?.setActive(false);
       this.reloadParcelsWmsLayer();
       this.editMode = false;
       this.selectMode = false;
-      console.log("[Drav-parcel] Drawing mode deactivated");
+      console.log('[DrawParcel] Risanje izključeno');
     }
   }
    
@@ -103,7 +206,7 @@ export class DrawParcelComponent implements AfterViewInit, OnDestroy, OnInit {
     this.eventService.emitEvent(new EventModel('modeChange', mode));
   }
 
-
+  // EDIT PARCEL BREZ SNAP-anja
   // od tu se sproži editiranje parcdel s pomočjo proferorjevega event-service  )
   editParcel(): void {
     this.editMode = !this.editMode;
@@ -121,25 +224,67 @@ export class DrawParcelComponent implements AfterViewInit, OnDestroy, OnInit {
       console.log('[draw-parcel] Poslal event "requestParcelWkt"');
     }
   }
+
+  // EDIT PARCEL Z SNAP-om
+  // editParcel(): void {
+  //   this.editMode = !this.editMode;
+  //   const mode = this.editMode ? 'edit-parcel' : 'parcel';
+  //   this.eventService.emitEvent(new EventModel('modeChange', mode));
+
+  //   if (this.editMode) {
+  //     console.log('[draw-parcel] Začenjam urejanje parcele.');
+  //     this.mapService.addModifyParcelInteraction();
+  //   } else {
+  //     console.log('[draw-parcel] Zaključujem urejanje parcele.');
+  //     this.mapService.removeModifyParcelInteraction();
+
+  //     this.mapService.setShouldEmitParcelWkt(true);
+  //     this.mapService.sendParcelWkt();
+  //     this.eventService.emitEvent(new EventModel('requestParcelWkt', null));
+  //   }
+  // }
   
 
+
+  // Tu se dejansko rišejo parcele na karto.
   addDrawParcelInteraction() {
-    //Add the draw interaction when the component is initialized
-    var sourceParcels: VectorSource = this.mapService.getLayerByTitle('Parcels vector')?.getSource();
-    if(sourceParcels){
+    const map = this.mapService.map!;
+    const sourceParcels = this.mapService.getLayerByTitle('Parcels vector')?.getSource();
+
+    if (sourceParcels) {
+      console.log('[addDrawParcelInteraction] Kličem funkcijo. Število feature-jev v source:', sourceParcels.getFeatures().length);
+
+      // Odstrani stare interakcije
+      if (this.drawParcel) {
+        map.removeInteraction(this.drawParcel);
+        console.log('[addDrawParcelInteraction] Odstranjena prejšnja Draw interakcija');
+      }
+      if (this.snapInteraction) {
+        map.removeInteraction(this.snapInteraction);
+        console.log('[addDrawParcelInteraction] Odstranjena prejšnja Snap interakcija');
+      }
+
+      // Ustvari Draw interakcijo
       this.drawParcel = new Draw({
-         source: sourceParcels, //source of the layer where the poligons will be drawn
-        type: ('Polygon') //geometry type
+        source: sourceParcels,
+        type: 'Polygon'
       });
       this.drawParcel.on('drawend', this.manageDrawEnd);
-  
-      //adds the interaction to the map. This must be done only once
-      this.mapService.map!.addInteraction(this.drawParcel);
-    }else{
-      console.error("Error: Parcels layer not found");
+      map.addInteraction(this.drawParcel);
+      console.log('[addDrawParcelInteraction] Dodana nova Draw interakcija');
+
+      // Ustvari Snap interakcijo
+      this.snapInteraction = new Snap({ source: sourceParcels });
+      map.addInteraction(this.snapInteraction);
+      console.log('[addDrawParcelInteraction] Dodana Snap interakcija');
+
+    } else {
+      console.error('[addDrawParcelInteraction] Napaka: Parcelni layer ni najden!');
     }
   }
 
+
+  
   //Enables the polygons draw
   enableDrawParcels(){
     this.mapService.disableMapInteractions(); // Disable other interactions
@@ -148,14 +293,22 @@ export class DrawParcelComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   //Disables the polygons draw
-  disableDrawParcels(){
-    this.drawParcel!.setActive(false);
+  disableDrawParcels() {
+    if (this.drawParcel) {
+      this.drawParcel.setActive(false);
+    }
+
+    if (this.snapInteraction) {
+      this.mapService.map?.removeInteraction(this.snapInteraction);
+      this.snapInteraction = undefined!;
+    }
   }
 
   //Enables clear the vector layer
   clearVectorLayer(){
     this.mapService.getLayerByTitle('Parcels vector')?.getSource().clear();
   }
+
   //Reload Parcels WMS Layer
   reloadParcelsWmsLayer(){
     this.mapService.getLayerByTitle('Parcels WMS')?.getSource().updateParams({"time": Date.now()})
@@ -188,6 +341,9 @@ export class DrawParcelComponent implements AfterViewInit, OnDestroy, OnInit {
     if (this.modeSubscription) {
       this.modeSubscription.unsubscribe();
     }
+    if (this.snapInteraction) {
+      this.mapService.map?.removeInteraction(this.snapInteraction);
+}
   }
 
 

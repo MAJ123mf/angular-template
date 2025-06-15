@@ -1,11 +1,11 @@
 
-<div class="container mt-4">
-  <h1>Addresses</h1>
+<div class="container mt-0">
+  <h2>Addresses</h2>
   <div class="card">
     <form #form="ngForm" class="container inner">
       <div class="row mb-2 align-items-center">
         <label class="col-sm-2 col-form-label">Building number:</label>
-        <div class="col-sm-4">
+        <div class="col-sm-2">
           <input
             type="number"
             [(ngModel)]="address.building_num"
@@ -81,11 +81,11 @@
         </div>
       </div>
         <!-- Gumbi za dodajanje, posodabljanje in Clear forme -->
-        <button type="button" class="btn btn-primary mt-4" (click)="saveRecords()"> Insert </button>
+        <button type="button" class="btn btn-primary mt-0" (click)="saveRecords()"> Insert </button>
         &nbsp;
-        <button type="button" class="btn btn-primary mt-4" (click)="updateRecords()"> Update </button>
+        <button type="button" class="btn btn-primary mt-0" (click)="updateRecords()"> Update </button>
         &nbsp;
-        <button type="button" class="btn btn-primary mt-4" (click)="clearForm()"> Clear </button>
+        <button type="button" class="btn btn-primary mt-0" (click)="clearForm()"> Clear </button>
     </form>
 
     <!--  Tukaj dodamo komponento zemljevida z dogodkom wktChange -->

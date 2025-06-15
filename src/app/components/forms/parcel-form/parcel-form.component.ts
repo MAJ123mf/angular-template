@@ -13,7 +13,7 @@ import { EventService } from '../../../services/event.service';
 import { EventModel } from '../../../models/event.model';   
 import { AuthService } from '../../../services/auth.service';  // bomo preverjali če smo prijavljeni!
 import { MatDialog } from '@angular/material/dialog';
-import { LoginFormComponent } from '../login-form/login-form.component';
+
 
 @Component({
   standalone: true,
@@ -87,14 +87,6 @@ export class ParcelFormComponent implements OnInit {
         setTimeout(() => this.cdRef.detectChanges(), 0);
       }
     });
-
-    // po obrazcu za vnašanje parcel se ne moreš sprehajat neprijavljen
-    if (!this.authService.isAuthenticated) {
-      console.warn('[ParcelForm] Dostop zavrnjen ker uporabnik ni prijavljen');
-      this.dialog.open(LoginFormComponent, {
-        disableClose: true
-      });
-    }
   }
 
   loadGeometryFromWkt(wkt: string): void {
@@ -111,7 +103,15 @@ export class ParcelFormComponent implements OnInit {
     }
   }
 
+
   saveRecords() {
+
+    // preveri če imaš pravice za shrajevanje
+    if (!this.authService.ensureCanEdit()) {
+      this.statusMessage.emit('You do not have permission to save data.');
+      return;
+    }
+
     console.log('[Parcel-form] Parcel data za knjiženje:', this.parcel);
     const payload = {
       parc_st: this.parcel.parc_st,
@@ -133,7 +133,15 @@ export class ParcelFormComponent implements OnInit {
     });
   }
 
+
+
   updateRecords() {
+    // preveri če imaš pravice za update parcel
+    if (!this.authService.ensureCanEdit()) {
+      this.statusMessage.emit('You do not have permission to update data.');
+      return;
+   }
+
     const payload = {
       parc_st: this.parcel.parc_st,
       sifko: this.parcel.sifko,

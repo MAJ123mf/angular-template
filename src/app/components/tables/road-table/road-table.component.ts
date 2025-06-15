@@ -2,6 +2,8 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RoadService } from '../../../services/road.service';
 import { MapService } from '../../../services/map.service'; 
+import { AuthService } from '../../../services/auth.service';  // bomo preverjali če smo prijavljeni!
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
    selector: 'app-road-table',
@@ -21,7 +23,9 @@ export class RoadTableComponent implements OnInit {
 
   constructor(
     private roadService: RoadService,
-    private mapService: MapService
+    private mapService: MapService,
+    private authService: AuthService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -75,6 +79,13 @@ export class RoadTableComponent implements OnInit {
   }
 
   setDelete(road: any) {                            // ob kliku na gumb "Izbriši" v tabeli se sproži ta metoda in izbriše road objekt
+
+    // preverimo ali imamo pravice za brisanje cest, torej ali smo v grupi editors ali admins
+    if (!this.authService.ensureCanEdit()) {
+      this.statusMessage.emit('You do not have permission to delete data.');
+    return;
+    }
+
     this.roadService.delete(road.id).subscribe({
       next: () => {
         // Namesto alerta, ki odpre novo okno,  pošljemo raje sporočilo v statusno vrstico

@@ -3,7 +3,8 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AddressService } from '../../../services/address.service';
 import { MapService } from '../../../services/map.service'; 
-
+import { AuthService } from '../../../services/auth.service';  // bomo preverjali če smo prijavljeni!
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-address-table',
@@ -23,7 +24,9 @@ export class AddressTableComponent implements OnInit {
 
   constructor(
     private addressService: AddressService,
-    private mapService: MapService
+    private mapService: MapService,
+    private authService: AuthService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -80,6 +83,13 @@ export class AddressTableComponent implements OnInit {
   }
 
   setDelete(address: any) {                            // ob kliku na gumb "Izbriši" v tabeli se sproži ta metoda in izbriše road objekt
+
+    // preverimo ali imamo pravice za brisanje naslovov, torej ali smo v grupi editors ali admins
+    if (!this.authService.ensureCanEdit()) {
+      this.statusMessage.emit('You do not have permission to delete data.');
+    return;
+    }
+
     this.addressService.delete(address.id).subscribe({
       next: () => {
         // Namesto alerta, ki odpre novo okno,  pošljemo raje sporočilo v statusno vrstico

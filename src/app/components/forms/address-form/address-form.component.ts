@@ -100,12 +100,12 @@ export class AddressFormComponent implements OnInit {
        this.clearForm();
      });
 
-     if (!this.authService.isAuthenticated) {
-      console.warn('[AddressForm] Dostop zavrnjen ker uporabnik ni prijavljen');
-      this.dialog.open(LoginFormComponent, {
-       disableClose: true
-      });
-    }
+    //  if (!this.authService.isAuthenticated) {
+    //   console.warn('[AddressForm] Dostop zavrnjen ker uporabnik ni prijavljen');
+    //   this.dialog.open(LoginFormComponent, {
+    //    disableClose: true
+    //   });
+    // }
   }
 
   loadGeometryFromWkt(wkt: string): void {
@@ -120,52 +120,67 @@ export class AddressFormComponent implements OnInit {
   }
 
   saveRecords() {
-  console.log('Address data za knjiženje:', this.address);  
-  // Pripravi objekt za pošiljanje, kjer geom vzamemo iz geom_wkt
-  const payload = {
-    building_num: this.address.building_num,
-    street: this.address.street,
-    house_num: this.address.house_num,
-    post_num: this.address.post_num, 
-    post_name: this.address.post_name, 
-    geom: this.address.geom_wkt    // ključ "geom" s podatkom iz geom_wkt
-  };
 
-  this.addressService.save(payload).subscribe({
-    next: (res) => {
-      // Prikaži backendovo message polje, če obstaja
-      this.statusMessage.emit(JSON.stringify(res));          // dejansko sporočilo od Django
-      console.log(res);
-      this.clearForm();
-      this.saved.emit();
-    },
-    error: (err) => {
-      this.statusMessage.emit(JSON.stringify(err.error));    // dejansko sporočilo od Django
+    // preveri če imaš pravice za shrajevanje naslovov
+    if (!this.authService.ensureCanEdit()) {
+      this.statusMessage.emit('You do not have permission to save data.');
+      return;
     }
-  });
-}
 
-updateRecords() {
-  const payload = {
-    building_num: this.address.building_num,
-    street: this.address.street,
-    house_num: this.address.house_num,
-    post_num: this.address.post_num, 
-    post_name: this.address.post_name, 
-    geom: this.address.geom_wkt    // ključ "geom" s podatkom iz geom_wkt
-  };
+    console.log('Address data za knjiženje:', this.address);  
+    // Pripravi objekt za pošiljanje, kjer geom vzamemo iz geom_wkt
+    const payload = {
+      building_num: this.address.building_num,
+      street: this.address.street,
+      house_num: this.address.house_num,
+      post_num: this.address.post_num, 
+      post_name: this.address.post_name, 
+      geom: this.address.geom_wkt    // ključ "geom" s podatkom iz geom_wkt
+    };
 
-  this.addressService.update(this.address.id, payload).subscribe({
-    next: (res) => {
-      this.statusMessage.emit(res?.message ||'Address updated successfully');
-      this.clearForm();
-      this.saved.emit();
-    },
-    error: (err) => {
-      this.statusMessage.emit(JSON.stringify(err.error));
+    this.addressService.save(payload).subscribe({
+      next: (res) => {
+        // Prikaži backendovo message polje, če obstaja
+        this.statusMessage.emit(JSON.stringify(res));          // dejansko sporočilo od Django
+        console.log(res);
+        this.clearForm();
+        this.saved.emit();
+      },
+      error: (err) => {
+        this.statusMessage.emit(JSON.stringify(err.error));    // dejansko sporočilo od Django
+      }
+    });
+  }
+
+
+  updateRecords() {
+
+    // preveri če imaš pravice za update naslovov
+    if (!this.authService.ensureCanEdit()) {
+      this.statusMessage.emit('You do not have permission to update data.');
+      return;
     }
-  });
-}
+
+    const payload = {
+      building_num: this.address.building_num,
+      street: this.address.street,
+      house_num: this.address.house_num,
+      post_num: this.address.post_num, 
+      post_name: this.address.post_name, 
+      geom: this.address.geom_wkt    // ključ "geom" s podatkom iz geom_wkt
+    };
+
+    this.addressService.update(this.address.id, payload).subscribe({
+      next: (res) => {
+        this.statusMessage.emit(res?.message ||'Address updated successfully');
+        this.clearForm();
+        this.saved.emit();
+      },
+      error: (err) => {
+        this.statusMessage.emit(JSON.stringify(err.error));
+      }
+    });
+  }
 
   setUpdate(data: Partial<Address>): void {
     this.address = new Address(

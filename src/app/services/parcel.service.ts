@@ -71,6 +71,6 @@ export class ParcelService {
   /** Izbriši parcelo */
   delete(id: number): Observable<any> {
     console.log(`ParcelService: brišem parcelo z ID=${id}`);
-    return this.http.delete(`${this.baseUrl}${id}`);
+    return this.http.delete(`${this.baseUrl}${id}/`);
   }
 }

@@ -62,14 +62,12 @@ login() {
         this.authService.isAuthenticated = true;
 
         // Ponovno preveri stanje s strežnikom
-        this.authService.checkIsLoggedInInServer();
-       
+        this.authService.checkIsLoggedInInServer().subscribe();
 
         // Počakamo 2 sekundi, da si uporabnik prebere sporočilo
         setTimeout(() => {
           this.dialogRef.close(true); // zapri modal
-        }, 2000);
-        this.dialogRef.close(true);
+        }, 1000);
       } else {
         console.warn('[login-form] Response OK is false or missing:', response);
       }

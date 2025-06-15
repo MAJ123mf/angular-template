@@ -12,7 +12,7 @@ import { DrawParcelComponent } from './components/draw-parcel/draw-parcel.compon
 import { AuthGuard } from './guards/auth.guard'; // pot do guard datoteke (za centralno varovanje)
 
 export const routes: Routes = [
-    {path: '', redirectTo: '/home', pathMatch: 'full'},
+    {path: '', redirectTo: '/login-form', pathMatch: 'full' },
     {path: 'form-parcel', component:ParcelFormComponent, canActivate: [AuthGuard] },   // te ki imajo AuthGuard, se ne odpro brez prijave
     {path: 'form-road', component:RoadFormComponent, canActivate: [AuthGuard] },
     {path: 'form-address', component:AddressFormComponent, canActivate: [AuthGuard] },
