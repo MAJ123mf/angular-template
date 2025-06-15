@@ -62,7 +62,7 @@ export class ParcelService {
     area: number;
     geom: string;
   }): Observable<any> {
-    console.log(`ParcelService: posodabljam parcelo z ID=${id}`, parcel);
+    console.log(`ParcelService: posodabljam parcelo z ID=${id}/`, parcel);
     return this.http.post(`${this.updateUrl}${id}/`, parcel).pipe(
       tap(res => console.log('Odgovor po posodobitvi parcele:', res))
     );
@@ -70,7 +70,7 @@ export class ParcelService {
 
   /** Izbriši parcelo */
   delete(id: number): Observable<any> {
-    console.log(`ParcelService: brišem parcelo z ID=${id}`);
+    console.log(`ParcelService: brišem parcelo z ID=${id}/`);
     return this.http.delete(`${this.baseUrl}${id}/`);
   }
 }

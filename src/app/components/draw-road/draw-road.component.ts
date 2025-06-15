@@ -81,7 +81,7 @@ export class DrawRoadComponent implements AfterViewInit, OnDestroy, OnInit {
     } else {
       // Stop drawing mode
       this.disableDrawRoads();
-      this.clearVectorLayer();
+      // this.clearVectorLayer();
       this.reloadRoadsWmsLayer();
       this.editMode = false;
       this.selectMode = false;

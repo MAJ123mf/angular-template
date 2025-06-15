@@ -80,7 +80,7 @@ export class DrawAddressComponent implements AfterViewInit, OnDestroy, OnInit {
     }
     else {
       this.disableDrawAddress();  // Stop drawing mode
-      this.clearVectorLayer();
+      // this.clearVectorLayer();
       this.reloadAddressWmsLayer();
       this.editMode = false;
       this.selectMode = false;

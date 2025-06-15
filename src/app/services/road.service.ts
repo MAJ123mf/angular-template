@@ -70,9 +70,9 @@ export class RoadService {
 
   /** Izbriši cesto */
   delete(id: number): Observable<any> {
-    console.log(`RoadService: delete() called for id=${id}`);
+    console.log(`RoadService: delete() called for id=${id}/`);
 
-    return this.http.delete(`${this.baseUrl}${id}`).pipe(
+    return this.http.delete(`${this.baseUrl}${id}/`).pipe(
       tap(response => console.log('RoadService: delete response:', response))
     );
   }
