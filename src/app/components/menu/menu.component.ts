@@ -50,7 +50,7 @@ export class MenuComponent {
 
     dialogRef.afterClosed().subscribe(() => {
     // Preusmeri na login-form po zaprtju logout modala
-    window.location.href = '/login-form'; // <-- najzanesljiveje, če `router.navigateByUrl` ne deluje zaradi standalone routerja
+    // window.location.href = '/login-form'; // Sem zakomentiral, ne želim reloadati strani
   });
   }
 
