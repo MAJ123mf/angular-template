@@ -47,38 +47,38 @@ export class LoginFormComponent {
     private authService: AuthService
   ){}
 
-login() {
-  console.log('[login-form] Login triggered!');
-  this.serverMessage = '';
+  login() {
+    console.log('[login-form] Login triggered!');
+    this.serverMessage = '';
 
-  this.apiService.post('core/login/', this.controlsGroup.value).subscribe({
-    next: (response: any) => {
-      console.log('[login-form] Received response:', response);
+    this.apiService.post('core/login/', this.controlsGroup.value).subscribe({
+      next: (response: any) => {
+        console.log('[login-form] Received response:', response);
 
-      // Robustno preverjanje
-      if (response && response.ok) {
-        console.log('[login-form] Login success:', response);
-        this.authService.username = this.username.value!;
-        this.authService.isAuthenticated = true;
+        // Robustno preverjanje
+        if (response && response.ok) {
+          console.log('[login-form] Login success:', response);
+          this.authService.username = this.username.value!;
+          this.authService.isAuthenticated = true;
 
-        // Ponovno preveri stanje s strežnikom
-        this.authService.checkIsLoggedInInServer().subscribe();
+          // Ponovno preveri stanje s strežnikom
+          this.authService.checkIsLoggedInInServer().subscribe();
 
-        // Počakamo 2 sekundi, da si uporabnik prebere sporočilo
-        setTimeout(() => {
-          this.dialogRef.close(true); // zapri modal
-        }, 1000);
-      } else {
-        console.warn('[login-form] Response OK is false or missing:', response);
+          // Počakamo 2 sekundi, da si uporabnik prebere sporočilo
+          setTimeout(() => {
+            this.dialogRef.close(true); // zapri modal
+          }, 1000);
+        } else {
+          console.warn('[login-form] Response OK is false or missing:', response);
+        }
+
+        this.serverMessage = response.message || 'Unknown response.';
+      },
+      error: (error: any) => {
+        console.error('[login-form] Login failed:', error);
+        this.serverMessage = error.error?.message || 'Login failed.';
       }
-
-      this.serverMessage = response.message || 'Unknown response.';
-    },
-    error: (error: any) => {
-      console.error('[login-form] Login failed:', error);
-      this.serverMessage = error.error?.message || 'Login failed.';
-    }
-  });
-}
+    });
+  }
 
 }

@@ -76,7 +76,7 @@ export class AppComponent {
     // });
     this.authService.statusMessage$.subscribe(message => {
         this.statusText = message;
-      });
+    });
 
     // Ob vsakem zagonu preverimo, ali je prijavljen uporabnik (prek Django seje)
     this.authService.checkIsLoggedInInServer().subscribe();
