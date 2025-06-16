@@ -64,7 +64,7 @@ export class AppComponent {
     this.authService.statusMessage$.subscribe(message => {      // Za sporočila iz authService  (kdo je prijavljen s kakšnimi pravicami)
       this.statusText = message;
     });
-        //  TO SPODAJ ODKOMENTIRAMO, če želimo prijavo takoj na začetku
+    //  TO SPODAJ ODKOMENTIRAMO, če želimo prijavo takoj na začetku
     // this.authService.checkIsLoggedInInServer().subscribe(() => {
     //   if (!this.authService.isAuthenticated) {
     //     this.dialog.open(LoginFormComponent, {
@@ -74,6 +74,12 @@ export class AppComponent {
     //     console.log('[AppComponent] Uporabnik je že prijavljen:', this.authService.username);
     //   }
     // });
+    this.authService.statusMessage$.subscribe(message => {
+        this.statusText = message;
+      });
+
+    // Ob vsakem zagonu preverimo, ali je prijavljen uporabnik (prek Django seje)
+    this.authService.checkIsLoggedInInServer().subscribe();
   }
 
 
