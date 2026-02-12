@@ -65,16 +65,31 @@ export class AppComponent {
   statusText = '';
 
 
-  @HostListener('document:keydown', ['$event'])
-  handleKeyboardEvent(event: KeyboardEvent) {
-    console.log('[App.Component.ts], Key Pressed? ', event.key, 'alt:', event.altKey, 'shift:', event.shiftKey);
+@HostListener('document:keydown', ['$event'])
+handleKeyboardEvent(event: KeyboardEvent) {
 
-    if (event.altKey && event.shiftKey && event.key.toLowerCase() === 'e') {
-      event.preventDefault();
-      console.log('[App.Component.ts]] Alt + Shift + e detected!');
-      this.downloadGpkg();
-    }
-  }  
+  console.log('[App.Component.ts], Key Pressed? ', event.key, 'alt:', event.altKey, 'shift:', event.shiftKey);
+
+  // ALT + SHIFT + E (export)
+  if (event.altKey && event.shiftKey && event.key.toLowerCase() === 'e') {
+
+    event.preventDefault();
+    console.log('[App.Component.ts]] Alt + Shift + e detected!');
+    this.downloadGpkg();
+  }
+
+  // F1 (help)
+  if (event.key === 'F1') {
+
+    event.preventDefault(); // zelo pomembno
+
+    window.open('/uporabniska_navodila/index.html', '_blank');
+
+    // alternativa:
+    // window.location.href = '/uporabniska_navodila/index.html';
+  }
+}
+ 
 
 
   @HostListener('document:mousemove', ['$event'])
@@ -228,4 +243,5 @@ export class AppComponent {
     // pokliči funkcijo za označevanje na karti
     this.mapService.highlightAddressOnMap(address); 
   }
+
 }
