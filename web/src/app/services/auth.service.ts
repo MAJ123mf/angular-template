@@ -23,7 +23,7 @@ export class AuthService {
   public username: string = '';
   public isAuthenticated: boolean = false;
   public userGroups: string[] = [];
-  private statusMessageSubject = new BehaviorSubject<string>('');
+  public statusMessageSubject = new BehaviorSubject<string>('');
   public statusMessage$ = this.statusMessageSubject.asObservable();
 
   constructor(
@@ -64,6 +64,7 @@ export class AuthService {
           this.userGroups = [];
           this.isAuthenticated = false;
           console.log('[AuthService] Not logged in');
+          this.statusMessageSubject.next('You are not logged in.');
         }
       })
     );

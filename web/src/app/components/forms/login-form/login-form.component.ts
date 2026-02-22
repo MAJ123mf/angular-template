@@ -82,59 +82,26 @@ export class LoginFormComponent {
       }
     });
   }
-  
 
-  /*
-  login() {
-    console.log('[login-form] Login triggered!');
+  loginWithCertificate() {
     this.serverMessage = '';
-
-    const csrfToken = this.getCsrfTokenFromCookie();
-
-    this.apiService.post('core/login/', this.controlsGroup.value, {
-      withCredentials: true,
-      headers: {
-        'X-CSRFToken': csrfToken
-      }
-    }).subscribe({
+    this.authService.checkIsLoggedInInServer().subscribe({
       next: (response: any) => {
-        console.log('[login-form] Received response:', response);
-
-        if (response && response.ok) {
-          this.authService.username = this.username.value!;
-          this.authService.isAuthenticated = true;
-          this.authService.checkIsLoggedInInServer().subscribe();
-
+        if (response.ok) {
+          this.serverMessage = 'Prijava uspešna: ' + this.authService.username;
           setTimeout(() => {
             this.dialogRef.close(true);
           }, 1000);
         } else {
-          console.warn('[login-form] Response OK is false or missing:', response);
+          this.serverMessage = 'Certifikat ni pooblaščen ali ni bil poslan.';
         }
-
-        this.serverMessage = response.message || 'Unknown response.';
       },
-      error: (error: any) => {
-        console.error('[login-form] Login failed:', error);
-        this.serverMessage = error.error?.message || 'Login failed.';
+      error: () => {
+        this.serverMessage = 'Napaka pri prijavi s certifikatom.';
       }
     });
   }
-  */
-
-  // preberi CSRF žeton iz cooki-ja
-  // getCsrfTokenFromCookie(): string {
-  //   const name = 'csrftoken=';
-  //   const decodedCookie = decodeURIComponent(document.cookie);
-  //   const ca = decodedCookie.split(';');
-  //   for (let i = 0; i < ca.length; i++) {
-  //     let c = ca[i].trim();
-  //     if (c.indexOf(name) === 0) {
-  //       return c.substring(name.length, c.length);
-  //     }
-  //   }
-  //   return '';
-  // }
+  
 
 
 }

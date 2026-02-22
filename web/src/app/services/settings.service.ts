@@ -10,7 +10,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class SettingsService {
-  public mode=1;// 1 for local, 2 for production
+  public mode=2;// 1 for local, 2 for production
 
   public API_URL;
   public GEOSERVER_URL;
@@ -22,9 +22,9 @@ export class SettingsService {
       this.WEB_URL='http://192.168.0.39:4200/';
 
     } else if (this.mode== 2) {
-      this.API_URL='https://gisserver.car.upv.es/desweb-api/';
-      this.GEOSERVER_URL='https://gisserver.car.upv.es/geoserver/';
-      this.WEB_URL='https://gisserver.car.upv.es/desweb/';
+      this.API_URL='/';
+      this.GEOSERVER_URL='https://192.168.0.39:8080/geoserver/';
+      this.WEB_URL='/';
     }
   }
 } 

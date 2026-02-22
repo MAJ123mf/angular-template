@@ -12,6 +12,7 @@ import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
 import { MatDialogRef } from '@angular/material/dialog';   // za login modalno okno, da se bo zaprlo
 
+
 @Component({
   selector: 'app-logout-form',
   standalone: true,
@@ -40,9 +41,8 @@ export class LogoutFormComponent {
               this.authService.userGroups = [];
               this.authService.checkIsLoggedInInServer();
               console.log('[Logout] Uporabnik odjavljen !');
-
+              this.authService.statusMessageSubject.next('You are now logged out.');
               this.dialogRef.close();
-
             }
             this.serverMessage=response.message;
           },
