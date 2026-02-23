@@ -1,97 +1,92 @@
-
 <div class="container mt-0">
-  <h2>Evidenca naslovov</h2>
+  <h2>{{ 'ADDRESS_FORM_TITLE' | translate }}</h2>
   <div class="card">
     <form #form="ngForm" class="container inner">
       <div class="row mb-2 align-items-center">
-        <label class="col-sm-2 col-form-label">Številka stavbe:</label>
+        <label class="col-sm-2 col-form-label">{{ 'ADDRESS_FORM_BUILDING_NUM' | translate }}</label>
         <div class="col-sm-2">
           <input
             type="number"
             [(ngModel)]="address.building_num"
             name="building_num"
             class="form-control"
-            placeholder="Building number"
+            [placeholder]="'ADDRESS_FORM_BUILDING_NUM_PLACEHOLDER' | translate"
           />
         </div>
       </div>
 
       <div class="row mb-2 align-items-center">
-        <label class="col-sm-2 col-form-label">Ulica:</label>
+        <label class="col-sm-2 col-form-label">{{ 'ADDRESS_FORM_STREET' | translate }}</label>
         <div class="col-sm-4">
           <input
             type="text"
             [(ngModel)]="address.street"
             name="street"
             class="form-control"
-            placeholder="Street"
+            [placeholder]="'ADDRESS_FORM_STREET_PLACEHOLDER' | translate"
           />
         </div>
       </div>
 
       <div class="row mb-2 align-items-center">
-        <label class="col-sm-2 col-form-label">Hišna številka:</label>
+        <label class="col-sm-2 col-form-label">{{ 'ADDRESS_FORM_HOUSE_NUM' | translate }}</label>
         <div class="col-sm-4">
           <input
             type="text"
             [(ngModel)]="address.house_num"
             name="house_num"
             class="form-control"
-            placeholder="House number"
+            [placeholder]="'ADDRESS_FORM_HOUSE_NUM_PLACEHOLDER' | translate"
           />
         </div>
       </div>
 
       <div class="row mb-2 align-items-center">
-        <label class="col-sm-2 col-form-label">Poštna številka:</label>
+        <label class="col-sm-2 col-form-label">{{ 'ADDRESS_FORM_POST_NUM' | translate }}</label>
         <div class="col-sm-4">
           <input
             type="number"
             [(ngModel)]="address.post_num"
             name="post_num"
             class="form-control"
-            placeholder="Post number"
+            [placeholder]="'ADDRESS_FORM_POST_NUM_PLACEHOLDER' | translate"
           />
         </div>
       </div>
 
       <div class="row mb-2 align-items-center">
-        <label class="col-sm-2 col-form-label">Pošta:</label>
+        <label class="col-sm-2 col-form-label">{{ 'ADDRESS_FORM_POST_NAME' | translate }}</label>
         <div class="col-sm-4">
           <input
             type="text"
             [(ngModel)]="address.post_name"
             name="post_name"
             class="form-control"
-            placeholder="Post name"
+            [placeholder]="'ADDRESS_FORM_POST_NAME_PLACEHOLDER' | translate"
           />
         </div>
       </div>
 
       <div class="row mb-3 align-items-center">
-        <label class="col-sm-2 col-form-label">Geom:</label>
+        <label class="col-sm-2 col-form-label">{{ 'ADDRESS_FORM_GEOM' | translate }}</label>
         <div class="col-sm-10">
           <textarea
             [(ngModel)]="address.geom_wkt"
             name="geom_wkt"
             class="form-control"
-            rows = "2"
+            rows="2"
             placeholder="POINT(...)"
           ></textarea>
         </div>
       </div>
-        <!-- Gumbi za dodajanje, posodabljanje in Clear forme -->
-        <button type="button" class="btn btn-primary mt-0" (click)="saveRecords()"> Vstavi </button>
-        &nbsp;
-        <button type="button" class="btn btn-primary mt-0" (click)="updateRecords()"> Posodobi </button>
-        &nbsp;
-        <button type="button" class="btn btn-primary mt-0" (click)="clearForm()"> Počisti </button>
+
+      <button type="button" class="btn btn-primary mt-0" (click)="saveRecords()">{{ 'INSERT' | translate }}</button>
+      &nbsp;
+      <button type="button" class="btn btn-primary mt-0" (click)="updateRecords()">{{ 'UPDATE' | translate }}</button>
+      &nbsp;
+      <button type="button" class="btn btn-primary mt-0" (click)="clearForm()">{{ 'CLEAR' | translate }}</button>
     </form>
 
-    <!--  Tukaj dodamo komponento zemljevida z dogodkom wktChange -->
-    <div class="mt-4">
-      
-    </div>
+    <div class="mt-4"></div>
   </div>
 </div>
-

@@ -23,6 +23,36 @@ html, body {
   padding-left: 1rem;
 }
 
+/* PREKLOPNIK JEZIKOV */
+.language-switcher {
+  margin-left: auto;
+  margin-right: 0.5rem;
+  display: flex;
+  gap: 4px;
+
+  button {
+    background: none;
+    border: 1px solid #555;
+    padding: 1px 7px;
+    cursor: pointer;
+    border-radius: 3px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: #333;
+    line-height: 1.4;
+
+    &:hover {
+      background-color: rgba(0,0,0,0.1);
+    }
+
+    &.active {
+      background-color: #555;
+      color: white;
+      border-color: #555;
+    }
+  }
+}
+
 .main {
   height: 94vh;
   display: flex;
@@ -36,14 +66,12 @@ html, body {
 
 .left {
   width: 40%;
-  // background-color: lightblue;
 }
 
 .right {
   width: 60%;
-  position: relative; // Ključno za absolute positioning znotraj - dodal, ker risanje ni delovalo na celi površini
-  height: 100%;       // Dodaj višino, da otrok lahko raste      - dodal, ker risanje ni delovalo na celi površini
-  // background-color: lightgreen;
+  position: relative;
+  height: 100%;
 }
 
 app-map {
@@ -65,7 +93,6 @@ app-map {
 
 .bottom {
   height: 20%;
-  // background-color: lightcoral;
   overflow: auto;
 }
 
@@ -78,19 +105,17 @@ app-map {
   padding-left: 1rem;
 }
 
-/* Vodoravni razdelilnik levo-desno */
 .divider {
-  width: 5px;               // debelina
-  background-color: #d5ec52; // ista barva kot menu
-  cursor: col-resize;       // kazalec za horizontalno spreminjanje
-  z-index: 10;              // da se pokaže nad vsemi
+  width: 5px;
+  background-color: #d5ec52;
+  cursor: col-resize;
+  z-index: 10;
 }
 
-/* Vertikalni razdelilnik gor-dol */
 .dividerY {
-  height: 5px;              // debelina
+  height: 5px;
   width: 100%;
-  background-color: #d5ec52; // ista barva kot menu
-  cursor: row-resize;       // kazalec za vertikalno spreminjanje
+  background-color: #d5ec52;
+  cursor: row-resize;
   z-index: 10;
 }

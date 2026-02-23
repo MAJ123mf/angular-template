@@ -1,17 +1,15 @@
-<button mat-button (click)="select('parcel')">Parcele</button>
-<button mat-button (click)="select('building')">Stavbe</button>
-<button mat-button (click)="select('road')">Ceste</button>
-<button mat-button (click)="select('address')">Naslovi</button>
-<button mat-button (click)="openAbout()">O programu</button>
-
+<button mat-button (click)="select('parcel')">{{ 'MENU_PARCELS' | translate }}</button>
+<button mat-button (click)="select('building')">{{ 'MENU_BUILDINGS' | translate }}</button>
+<button mat-button (click)="select('road')">{{ 'MENU_ROADS' | translate }}</button>
+<button mat-button (click)="select('address')">{{ 'MENU_ADDRESSES' | translate }}</button>
+<button mat-button (click)="openAbout()">{{ 'MENU_ABOUT' | translate }}</button>
 
 <span class="spacer"></span>
 
 <ng-container *ngIf="!authService.isAuthenticated">
-   <button mat-button (click)="openLoginDialog()">Login</button>
+  <button mat-button (click)="openLoginDialog()">{{ 'MENU_LOGIN' | translate }}</button>
 </ng-container>
 
 <ng-container *ngIf="authService.isAuthenticated">
-   <button mat-button (click)="openLogoutDialog()">Logout ({{ authService.username }})</button>
+  <button mat-button (click)="openLogoutDialog()">{{ 'MENU_LOGOUT' | translate }} ({{ authService.username }})</button>
 </ng-container>
-

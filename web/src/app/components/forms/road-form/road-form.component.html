@@ -1,48 +1,48 @@
 <div class="container road">
-  <h2>GJI ceste</h2>
+  <h2>{{ 'ROAD_FORM_TITLE' | translate }}</h2>
   <div class="road-card">
     <form #form="ngForm" class="container inner">
-      <div class="row mb-2 align-items-center">       <!--  mb-2 is a margin-bottom class bootstrap-ova zadeva -->
-        <label class="col-sm-2 col-form-label">Ime ulice:</label>   <!-- col-sm-2 bootstrap oblikovanje -->
+      <div class="row mb-2 align-items-center">
+        <label class="col-sm-2 col-form-label">{{ 'ROAD_FORM_IME_ULICE' | translate }}</label>
         <div class="col-sm-4">
           <input
             type="text"
             [(ngModel)]="road.str_name"
             name="str_name"
             class="form-control"
-            placeholder="ime ulice:"
+            [placeholder]="'ROAD_FORM_IME_ULICE_PLACEHOLDER' | translate"
           />
         </div>
       </div>
 
       <div class="row mb-2 align-items-center">
-        <label class="col-sm-2 col-form-label">Upravljalec:</label>
+        <label class="col-sm-2 col-form-label">{{ 'ROAD_FORM_UPRAVLJALEC' | translate }}</label>
         <div class="col-sm-4">
           <input
             type="text"
             [(ngModel)]="road.administrator"
             name="administrator"
             class="form-control"
-            placeholder="vpiši upravljalca ceste"
+            [placeholder]="'ROAD_FORM_UPRAVLJALEC_PLACEHOLDER' | translate"
           />
         </div>
       </div>
 
       <div class="row mb-2 align-items-center">
-        <label class="col-sm-2 col-form-label">Vzdrževalec:</label>
+        <label class="col-sm-2 col-form-label">{{ 'ROAD_FORM_VZDRZEVALEC' | translate }}</label>
         <div class="col-sm-4">
           <input
             type="text"
             [(ngModel)]="road.maintainer"
             name="maintainer"
             class="form-control"
-            placeholder="vpiši vzdrževalca ceste"
+            [placeholder]="'ROAD_FORM_VZDRZEVALEC_PLACEHOLDER' | translate"
           />
         </div>
       </div>
 
       <div class="row mb-3 align-items-center">
-        <label class="col-sm-2 col-form-label">Dolžina odseka:</label>
+        <label class="col-sm-2 col-form-label">{{ 'ROAD_FORM_DOLZINA' | translate }}</label>
         <div class="col-sm-4">
           <input
             type="text"
@@ -56,7 +56,7 @@
       </div>
 
       <div class="row mb-3 align-items-center">
-        <label class="col-sm-2 col-form-label">Geom:</label>
+        <label class="col-sm-2 col-form-label">{{ 'ROAD_FORM_GEOM' | translate }}</label>
         <div class="col-sm-10">
           <textarea
             [(ngModel)]="road.geom_wkt"
@@ -67,20 +67,16 @@
           ></textarea>
         </div>
       </div>
-        <!-- Gumbi za dodajanje, posodabljanje in Clear forme -->
-      <button type="button" class="btn btn-primary road" (click)="saveRecords()"> Vstavi </button>
-      &nbsp;
-      <button type="button" class="btn btn-primary road" (click)="updateRecords()"> Posodobi </button>
-      &nbsp;
-      <button type="button" class="btn btn-primary road" (click)="clearForm()"> Počisti </button>
-      <br>   <!-- // izpis praznih vrstic, da se črta za gubom Insert in Update pomakne navzdol -->
-      <br>
 
+      <button type="button" class="btn btn-primary road" (click)="saveRecords()">{{ 'INSERT' | translate }}</button>
+      &nbsp;
+      <button type="button" class="btn btn-primary road" (click)="updateRecords()">{{ 'UPDATE' | translate }}</button>
+      &nbsp;
+      <button type="button" class="btn btn-primary road" (click)="clearForm()">{{ 'CLEAR' | translate }}</button>
+      <br>
+      <br>
     </form>
 
-    <!--  Tukaj dodamo komponento zemljevida z dogodkom wktChange -->
-    <div class="road">
-      
-    </div>
+    <div class="road"></div>
   </div>
 </div>

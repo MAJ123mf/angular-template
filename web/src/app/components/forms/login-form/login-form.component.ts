@@ -83,25 +83,5 @@ export class LoginFormComponent {
     });
   }
 
-  loginWithCertificate() {
-    this.serverMessage = '';
-    this.authService.checkIsLoggedInInServer().subscribe({
-      next: (response: any) => {
-        if (response.ok) {
-          this.serverMessage = 'Prijava uspešna: ' + this.authService.username;
-          setTimeout(() => {
-            this.dialogRef.close(true);
-          }, 1000);
-        } else {
-          this.serverMessage = 'Certifikat ni pooblaščen ali ni bil poslan.';
-        }
-      },
-      error: () => {
-        this.serverMessage = 'Napaka pri prijavi s certifikatom.';
-      }
-    });
-  }
-  
-
 
 }

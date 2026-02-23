@@ -15,6 +15,7 @@ import { transformExtentWithOptions } from 'ol/format/Feature';
 import { BehaviorSubject } from 'rxjs';  // za obvestila v statusni vrstici. Običajni emit ne deluje v servisih!
 import { HttpClient } from '@angular/common/http';
 import { SettingsService } from './settings.service';
+import { TranslateService } from '@ngx-translate/core'; // za multilanguage
 
 @Injectable({
   providedIn: 'root'
@@ -30,10 +31,21 @@ export class AuthService {
     public settingsService:SettingsService,
     public apiService: ApiService,
     private dialog: MatDialog,
-    private http: HttpClient
+    private http: HttpClient,
+    private translate: TranslateService   // za Multilanguage
   ) {
-    //  this.checkIsLoggedInInServer();    // Po default se ne bomo kar prijavljali, ampak bomo preverili, če smo že prijavljeni
-  }
+          // Ob vsaki spremembi jezika osveži sporočilo
+      this.translate.onLangChange.subscribe(() => {
+        if (this.isAuthenticated) {
+          this.statusMessageSubject.next(
+            this.translate.instant('AUTH_LOGGED_IN', {
+              username: this.username,
+              groups: this.userGroups.join(', ')
+            })
+          );
+        }
+      });
+    }
 
   
   
@@ -57,14 +69,18 @@ export class AuthService {
           console.log('[AuthService] Logged in as:', this.username, 'Groups:', this.userGroups);
 
           // v statusno vrstico pošljemo sporočilo o uspešni prijavi
-          this.statusMessageSubject.next('You are logged in as ' + this.username + '. You are a member of groups: ' + this.userGroups.join(', '));
+          this.statusMessageSubject.next(
+            this.translate.instant('AUTH_LOGGED_IN', {
+              username: this.username,
+              groups: this.userGroups.join(', ')
+            })
+          );
       
         } else {
           this.username = '';
           this.userGroups = [];
           this.isAuthenticated = false;
           console.log('[AuthService] Not logged in');
-          this.statusMessageSubject.next('You are not logged in.');
         }
       })
     );

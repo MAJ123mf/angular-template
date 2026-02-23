@@ -13,6 +13,8 @@ import { EventService } from '../../../services/event.service';
 import { EventModel } from '../../../models/event.model';   
 import { AuthService } from '../../../services/auth.service';  // bomo preverjali če smo prijavljeni!
 import { MatDialog } from '@angular/material/dialog';
+import { TranslateModule } from '@ngx-translate/core';
+
 
 
 @Component({
@@ -20,7 +22,8 @@ import { MatDialog } from '@angular/material/dialog';
   selector: 'app-parcel-form',
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    TranslateModule
   ],
   templateUrl: './parcel-form.component.html',
   styleUrls: ['./parcel-form.component.scss']

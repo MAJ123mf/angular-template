@@ -1,6 +1,17 @@
 <div class="container">
   <div class="menu">
     <app-menu (formSelected)="switchForm($event)"></app-menu>
+
+    <!-- PREKLOPNIK JEZIKOV -->
+    <div class="language-switcher">
+      <button 
+        *ngFor="let lang of languageService.availableLanguages"
+        [class.active]="lang.code === languageService.getCurrentLanguage()"
+        (click)="languageService.setLanguage(lang.code)">
+        {{ lang.label }}
+      </button>
+    </div>
+
   </div>
 
   <div class="main">

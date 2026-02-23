@@ -1,22 +1,22 @@
 <div class="container mt-0">
-  <h2>Zemljiški kataster</h2>
+  <h2>{{ 'PARCEL_TITLE' | translate }}</h2>
   <div class="card">
     <form #form="ngForm" class="container inner">
       <div class="row mb-2 align-items-center">
-        <label class="col-sm-2 col-form-label">Parcelna št.:</label>
+        <label class="col-sm-2 col-form-label">{{ 'PARCEL_NO' | translate }}</label>
         <div class="col-sm-4">
           <input
             type="text"
             [(ngModel)]="parcel.parc_st"
             name="parc_st"
             class="form-control"
-            placeholder="Parcelna številka"
+            [placeholder]="'PARCEL_PLACEHOLDER' | translate"
           />
         </div>
       </div>
 
       <div class="row mb-2 align-items-center">
-        <label class="col-sm-2 col-form-label">Šifra KO:</label>
+        <label class="col-sm-2 col-form-label">{{ 'SIFKO' | translate }}</label>
         <div class="col-sm-4">
           <input
             type="text"
@@ -29,7 +29,7 @@
       </div>
 
       <div class="row mb-2 align-items-center">
-        <label class="col-sm-2 col-form-label">Površina:</label>
+        <label class="col-sm-2 col-form-label">{{ 'AREA' | translate }}</label>
         <div class="col-sm-4">
           <input
             type="number"
@@ -43,7 +43,7 @@
       </div>
 
       <div class="row mb-3 align-items-center">
-        <label class="col-sm-2 col-form-label">Geom:</label>
+        <label class="col-sm-2 col-form-label">{{ 'GEOM' | translate }}</label>
         <div class="col-sm-10">
           <textarea
             [(ngModel)]="parcel.geom_wkt"
@@ -54,12 +54,13 @@
           ></textarea>
         </div>
       </div>
-        <!-- Gumbi za dodajanje, posodabljanje in Clear forme -->
-        <button type="button" class="btn btn-primary mt-0" (click)="saveRecords()"> Vstavi </button>
-        &nbsp;
-        <button type="button" class="btn btn-primary mt-0" (click)="updateRecords()"> Posodobi </button>
-        &nbsp;
-        <button type="button" class="btn btn-primary mt-0" (click)="clearForm()"> Počisti </button>
+
+      <!-- Gumbi za dodajanje, posodabljanje in Clear forme -->
+      <button type="button" class="btn btn-primary mt-0" (click)="saveRecords()">{{ 'INSERT' | translate }}</button>
+      &nbsp;
+      <button type="button" class="btn btn-primary mt-0" (click)="updateRecords()">{{ 'UPDATE' | translate }}</button>
+      &nbsp;
+      <button type="button" class="btn btn-primary mt-0" (click)="clearForm()">{{ 'CLEAR' | translate }}</button>
     </form>
 
     <!--  Tukaj dodamo komponento zemljevida z dogodkom wktChange -->
@@ -68,4 +69,3 @@
     </div>
   </div>
 </div>
-

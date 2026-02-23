@@ -7,11 +7,16 @@ import { MatDialog } from '@angular/material/dialog';
 import { EventService } from '../../../services/event.service';
 import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
    selector: 'app-road-table',
    standalone: true,
-   imports: [CommonModule, FormsModule],
+   imports: [
+              CommonModule, 
+              FormsModule, 
+              TranslateModule
+            ],
    templateUrl: './road-table.component.html',
    styleUrl: './road-table.component.scss'
 })

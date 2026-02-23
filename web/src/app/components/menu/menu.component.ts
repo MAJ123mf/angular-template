@@ -7,6 +7,7 @@ import { LoginFormComponent } from '../forms/login-form/login-form.component';
 import { LogoutFormComponent } from '../forms/logout-form/logout-form.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from '../../services/auth.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-menu',
@@ -16,7 +17,8 @@ import { AuthService } from '../../services/auth.service';
     RouterLink,
     CommonModule,
     LoginFormComponent,
-    LogoutFormComponent
+    LogoutFormComponent,
+    TranslateModule
   ],
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss']

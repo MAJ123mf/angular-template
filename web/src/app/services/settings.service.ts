@@ -10,7 +10,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class SettingsService {
-  public mode=2;// 1 for local, 2 for production
+  public mode=1;// 1 for local, 2 for production
 
   public API_URL;
   public GEOSERVER_URL;

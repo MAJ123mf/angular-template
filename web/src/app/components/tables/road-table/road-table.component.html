@@ -1,22 +1,22 @@
-  <div class="kontrolna-vrstica">
+<div class="kontrolna-vrstica">
   <div class="izbira-del">
     <INPUT type="radio" id="all" name="izbira" value="all" checked (click)="setIzbira('all')">  
-    <label for="all">Select All</label> 
+    <label for="all">{{ 'ROAD_TABLE_SELECT_ALL' | translate }}</label> 
     &nbsp; &nbsp; &nbsp;
     <INPUT type="radio" id="one" name="izbira" value="one" (click)="setIzbira('one')"> 
-    <label for="one">Select One</label> 
+    <label for="one">{{ 'ROAD_TABLE_SELECT_ONE' | translate }}</label> 
     &nbsp; &nbsp; &nbsp;
-    <label for="fname">ID:</label>
+    <label for="fname">{{ 'ROAD_TABLE_ID' | translate }}</label>
     <input type="text" id="e_izb" name="e_izb" size="3" [value]="inputId" (input)="onInputIdChange($event)">
   </div>
   <div class="iskanje-del">
-    <label for="fiu">Filtriranje zapisov: Ime ulice/ceste: </label>
-    <input type="text" id="fiu" name="flu" size="25" [(ngModel)]="filterImeUlice" placeholder="Ime ulice">
-    <button type="button" class="btn btn-primary btn-sm me-1" (click)="filtrirajImeUlice()">Filtriraj</button>
-    <button type="button" class="btn btn-secondary btn-sm" (click)="clearFilter()">Počisti</button>
+    <label for="fiu">{{ 'ROAD_TABLE_FILTER_LABEL' | translate }}</label>
+    <input type="text" id="fiu" name="flu" size="25" [(ngModel)]="filterImeUlice" [placeholder]="'ROAD_TABLE_FILTER_PLACEHOLDER' | translate">
+    <button type="button" class="btn btn-primary btn-sm me-1" (click)="filtrirajImeUlice()">{{ 'ROAD_TABLE_FILTER_BTN' | translate }}</button>
+    <button type="button" class="btn btn-secondary btn-sm" (click)="clearFilter()">{{ 'ROAD_TABLE_CLEAR_BTN' | translate }}</button>
     
     <span *ngIf="filtriranArray.length > 0 && filterImeUlice" style="margin-left: 10px; font-weight: bold;">
-      Najdenih: {{ filtriranArray.length }}
+      {{ 'ROAD_TABLE_FOUND' | translate }} {{ filtriranArray.length }}
     </span>
   </div>
 </div> 
@@ -26,12 +26,12 @@
     <thead>
       <tr>
         <th scope="col">Id</th>
-        <th scope="col" style="width: 240px;">Ime ulice</th>
-        <th scope="col" style="width: 250px;">Upravljalec</th>
-        <th scope="col" style="width: 250px;">Vzdrževalec</th>
-        <th scope="col">Dolžina</th>
-        <th scope="col">Geom WKT</th>
-        <th scope="col">Akcija</th>
+        <th scope="col" style="width: 240px;">{{ 'ROAD_TABLE_IME_ULICE' | translate }}</th>
+        <th scope="col" style="width: 250px;">{{ 'ROAD_TABLE_UPRAVLJALEC' | translate }}</th>
+        <th scope="col" style="width: 250px;">{{ 'ROAD_TABLE_VZDRZEVALEC' | translate }}</th>
+        <th scope="col">{{ 'ROAD_TABLE_DOLZINA' | translate }}</th>
+        <th scope="col">{{ 'ROAD_TABLE_GEOM' | translate }}</th>
+        <th scope="col">{{ 'ROAD_TABLE_ACTION' | translate }}</th>
       </tr>
     </thead>
     <tbody>
@@ -46,8 +46,8 @@
         <td>{{road.geom_wkt}}</td>
         <td style="white-space: nowrap; width: 120px;">
           <div class="d-flex justify-content-between">
-            <button type="button" class="btn btn-success btn-sm me-1" (click)="setUpdate(road)">Uredi</button>
-            <button type="button" class="btn btn-danger btn-sm" (click)="setDelete(road)">Briši</button>
+            <button type="button" class="btn btn-success btn-sm me-1" (click)="setUpdate(road)">{{ 'ROAD_TABLE_EDIT' | translate }}</button>
+            <button type="button" class="btn btn-danger btn-sm" (click)="setDelete(road)">{{ 'ROAD_TABLE_DELETE' | translate }}</button>
           </div>
         </td>
       </tr>

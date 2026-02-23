@@ -17,6 +17,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { LoginFormComponent } from './components/forms/login-form/login-form.component';
 import { MapService } from './services/map.service';
 import { GeoService } from './services/geo.service';
+import { TranslateModule } from '@ngx-translate/core';  // dodano za večjezičnost
+import { LanguageService } from './services/language.service';  // dodano za večjezičnost
 
 
 @Component({
@@ -34,7 +36,8 @@ import { GeoService } from './services/geo.service';
     RoadTableComponent,
     AddressTableComponent,
     AddressFormComponent,
-    MapComponent
+    MapComponent,
+    TranslateModule    // dodano za večjezičnost
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
@@ -49,8 +52,8 @@ export class AppComponent {
   @ViewChild(AddressTableComponent) addressTable!: AddressTableComponent;
   @ViewChild(AddressFormComponent) addressForm!: AddressFormComponent;
   title = 'web';
-  leftWidth = 40; // začetna širina v %
-  topHeight = 60; // začetna višina karte v %
+  leftWidth = 40;
+  topHeight = 60;
   private isResizingX = false;
   private isResizingY = false;
 
@@ -59,8 +62,9 @@ export class AppComponent {
     public authService: AuthService, 
     private router: Router,
     private dialog: MatDialog,
-    private mapService: MapService,   // <-- dodano za klic funkcij iz map.service 
-    private geoService: GeoService   // tukaj dodamo GeoService za izvoz Geopackage
+    private mapService: MapService,
+    private geoService: GeoService,
+    public languageService: LanguageService   // dodano za večjezičnost
    ) {}
   statusText = '';
 
@@ -100,81 +104,65 @@ export class AppComponent {
     }
 
 
-  startResizeX(event: MouseEvent) {   // začni spreminjati velikost panelov levo in desno
+  startResizeX(event: MouseEvent) {
     this.isResizingX = true;
     event.preventDefault();
   }
 
-    // --- vertikalno (gor-dol)
-  startResizeY(event: MouseEvent) {   // začni spreminjati velikost panelov gor in dol
+  startResizeY(event: MouseEvent) {
     this.isResizingY = true;
     event.preventDefault();
   }
   
 
   downloadGpkg() {
-      this.geoService.downloadGeoPackage().subscribe({
-        next: (blob) => {
-          const url = window.URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = 'podatki.gpkg';
-          a.click();
-          window.URL.revokeObjectURL(url);
-          this.statusText = "Zbirka je med prenosi!"; //  direktno BREZ EMITORJA ker smo že v parent komponenti
-        },
-        error: (err) => {
-          console.error('Napaka pri prenosu GeoPackage:', err);
-          this.statusText = "Napaka pri prenosu zbirke!";
-        }
-      });
-    }
+    this.geoService.downloadGeoPackage().subscribe({
+      next: (blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'podatki.gpkg';
+        a.click();
+        window.URL.revokeObjectURL(url);
+        this.statusText = "Zbirka je med prenosi!";
+      },
+      error: (err) => {
+        console.error('Napaka pri prenosu GeoPackage:', err);
+        this.statusText = "Napaka pri prenosu zbirke!";
+      }
+    });
+  }
 
 
   updateStatus(message: string) {
     this.statusText = message;
   }
 
-  selectedType: 'parcel' | 'building' | 'road' | 'address' = 'parcel';         // to nam pove na katerem jezičku MENUJA smo
+  selectedType: 'parcel' | 'building' | 'road' | 'address' = 'parcel';
 
 
-
-
-  // Če hočemo prijavo na začetku odkomentiramo, sicer lahko delamo tudi brez prijave
   ngOnInit(): void {
-    // this.authService.initCsrfToken();                        // za csrf token                 
-    this.authService.statusMessage$.subscribe(message => {      // Za sporočila iz authService  (kdo je prijavljen s kakšnimi pravicami)
+    this.languageService.init();               // dodano za večjezičnost inicializacija jezika
+
+    this.authService.statusMessage$.subscribe(message => {
       this.statusText = message;
     });
-    //  TO SPODAJ ODKOMENTIRAMO, če želimo prijavo takoj na začetku
-    // this.authService.checkIsLoggedInInServer().subscribe(() => {
-    //   if (!this.authService.isAuthenticated) {
-    //     this.dialog.open(LoginFormComponent, {
-    //       disableClose: true
-    //     });
-    //   } else {
-    //     console.log('[AppComponent] Uporabnik je že prijavljen:', this.authService.username);
-    //   }
-    // });
     this.authService.statusMessage$.subscribe(message => {
         this.statusText = message;
     });
-
-    // Ob vsakem zagonu preverimo, ali je prijavljen uporabnik (prek Django seje)
     this.authService.checkIsLoggedInInServer().subscribe();
   }
 
 
   openLoginDialog(): void {
     this.dialog.open(LoginFormComponent, {
-      disableClose: true, // Ne dovoli zapreti brez prijave
+      disableClose: true,
     });
   }
 
 
-
-  switchForm(module: 'parcel' | 'building' | 'road' | 'address') {                     // v module je izbira !
-    console.log('Preklapljam:', module); // Dodaj to vrstico za debug      // izbilo izpišem na conolo
+  switchForm(module: 'parcel' | 'building' | 'road' | 'address') {
+    console.log('Preklapljam:', module);
     this.selectedType = module;
   }
 
@@ -195,37 +183,29 @@ export class AppComponent {
 
   handleEditParcel(parcel: any) {
     console.log('Parcel selected for edit:', parcel);
-    this.selectedType = 'parcel';  // prikazujemo obrazec za urejanje parcele
-    this.parcelForm.setUpdate(parcel);  // nastavimo podatke v obrazcu
-
-     // pokliči funkcijo za označevanje na karti
+    this.selectedType = 'parcel';
+    this.parcelForm.setUpdate(parcel);
     this.mapService.highlightParcelOnMap(parcel);
   }
 
   handleEditBuilding(building: any) {
     console.log('Building selected for edit:', building);
-    this.selectedType = 'building';  // prikazujemo obrazec za urejanje stavbe
-    this.buildingForm.setUpdate(building);  // nastavimo podatke v obrazcu
-
-     // pokliči funkcijo za označevanje na karti
+    this.selectedType = 'building';
+    this.buildingForm.setUpdate(building);
     this.mapService.highlightBuildingOnMap(building);    
   }  
 
   handleEditRoad(road: any) {
     console.log('Road selected for edit:', road);
-    this.selectedType = 'road';  // prikazujemo obrazec za urejanje ceste (road)
-    this.roadForm.setUpdate(road);  // nastavimo podatke v obrazcu
-
-    // pokliči funkcijo za označevanje na karti
+    this.selectedType = 'road';
+    this.roadForm.setUpdate(road);
     this.mapService.highlightRoadOnMap(road); 
   }
 
   handleEditAddress(address: any) {
     console.log('Address selected for edit:', address);
-    this.selectedType = 'address';  // prikazujemo obrazec za urejanje naslovov (address)
-    this.addressForm.setUpdate(address);  // nastavimo podatke v obrazcu
-
-    // pokliči funkcijo za označevanje na karti
+    this.selectedType = 'address';
+    this.addressForm.setUpdate(address);
     this.mapService.highlightAddressOnMap(address); 
   }
 }

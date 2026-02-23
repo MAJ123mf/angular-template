@@ -15,13 +15,15 @@ import { AuthService } from '../../../services/auth.service';  // bomo preverjal
 import { MatDialog } from '@angular/material/dialog';
 // import { LoginFormComponent } from '../login-form/login-form.component';
 import { WKT } from 'ol/format';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-road-form',
   standalone: true,
   imports: [
      CommonModule, 
-     FormsModule
+     FormsModule,
+     TranslateModule
   ],
   templateUrl: './road-form.component.html',
   styleUrl: './road-form.component.scss'

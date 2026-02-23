@@ -7,11 +7,14 @@ import { MatDialog } from '@angular/material/dialog';
 import { EventService } from '../../../services/event.service';
 import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   standalone: true,
   selector: 'app-building-table',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, 
+            FormsModule, 
+            TranslateModule],
   templateUrl: './building-table.component.html',
   styleUrls: [ './building-table.component.scss']
 })

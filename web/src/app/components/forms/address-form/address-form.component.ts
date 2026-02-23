@@ -14,13 +14,15 @@ import { EventModel } from '../../../models/event.model';
 import { AuthService } from '../../../services/auth.service';  // bomo preverjali če smo prijavljeni!
 import { MatDialog } from '@angular/material/dialog';
 import { LoginFormComponent } from '../login-form/login-form.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-address-form',
   standalone: true,
   imports: [
     CommonModule, 
-    FormsModule
+    FormsModule,
+    TranslateModule 
   ],
   templateUrl: './address-form.component.html',
   styleUrl: './address-form.component.scss'
@@ -203,6 +205,4 @@ export class AddressFormComponent implements OnInit {
     console.log('Prejel WKT iz mape:', wkt);
     this.address.geom_wkt = wkt;
   }
-
-
 }
