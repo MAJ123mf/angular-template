@@ -84,4 +84,26 @@ export class LoginFormComponent {
   }
 
 
+  loginWithCertificate() {
+    this.serverMessage = '';
+    this.authService.checkIsLoggedInInServer().subscribe({
+      next: (response: any) => {
+        if (response && response.is_authenticated) {
+          this.authService.isAuthenticated = true;
+          this.authService.username = response.username;
+          setTimeout(() => {
+            this.dialogRef.close(true);
+          }, 1000);
+          this.serverMessage = 'Prijava uspešna: ' + response.username;
+        } else {
+          this.serverMessage = 'Certifikat ni pooblaščen.';
+        }
+      },
+      error: () => {
+        this.serverMessage = 'Napaka pri prijavi s certifikatom.';
+      }
+    });
+  }
+
+
 }
