@@ -56,6 +56,7 @@ export class AppComponent {
   topHeight = 60;
   private isResizingX = false;
   private isResizingY = false;
+  helpVisible = false;  // Dodano za prikaz pomoči
 
 
   constructor(
@@ -69,16 +70,34 @@ export class AppComponent {
   statusText = '';
 
 
-  @HostListener('document:keydown', ['$event'])
-  handleKeyboardEvent(event: KeyboardEvent) {
-    console.log('[App.Component.ts], Key Pressed? ', event.key, 'alt:', event.altKey, 'shift:', event.shiftKey);
+@HostListener('document:keydown', ['$event'])
+handleKeyboardEvent(event: KeyboardEvent) {
+  console.log('[App.Component.ts], Key Pressed? ', event.key, 'alt:', event.altKey, 'shift:', event.shiftKey);
 
-    if (event.altKey && event.shiftKey && event.key.toLowerCase() === 'e') {
-      event.preventDefault();
-      console.log('[App.Component.ts]] Alt + Shift + e detected!');
-      this.downloadGpkg();
-    }
-  }  
+  if (event.altKey && event.shiftKey && event.key.toLowerCase() === 'e') {
+    event.preventDefault();
+    console.log('[App.Component.ts]] Alt + Shift + e detected!');
+    this.downloadGpkg();
+  }
+
+  // Alt + F1 → overlay okno
+  if (event.altKey && event.key === 'F1') {
+    event.preventDefault();
+    console.log('[App.Component.ts] Alt + F1 detected!');
+    this.helpVisible = !this.helpVisible;
+  }
+
+  // F1 (Fn + F1 na prenosniku) → uporabniška navodila v novem tabu
+  if (!event.altKey && !event.shiftKey && !event.ctrlKey && event.key === 'F1') {
+    event.preventDefault();
+    console.log('[App.Component.ts] F1 detected!');
+    window.open('uporabniska_navodila/index.html', '_blank');
+  }
+}
+
+showHelp() {
+  this.helpVisible = !this.helpVisible;
+} 
 
 
   @HostListener('document:mousemove', ['$event'])
