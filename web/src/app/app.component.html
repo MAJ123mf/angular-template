@@ -101,3 +101,17 @@
 
   <div class="status">{{statusText}}</div>
 </div>
+
+<!-- POMOČ - Alt+F1 -->
+<div *ngIf="helpVisible" class="help-overlay" (click)="helpVisible = false">
+  <div class="help-dialog" (click)="$event.stopPropagation()">
+    <h2>Bližnice - kombinacije tipk</h2>
+    <table>
+      <tr><th>Bližnjica</th><th>Opis</th></tr>
+      <tr><td>Alt + F1</td><td>Prikaži/skrij to okno</td></tr>
+      <tr><td>Fn + F1 ali samo F1</td><td>Prikaži/skrij uporabniška navodila</td></tr>
+      <tr><td>Alt + Shift + E</td><td>Prenesi GeoPackage</td></tr>
+    </table>
+    <button (click)="helpVisible = false">Zapri</button>
+  </div>
+</div>
