@@ -1,0 +1,1401 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uporabniška navodila - GeoSG</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #C9DB31;
+            --primary-dark: #A4B828;
+            --secondary: #2E7D32;
+            --text: #1a1a1a;
+            --text-light: #666;
+            --bg: #f8f9fa;
+            --white: #ffffff;
+            --border: #e0e0e0;
+            --shadow: rgba(0, 0, 0, 0.08);
+            --code-bg: #f5f5f5;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.7;
+            color: var(--text);
+            background: var(--bg);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--text);
+            padding: 2rem 2rem 3rem;
+            box-shadow: 0 4px 20px var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.85;
+        }
+
+        /* Navigation */
+        .nav {
+            background: var(--white);
+            padding: 0.5rem 2rem;
+            box-shadow: 0 2px 8px var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 99;
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .nav-btn {
+            padding: 0.7rem 1.2rem;
+            background: transparent;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            color: var(--text);
+        }
+
+        .nav-btn:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem 4rem;
+        }
+
+        /* Sections */
+        .section {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 12px var(--shadow);
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section h2 {
+            font-size: 1.8rem;
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .section h3 {
+            font-size: 1.3rem;
+            color: var(--text);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section h3::before {
+            content: "▸";
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        /* Step cards */
+        .step {
+            background: var(--bg);
+            border-left: 4px solid var(--primary);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+        }
+
+        .step-number {
+            display: inline-block;
+            background: var(--primary);
+            color: var(--text);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 32px;
+            font-weight: bold;
+            margin-right: 0.8rem;
+        }
+
+        .step h4 {
+            display: inline;
+            font-size: 1.1rem;
+            color: var(--secondary);
+        }
+
+        .step p {
+            margin-top: 0.8rem;
+            color: var(--text-light);
+        }
+
+        /* Info boxes */
+        .info-box {
+            background: #E8F5E9;
+            border-left: 4px solid var(--secondary);
+            padding: 1.2rem;
+            margin: 1.5rem 0;
+            border-radius: 6px;
+        }
+
+        .info-box.warning {
+            background: #FFF3E0;
+            border-left-color: #F57C00;
+        }
+
+        .info-box.tip {
+            background: #E3F2FD;
+            border-left-color: #1976D2;
+        }
+
+        .info-box strong {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .info-box.warning strong {
+            color: #F57C00;
+        }
+
+        .info-box.tip strong {
+            color: #1976D2;
+        }
+
+        /* Feature list */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .feature-card {
+            background: var(--bg);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 2px solid var(--border);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .feature-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px var(--shadow);
+        }
+
+        .feature-card h4 {
+            color: var(--secondary);
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+        }
+
+        .feature-card p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        /* Expandable cards */
+        .feature-card.expandable {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .feature-card.expandable h4::after {
+            content: " ▼";
+            font-size: 0.8rem;
+            color: var(--primary);
+            transition: transform 0.3s;
+            display: inline-block;
+        }
+
+        .feature-card.expandable.expanded h4::after {
+            transform: rotate(180deg);
+        }
+
+        .expand-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+        }
+
+        .feature-card.expanded .expand-content {
+            max-height: 3000px;
+            transition: max-height 0.6s ease-in;
+        }
+
+        .expand-content img {
+            margin-top: 1rem;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+
+        /* Keyboard shortcuts */
+        .kbd {
+            display: inline-block;
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 0.2rem 0.5rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+
+        table th {
+            background: var(--secondary);
+            color: white;
+            padding: 0.9rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        table td {
+            padding: 0.9rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        table tr:hover {
+            background: var(--bg);
+        }
+
+        /* Code blocks */
+        .code-block {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+
+        /* Screenshot placeholder */
+        .screenshot {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            font-style: italic;
+            margin: 1.5rem 0;
+        }
+
+        /* Button examples */
+        .btn-example {
+            display: inline-block;
+            padding: 0.6rem 1.2rem;
+            background: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            margin: 0.3rem;
+            cursor: not-allowed;
+        }
+
+        .btn-example.success { background: #4CAF50; }
+        .btn-example.danger { background: #F44336; }
+        .btn-example.warning { background: #FF9800; }
+
+        /* Search box */
+        .search-container {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(201, 219, 49, 0.2);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-light);
+            border-top: 1px solid var(--border);
+            margin-top: 3rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 1.5rem 1rem 2rem;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .nav {
+                padding: 0.5rem 1rem;
+            }
+
+            .container {
+                padding: 0 1rem 2rem;
+                margin-top: 2rem;
+            }
+
+            .section {
+                padding: 1.5rem;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Icons using Unicode */
+        .icon-map::before { content: "🗺️ "; }
+        .icon-edit::before { content: "✏️ "; }
+        .icon-list::before { content: "📋 "; }
+        .icon-save::before { content: "💾 "; }
+        .icon-delete::before { content: "🗑️ "; }
+        .icon-search::before { content: "🔍 "; }
+        .icon-key::before { content: "⌨️ "; }
+        .icon-warn::before { content: "⚠️ "; }
+        .icon-tip::before { content: "💡 "; }
+        .icon-user::before { content: "👤 "; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🗺️ GeoSG - Uporabniška navodila</h1>
+    <p>Vodič za delo s GIS aplikacijo za upravljanje katastrskih podatkov</p>
+</div>
+
+<nav class="nav">
+    <button class="nav-btn active" onclick="showSection('uvod')">Uvod</button>
+    <button class="nav-btn" onclick="showSection('osnove')">Osnove</button>
+    <button class="nav-btn" onclick="showSection('parcele')">Parcele</button>
+    <button class="nav-btn" onclick="showSection('stavbe')">Stavbe</button>
+    <button class="nav-btn" onclick="showSection('ceste')">Ceste</button>
+    <button class="nav-btn" onclick="showSection('naslovi')">Naslovi</button>
+	<button class="nav-btn" onclick="showSection('sloji')">WMS/WFS sloji</button>
+    <button class="nav-btn" onclick="showSection('napredne')">Napredne funkcije</button>
+    <button class="nav-btn" onclick="showSection('pomoc')">FAQ</button>
+</nav>
+
+<div class="container">
+
+    <!-- UVOD -->
+    <section id="uvod" class="section active">
+        <h2>Dobrodošli v aplikaciji GeoSG</h2>
+        
+        <p>Ta aplikacija omogoča <strong>upravljanje, vizualizacijo in urejanje prostorskih podatkov</strong> katastrskih parcel, stavb, cest in naslovov. Aplikacija je namenjena strokovnjakom za delo z geodetskimi in GIS podatki.</p>
+
+        <img src="images/img_main.png" alt="Glavni zaslon aplikacije" style="width: 100%; border-radius: 8px; margin: 1.5rem 0; border: 2px solid var(--border); box-shadow: 0 4px 12px var(--shadow);">
+
+        <div class="feature-grid">
+            <div class="feature-card expandable" onclick="toggleExpand(this)">
+                <h4 class="icon-map">Interaktivni zemljevid</h4>
+                <p>OpenLayers karta s podlago, WMS/WFS sloji GURS, vektorskimi podatki in možnostjo risanja ter urejanja geometrije.</p>
+                <div class="expand-content">
+                    <img src="images/img_tools.png" alt="Orodja na karti" style="width: 100%; margin-top: 1rem; border-radius: 6px; border: 1px solid var(--border);">
+                    <p style="margin-top: 1rem;"><strong>Orodja na karti:</strong></p>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li><strong>Izberi:</strong> Klik na parcelo/stavbo/cesto na karti → samodejno se označi v tabeli in napolni obrazec</li>
+                        <li><strong>Riši:</strong> Omogoči risanje nove geometrije (poligon/linija/točka)</li>
+                        <li><strong>Uredi:</strong> Omogoči urejanje obstoječe geometrije (vlečenje oglišč)</li>
+                    </ul>
+                    <p style="margin-top: 1rem;"><strong>Povezanost karte in tabele:</strong></p>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li>Klik na karti → Samodejni scroll tabele na izbrano parcelo</li>
+                        <li>Klik "Uredi" v tabeli → Oznaka na karti (magenta obroba) + zoom na objekt</li>
+                        <li>Dvosmerna sinhronizacija - vedno vidiš, kaj je trenutno aktivno</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="feature-card expandable" onclick="toggleExpand(this)">
+                <h4 class="icon-edit">Risanje in editiranje</h4>
+                <p>Nariši nove ali uredi obstoječe parcele, stavbe, ceste in naslove neposredno na karti s snap funkcionalnostjo.</p>
+                <div class="expand-content">
+                    <img src="images/img_select.png" alt="Snap funkcionalnost" style="width: 100%; margin-top: 1rem; border-radius: 6px; border: 1px solid var(--border);">
+                    <p style="margin-top: 1rem;"><strong>Snap funkcionalnost (parcele in stavbe):</strong></p>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li><strong>Avtomatsko pripenjanje:</strong> Ko narišete ali urejate geometrijo in se približate obstoječemu oglišču (< 5 metrov), se kurzor spremeni v "pointer" in oglišče se avtomatsko pripne</li>
+                        <li><strong>Vizualni feedback:</strong> Modra barva označuje parcelo, na katero se pripenjate</li>
+                        <li><strong>Topološka natančnost:</strong> S snap funkcionalnostjo zagotovite, da se parcele natančno stikajo brez lukenj ali prekrivanj</li>
+                    </ul>
+                    <p style="margin-top: 1rem;"><strong>Postopek urejanja geometrije:</strong></p>
+                    <ol style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li>V tabeli kliknite "Uredi" ob parceli</li>
+                        <li>Na karti kliknite ikono "Uredi parcelo"</li>
+                        <li>Povlecite oglišča na nove pozicije (snap deluje!)</li>
+                        <li>Ko končate, ponovno kliknite ikono (se ugasne)</li>
+                        <li>WKT v obrazcu se samodejno posodobi</li>
+                        <li>Kliknite "Posodobi" za shranitev</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <div class="feature-card expandable" onclick="toggleExpand(this)">
+                <h4 class="icon-list">Tabelarični pregled</h4>
+                <p>Pregleduj, išči in filtriraj zapise po katastrski občini, parcelni številki ali imenu ulice.</p>
+                <div class="expand-content">
+                    <img src="images/img_parcel_selected.png" alt="Tabela s filtri" style="width: 100%; margin-top: 1rem; border-radius: 6px; border: 1px solid var(--border);">
+                    <p style="margin-top: 1rem;"><strong>Funkcionalnosti tabele:</strong></p>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li><strong>Iskanje parcel/stavb:</strong> Vnos KO + parcelne št./št. stavbe → "Išči" → Samodejni scroll na najdeno vrstico</li>
+                        <li><strong>Filter cest/naslovov:</strong> Vnos imena ulice → "Išči" → Prikaže samo ujemajoče rezultate</li>
+                        <li><strong>Samodejno označevanje:</strong> Klik na parcelo na karti → Rumena oznaka v tabeli + scroll na vrstico</li>
+                        <li><strong>WKT geometrija:</strong> Vsaka vrstica vsebuje celotno WKT geometrijo za preverjanje</li>
+                    </ul>
+                    <p style="margin-top: 1rem;"><strong>Akcije v tabeli:</strong></p>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li><strong>Uredi (rumeni gumb):</strong> Napolni obrazec + highlight na karti</li>
+                        <li><strong>Briši (rdeči gumb):</strong> Izbriše zapis (zahteva potrditev)</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="feature-card expandable" onclick="toggleExpand(this)">
+                <h4 class="icon-save">CRUD operacije</h4>
+                <p>Ustvari (Create), preberi (Read), posodobi (Update) in izbriši (Delete) zapise v PostgreSQL/PostGIS bazi.</p>
+                <div class="expand-content">
+                    <img src="images/img_ceste_form.png" alt="Obrazec za CRUD operacije" style="width: 100%; margin-top: 1rem; border-radius: 6px; border: 1px solid var(--border);">
+                    <p style="margin-top: 1rem;"><strong>Gumbi v obrazcu:</strong></p>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li><strong>Vstavi (moder gumb):</strong> Shrani novo parcelo/stavbo/cesto/naslov v bazo. WKT mora biti izpolnjen!</li>
+                        <li><strong>Posodobi (moder gumb):</strong> Posodobi obstoječ zapis. Gumb se prikaže samo pri urejanju.</li>
+                        <li><strong>Počisti (moder gumb):</strong> Resetira obrazec na prazne vrednosti.</li>
+                    </ul>
+                    <p style="margin-top: 1rem;"><strong>Potek shranjevanja:</strong></p>
+                    <ol style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li>Nariši geometrijo na karti (WKT se avtomatsko vnese)</li>
+                        <li>Izpolni atribute (Parc.št., KO, Površina…)</li>
+                        <li>Klikni "Vstavi"</li>
+                        <li>Aplikacija preveri pravice (glej naslednji razdelek)</li>
+                        <li>Če imaš pravice → POST zahteva v Django API → Shranjeno v PostgreSQL/PostGIS</li>
+                        <li>Tabela se samodejno osveži, karta se osveži, obrazec se resetira</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <div class="feature-card expandable" onclick="toggleExpand(this)">
+                <h4 class="icon-user">Upravljanje pravic</h4>
+                <p>Prijava z Django avtentikacijo, preverjanje pravic za urejanje podatkov (skupina 'editors' ali 'admin').</p>
+                <div class="expand-content">
+                    <img src="images/img_login.png" alt="Prijavno okno" style="width: 100%; margin-top: 1rem; border-radius: 6px; border: 1px solid var(--border);">
+                    <p style="margin-top: 1rem;"><strong>Prijava v aplikacijo:</strong></p>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li>Kliknite jezičko "Login" v zgornjem meniju</li>
+                        <li>Vnesite uporabniško ime in geslo</li>
+                        <li>Po uspešni prijavi se prikaže vaše ime v statusni vrstici (spodaj)</li>
+                    </ul>
+                    
+                    <img src="images/img_django_admin.png" alt="Django admin vmesnik" style="width: 100%; margin-top: 1.5rem; border-radius: 6px; border: 1px solid var(--border);">
+                    <p style="margin-top: 1rem;"><strong>Django administracija (samo za admin):</strong></p>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li><strong>Uporabniki in skupine:</strong> Dodajanje uporabnikov, dodeljevanje v skupine (admins, editors, viewers)</li>
+                        <li><strong>Podatkovni modeli:</strong> Direkten dostop do Parcels, Buildings, Roads, Addresses, Owners</li>
+                        <li><strong>Pravice:</strong> Active, Staff status, Superuser status</li>
+                    </ul>
+                    <p style="margin-top: 1rem;"><strong>Hierarhija pravic:</strong></p>
+                    <table style="width: 100%; margin-top: 0.5rem;">
+                        <tr style="background: #2E7D32; color: white;">
+                            <th style="padding: 0.5rem;">Skupina</th>
+                            <th style="padding: 0.5rem;">Pravice</th>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.5rem;"><strong>admin</strong></td>
+                            <td style="padding: 0.5rem;">Polne pravice + dostop do Django admin</td>
+                        </tr>
+                        <tr style="background: var(--bg);">
+                            <td style="padding: 0.5rem;"><strong>editors</strong></td>
+                            <td style="padding: 0.5rem;">Vnos, urejanje, brisanje podatkov</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.5rem;"><strong>viewers</strong></td>
+                            <td style="padding: 0.5rem;">Samo branje (brez urejanja)</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="feature-card expandable" onclick="toggleExpand(this)">
+                <h4 class="icon-key">GeoPackage izvoz</h4>
+                <p>Izvozi vse podatke v GeoPackage (.gpkg) format s tipkovnico bližnjico Alt+Shift+E.</p>
+                <div class="expand-content">
+                    <p style="margin-top: 1rem;"><strong>Tipkovna bližnjica:</strong></p>
+                    <div style="text-align: center; margin: 1.5rem 0; font-size: 2rem; font-weight: bold; color: var(--secondary);">
+                        <span class="kbd" style="font-size: 1.5rem;">Alt</span> + 
+                        <span class="kbd" style="font-size: 1.5rem;">Shift</span> + 
+                        <span class="kbd" style="font-size: 1.5rem;">E</span>
+                    </div>
+                    <p style="margin-top: 1rem;"><strong>Kaj se izvozi:</strong></p>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li>✓ Vse parcele (s geometrijo)</li>
+                        <li>✓ Vse stavbe (s geometrijo)</li>
+                        <li>✓ Vse ceste (s geometrijo)</li>
+                        <li>✓ Vsi naslovi (s geometrijo)</li>
+                    </ul>
+                    <p style="margin-top: 1rem;"><strong>Uporaba v QGIS:</strong></p>
+                    <ol style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li>Pritisnite Alt+Shift+E</li>
+                        <li>Brskalnik prenese datoteko <code>podatki.gpkg</code></li>
+                        <li>V QGIS: <strong>Layer → Add Layer → Add Vector Layer</strong></li>
+                        <li>Izberite preneseno .gpkg datoteko</li>
+                        <li>Vsi 4 sloji se naložijo v QGIS</li>
+                    </ul>
+                    <div class="info-box tip" style="margin-top: 1rem;">
+                        <strong>💡 Nasvet</strong>
+                        GeoPackage format je OGC standard in ga podpirajo vsa GIS orodja (QGIS, ArcGIS, FME, GDAL...).
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-box tip" style="margin-top: 2rem;">
+            <strong class="icon-tip">Nasvet za začetnike</strong>
+            Kliknite na katerokoli kartico zgoraj za prikaz podrobnosti in slik. Začnite z razdelkom "Osnove", kjer se boste seznanili z vmesnikom aplikacije.
+        </div>
+
+        <h3>Sistemske zahteve</h3>
+        <ul style="margin-left: 2rem; line-height: 2;">
+            <li>Sodoben spletni brskalnik (Chrome, Firefox, Edge, Safari)</li>
+            <li>Minimalna ločljivost zaslona: 1280x720 px</li>
+            <li>Internetna povezava za nalaganje podlag in WMS/WFS slojev</li>
+            <li>Prijavni račun z ustreznimi pravicami</li>
+        </ul>
+    </section>
+
+    <!-- OSNOVE -->
+    <section id="osnove" class="section">
+        <h2>Osnove uporabe aplikacije</h2>
+
+        <h3>Vmesnik aplikacije</h3>
+        <p>Aplikacija je razdeljena na tri glavne dele:</p>
+
+        <div class="step">
+            <span class="step-number">1</span>
+            <h4>Zgornja vrstica z jezički</h4>
+            <p><strong>Parcele | Stavbe | Ceste | Naslovi | O programu | Login</strong><br>
+            S klikom na jezička preklapljate med različnimi moduli. Vsak modul prikaže ustrezno tabelo in obrazec.</p>
+        </div>
+
+        <div class="step">
+            <span class="step-number">2</span>
+            <h4>Leva plošča (Tabela + Obrazec)</h4>
+            <p>Zgornji del prikazuje <strong>tabelo z zapisi</strong>, spodnji del pa <strong>obrazec za vnos/urejanje</strong>. Velikost lahko prilagodite z vlečenjem vmesnega ločila.</p>
+        </div>
+
+        <div class="step">
+            <span class="step-number">3</span>
+            <h4>Desna plošča (Zemljevid)</h4>
+            <p>Interaktivni OpenLayers zemljevid s kontrolami za sloje, zoom in risanje/urejanje geometrije.</p>
+        </div>
+
+        <div class="info-box">
+            <strong>💡 Prilagajanje panelov</strong>
+            Velikost panelov lahko spreminjate z vlečenjem ločnice med tabelo in obrazcem (vertikalno) ter med levo in desno ploščo (horizontalno).
+        </div>
+
+        <h3>Navigacija po slojih</h3>
+        <p>Na karti najdete gumb <strong>"Sloji"</strong> (zgoraj desno), ki odpre seznam razpoložljivih slojev:</p>
+        <ul style="margin-left: 2rem;">
+            <li><strong>Podlage:</strong> OSM, Ortofoto (GURS), Google satelit, Google hybrid</li>
+            <li><strong>WFS GURS:</strong> Katastrske občine, Parcele, Stavbe, Občine (vektorski sloji)</li>
+            <li><strong>Moji WMS sloji:</strong> Parcele, Stavbe, Ceste, Naslovi iz GeoServerja</li>
+            <li><strong>Moji delovni sloji:</strong> Parcele, Stavbe, Ceste, Naslovi iz PostgreSQL baze (vektorski)</li>
+        </ul>
+
+        <div class="info-box warning">
+            <strong class="icon-warn">Pozor</strong>
+            WFS sloji GURS nalagajo veliko podatkov in lahko upočasnijo aplikacijo. Priporočamo uporabo samo na manjših območjih.
+        </div>
+
+        <h3>Osnovni kontroli</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Funkcija</th>
+                    <th>Opis</th>
+                    <th>Lokacija</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Zoom +/−</strong></td>
+                    <td>Približaj/oddalji pogled</td>
+                    <td>Desno na karti ali kolešček miške</td>
+                </tr>
+                <tr>
+                    <td><strong>Pan (premik)</strong></td>
+                    <td>Premakni pogled po karti</td>
+                    <td>Vleci z miško po karti</td>
+                </tr>
+                <tr>
+                    <td><strong>Sloji</strong></td>
+                    <td>Vklopi/izklopi posamezne sloje</td>
+                    <td>Gumb "Sloji" zgoraj desno</td>
+                </tr>
+                <tr>
+                    <td><strong>Uredi</strong></td>
+                    <td>Editiraj obstoječo geometrijo</td>
+                    <td>Ikone na modulu (zgoraj desno na karti)</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+
+    <!-- WMS/WFS SLOJI -->
+    <section id="sloji" class="section">
+        <h2>WMS in WFS sloji</h2>
+
+        <p>GeoSG omogoča prikaz različnih tipov geografskih slojev iz več virov. Sloje upravljate preko kontrole <strong>"Sloji"</strong> v zgornjem desnem kotu karte.</p>
+
+        <img src="images/img_layers.png" alt="Kontrola slojev" style="width: 320px; margin: 1.5rem auto; display: block; border-radius: 8px; border: 2px solid var(--border); box-shadow: 0 4px 12px var(--shadow);">
+
+        <h3>Tipi slojev</h3>
+
+        <div class="step">
+            <span class="step-number">1</span>
+            <h4>WMS GURS (Web Map Service)</h4>
+            <p><strong>Kaj so WMS sloji:</strong> WMS (Web Map Service) je OGC standard za prikaz kartografskih slik preko spleta. Sloji se prikazujejo kot rastrske slike (PNG/JPEG).</p>
+            <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                <li><strong>WMS Parcele:</strong> Katastrske parcele iz GURS servisa</li>
+                <li><strong>WMS Stavbe:</strong> Stavbe iz GURS servisa</li>
+                <li><strong>WMS DOF25:</strong> Digitalni ortofoto v ločljivosti 25 cm/piksel</li>
+            </ul>
+            <div class="info-box tip" style="margin-top: 1rem;">
+                <strong>💡 Prednosti WMS</strong>
+                WMS sloji so hitri za prikaz, saj se prenašajo samo slike (ne celotne geometrije). Idealni za referenčni prikaz velikih območij.
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-number">2</span>
+            <h4>WFS GURS (Web Feature Service)</h4>
+            <p><strong>Kaj so WFS sloji:</strong> WFS (Web Feature Service) je OGC standard za prenos vektorskih podatkov preko spleta. Prenese se celotna geometrija in atributi.</p>
+            <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                <li><strong>WFS Katastrske Občine:</strong> Meje katastrskih občin (poligoni)</li>
+                <li><strong>WFS Parcele:</strong> Parcele z atributi (številka, površina, KO…)</li>
+                <li><strong>WFS Stavbe:</strong> Stavbe z atributi</li>
+                <li><strong>WFS RPE Občine:</strong> Meje občin iz registra prostorskih enot</li>
+            </ul>
+            <div class="info-box warning" style="margin-top: 1rem;">
+                <strong>⚠️ Pomembno o WFS slojih</strong>
+                WFS sloji prenašajo VELIKO podatkov (vse geometrije in atribute). To lahko močno upočasni aplikacijo, posebej na velikih območjih. Priporočamo uporabo samo za manjša območja ali kontrolne namene.
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-number">3</span>
+            <h4>Moji WMS sloji (GeoServer)</h4>
+            <p><strong>Lastni WMS sloji:</strong> To so sloji, ki jih servira vaš GeoServer iz vaše PostgreSQL/PostGIS baze.</p>
+            <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                <li><strong>WMS Parcel:</strong> Vaše parcele (iz vaše baze)</li>
+                <li><strong>WMS Stavb:</strong> Vaše stavbe</li>
+                <li><strong>WMS Cest:</strong> Vaše ceste</li>
+                <li><strong>WMS Naslovov:</strong> Vaši naslovi</li>
+            </ul>
+            <p style="margin-top: 0.8rem;">Ti sloji se uporabljajo za <strong>hitrejši prikaz</strong> vaših podatkov brez prenosa celotne geometrije.</p>
+        </div>
+
+        <div class="step">
+            <span class="step-number">4</span>
+            <h4>Moji delovni sloji (Vektorski)</h4>
+            <p><strong>Vektorski sloji iz baze:</strong> To so sloji, ki se naložijo direktno iz PostgreSQL/PostGIS baze kot vektorski podatki (GeoJSON format).</p>
+            <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                <li><strong>Vektorski sloj parcel:</strong> Omogoča selekcijo in editiranje</li>
+                <li><strong>Vektorski sloj stavb:</strong> Omogoča selekcijo in editiranje</li>
+                <li><strong>Vektorski sloj cest:</strong> Omogoča selekcijo in editiranje</li>
+                <li><strong>Vektorski sloj Naslovov:</strong> Omogoča selekcijo in editiranje</li>
+            </ul>
+            <div class="info-box" style="margin-top: 1rem;">
+                <strong>✓ Kdaj uporabljati vektorske sloje</strong>
+                Vektorski sloji so obvezni za <strong>selekcijo objektov na karti</strong> in <strong>editiranje geometrije</strong>. WMS sloji so samo slike, na njih ne morete klikati ali urejati.
+            </div>
+        </div>
+
+        <h3>Kako uporabljati kontrolo slojev</h3>
+
+        <div class="step">
+            <span class="step-number">1</span>
+            <h4>Odpri kontrolo</h4>
+            <p>Na karti (desna plošča) poiščite gumb <strong>"Sloji"</strong> v zgornjem desnem kotu. Kliknite nanj za odpiranje menija slojev.</p>
+        </div>
+
+        <div class="step">
+            <span class="step-number">2</span>
+            <h4>Vklopi/izklopi sloje</h4>
+            <p>Kliknite na checkbox poleg imena sloja ali skupine slojev:</p>
+            <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                <li><strong>Označen checkbox (✓):</strong> Sloj je viden na karti</li>
+                <li><strong>Neoznačen checkbox (☐):</strong> Sloj je skrit</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <span class="step-number">3</span>
+            <h4>Upravljanje skupin</h4>
+            <p>Sloji so organizirani v skupine. Če kliknete na checkbox skupine, vklopite/izklopite VSE sloje v tej skupini naenkrat.</p>
+        </div>
+
+        <h3>Primerjava WMS vs WFS vs Vektorski sloji</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Lastnost</th>
+                    <th>WMS (rastrski)</th>
+                    <th>WFS (vektorski)</th>
+                    <th>Delovni vektorski</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Format prenosa</strong></td>
+                    <td>PNG/JPEG slika</td>
+                    <td>GML/GeoJSON geometrija</td>
+                    <td>GeoJSON geometrija</td>
+                </tr>
+                <tr>
+                    <td><strong>Hitrost</strong></td>
+                    <td>🟢 Zelo hiter</td>
+                    <td>🔴 Počasen (veliko podatkov)</td>
+                    <td>🟡 Srednje hiter</td>
+                </tr>
+                <tr>
+                    <td><strong>Selekcija objektov</strong></td>
+                    <td>❌ Ne</td>
+                    <td>✅ Da</td>
+                    <td>✅ Da</td>
+                </tr>
+                <tr>
+                    <td><strong>Editiranje</strong></td>
+                    <td>❌ Ne</td>
+                    <td>❌ Ne (samo ogled)</td>
+                    <td>✅ Da</td>
+                </tr>
+                <tr>
+                    <td><strong>Prikaže atribute</strong></td>
+                    <td>❌ Ne</td>
+                    <td>✅ Da</td>
+                    <td>✅ Da</td>
+                </tr>
+                <tr>
+                    <td><strong>Uporaba</strong></td>
+                    <td>Referenčni prikaz</td>
+                    <td>Kontrola GURS podatkov</td>
+                    <td>Aktivno delo z bazo</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Priporočena kombinacija slojev</h3>
+
+        <div class="info-box tip">
+            <strong>💡 Najboljša nastavitev za delo</strong>
+            <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                <li><strong>Podlaga:</strong> OSM ali Google satelit (za orientacijo)</li>
+                <li><strong>WMS GURS:</strong> WMS Parcele ali WMS DOF25 (za referenčni prikaz katastra)</li>
+                <li><strong>Moji delovni sloji:</strong> Vključite VSE vektorske sloje (za selekcijo in editiranje)</li>
+                <li><strong>WFS GURS:</strong> Izklopite (razen za kontrolo manjših območij)</li>
+            </ul>
+        </div>
+
+        <div class="info-box warning">
+            <strong>⚠️ Zmogljivost</strong>
+            <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                <li>Če se aplikacija upočasni, najprej izklopite <strong>WFS GURS</strong> sloje</li>
+                <li>Na počasni povezavi uporabljajte samo <strong>WMS</strong> sloje za referenčni prikaz</li>
+                <li>Za editiranje morate imeti vklopljen vsaj en <strong>vektorski delovni sloj</strong></li>
+            </ul>
+        </div>
+
+        <h3>Vrstni red slojev</h3>
+        <p>Sloji se prikazujejo v naslednjem vrstnem redu (od spodaj navzgor):</p>
+        <ol style="margin-left: 2rem; line-height: 2;">
+            <li><strong>Podlaga</strong> (OSM, Google satelit…) – najspodaj</li>
+            <li><strong>WMS GURS</strong> (referenčni sloji GURS)</li>
+            <li><strong>WFS GURS</strong> (vektorski sloji GURS)</li>
+            <li><strong>Moji WMS sloji</strong> (iz GeoServerja)</li>
+            <li><strong>Moji vektorski sloji</strong> (iz baze)</li>
+            <li><strong>Highlight sloj</strong> (označeni objekti - magenta obroba) – na vrhu</li>
+        </ol>
+    </section>
+    <!-- PARCELE -->
+    <section id="parcele" class="section">
+        <h2>Delo s parcelami</h2>
+
+        <h3>Prikaz parcel v tabeli</h3>
+        <div class="step">
+            <span class="step-number">1</span>
+            <h4>Preklopite na jezičko "Parcele"</h4>
+            <p>V tabeli se prikažejo vse parcele iz baze (stolpci: ID, Parc. št., KO, Površina).</p>
+        </div>
+
+        <div class="step">
+            <span class="step-number">2</span>
+            <h4>Izbira načina prikaza</h4>
+            <p>Nad tabelo sta dva radijska gumba:</p>
+            <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                <li><strong>Select All:</strong> Prikaže vse parcele</li>
+                <li><strong>Select One:</strong> Prikaže samo parcelo z določenim ID (vnesite ID v polje)</li>
+            </ul>
+        </div>
+
+        <div class="info-box tip">
+            <strong class="icon-tip">Iskanje parcele</strong>
+            Uporabite funkcijo iskanja: vnesite <strong>KO</strong> in <strong>Parc. št.</strong>, nato kliknite "Išči". Tabela se bo samodejno pozicionirala na najdeno parcelo.
+        </div>
+
+        <h3>Dodajanje nove parcele</h3>
+        <div class="step">
+            <span class="step-number">1</span>
+            <h4>Nariši geometrijo na karti</h4>
+            <p>Na desni plošči (zemljevid) kliknite ikono <strong>"Riši parcelo"</strong> (poligon). Nariši poligon s kliki na karto. Dvojni klik zaključi risanje.</p>
+        </div>
+
+        <div class="step">
+            <span class="step-number">2</span>
+            <h4>Izpolni obrazec</h4>
+            <p>WKT geometrija se samodejno prenese v obrazec (polje "Geom"). Izpolnite še:</p>
+            <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                <li><strong>Parcelna številka (parc_st):</strong> npr. "1234/5"</li>
+                <li><strong>Šifra KO (sifko):</strong> npr. "850"</li>
+                <li><strong>Površina (area):</strong> npr. "1500"</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <span class="step-number">3</span>
+            <h4>Shrani parcelo</h4>
+            <p>Kliknite gumb <span class="btn-example success">Vstavi</span>. Čeimate ustrezne pravice, se parcela shrani v bazo in prikaže v tabeli.</p>
+        </div>
+
+        <div class="info-box warning">
+            <strong class="icon-warn">Pravice</strong>
+            Za shranjevanje, urejanje in brisanje morate biti član skupine <strong>'editors'</strong> ali <strong>'admin'</strong>. Če nimate pravic, se prikaže opozorilo.
+        </div>
+
+        <h3>Urejanje obstoječe parcele</h3>
+        <div class="step">
+            <span class="step-number">1</span>
+            <h4>Izberi parcelo</h4>
+            <p>V tabeli kliknite <span class="btn-example warning">Uredi</span> ob parceli, ki jo želite spremeniti. Podatki se naložijo v obrazec.</p>
+        </div>
+
+        <div class="step">
+            <span class="step-number">2</span>
+            <h4>Uredi atribute ali geometrijo</h4>
+            <p><strong>Atributi:</strong> Spremenite vrednosti v obrazcu.</p>
+            <p><strong>Geometrija:</strong> Kliknite ikono "Uredi parcelo" na karti, povlecite oglišča. Ko končate, kliknite ponovno isto ikono (se ugasne). WKT se posodobi.</p>
+        </div>
+
+        <div class="step">
+            <span class="step-number">3</span>
+            <h4>Shrani spremembe</h4>
+            <p>Kliknite <span class="btn-example warning">Posodobi</span>. Parcela se posodobi v bazi.</p>
+        </div>
+
+        <h3>Brisanje parcele</h3>
+        <p>V tabeli kliknite <span class="btn-example danger">Briši</span> ob parceli. Potrditvenemu dialoga potrdite brisanje.</p>
+
+        <div class="info-box">
+            <strong>Snap funkcionalnost</strong>
+            Pri risanju ali urejanju se oglišča samodejno "pripnejo" (snap) na obstoječa oglišča drugih parcel, če ste znotraj 5 metrov. Kurzor se spremeni v "pointer" ob bližini oglišča.
+        </div>
+    </section>
+
+    <!-- STAVBE -->
+    <section id="stavbe" class="section">
+        <h2>Delo s stavbami</h2>
+
+        <p>Delo s stavbami je analogno delu s parcelami. Edina razlika je v podatkovnem modelu.</p>
+
+        <h3>Atributi stavbe</h3>
+        <ul style="margin-left: 2rem; line-height: 2;">
+            <li><strong>ID:</strong> Enoličen identifikator (generira baza)</li>
+            <li><strong>Šifra KO (sifko):</strong> Katastrska občina (npr. "850")</li>
+            <li><strong>Številka stavbe (st_stavbe):</strong> npr. "1234"</li>
+            <li><strong>Opis (description):</strong> Kratek opis stavbe</li>
+            <li><strong>Površina (area):</strong> Površina tlorisa stavbe (m²)</li>
+            <li><strong>Geometrija (geom_wkt):</strong> Poligon stavbe v WKT formatu</li>
+        </ul>
+
+        <h3>Postopek dela</h3>
+        <div class="step">
+            <span class="step-number">1</span>
+            <h4>Preklopite na jezičko "Stavbe"</h4>
+        </div>
+
+        <div class="step">
+            <span class="step-number">2</span>
+            <h4>Nariši poligon stavbe</h4>
+            <p>Ikona "Riši stavbo" na zemljevidu. Narišite poligon, dvojni klik zaključi.</p>
+        </div>
+
+        <div class="step">
+            <span class="step-number">3</span>
+            <h4>Izpolni obrazec in shrani</h4>
+            <p>WKT se avtomatsko vnese. Dodajte ostale atribute in kliknite <span class="btn-example success">Vstavi</span>.</p>
+        </div>
+
+        <div class="info-box tip">
+            <strong>Iskanje stavbe</strong>
+            V tabeli vnesite <strong>KO</strong> in <strong>Št. stavbe</strong>, nato kliknite "Išči". Stavba se označi v tabeli in karta se prilagodi na stavbo.
+        </div>
+
+        <h3>Urejanje in brisanje</h3>
+        <p>Enako kot pri parcelah:</p>
+        <ul style="margin-left: 2rem;">
+            <li><strong>Uredi:</strong> Klik na <span class="btn-example warning">Uredi</span> → Spremeni atribute ali geometrijo → <span class="btn-example warning">Posodobi</span></li>
+            <li><strong>Briši:</strong> Klik na <span class="btn-example danger">Briši</span> → Potrdi</li>
+        </ul>
+    </section>
+
+    <!-- CESTE -->
+    <section id="ceste" class="section">
+        <h2>Delo s cestami</h2>
+
+        <h3>Atributi ceste</h3>
+        <ul style="margin-left: 2rem; line-height: 2;">
+            <li><strong>ID:</strong> Enoličen identifikator</li>
+            <li><strong>Ime ulice (str_name):</strong> npr. "Dunajska cesta"</li>
+            <li><strong>Administrator:</strong> Upravljavec ceste</li>
+            <li><strong>Vzdrževalec (maintainer):</strong> Kdo vzdržuje cesto</li>
+            <li><strong>Dolžina (length):</strong> Dolžina ceste v metrih</li>
+            <li><strong>Geometrija (geom_wkt):</strong> LineString (linija) v WKT formatu</li>
+        </ul>
+
+        <div class="info-box">
+            <strong>Posebnost: LineString</strong>
+            Ceste se narišejo kot <strong>linija</strong> (LineString), ne poligon. Kliknite ikono "Riši cesto", nato klikajte po karti za dodajanje vozlišč. Dvojni klik zaključi.
+        </div>
+
+        <h3>Filter po imenu ulice</h3>
+        <div class="step">
+            <span class="step-number">1</span>
+            <h4>Vnesite ime ulice</h4>
+            <p>Nad tabelo je vnosno polje "Filter po imenu ulice". Vnesite del imena (npr. "Dunaj").</p>
+        </div>
+
+        <div class="step">
+            <span class="step-number">2</span>
+            <h4>Kliknite "Išči"</h4>
+            <p>Tabela se filtrira in prikaže samo ceste z ujemajočim imenom. Tudi karta se osveži s filtriranimi cestami.</p>
+        </div>
+
+        <div class="step">
+            <span class="step-number">3</span>
+            <h4>Počisti filter</h4>
+            <p>Gumb "Počisti filter" odstrani filter in prikaže vse ceste.</p>
+        </div>
+
+        <h3>Urejanje geometrije ceste</h3>
+        <p>Enako kot pri parcelah, vendar urejate linijo (dodajate/pomikate vozlišča), ne poligon.</p>
+    </section>
+
+    <!-- NASLOVI -->
+    <section id="naslovi" class="section">
+        <h2>Delo z naslovi</h2>
+
+        <h3>Atributi naslova</h3>
+        <ul style="margin-left: 2rem; line-height: 2;">
+            <li><strong>ID:</strong> Enoličen identifikator</li>
+            <li><strong>Številka stavbe (building_num):</strong> Šifra stavbe</li>
+            <li><strong>Ulica (street):</strong> Ime ulice</li>
+            <li><strong>Hišna številka (house_num):</strong> npr. "25A"</li>
+            <li><strong>Poštna številka (post_num):</strong> npr. "1000"</li>
+            <li><strong>Pošta (post_name):</strong> npr. "Ljubljana"</li>
+            <li><strong>Geometrija (geom_wkt):</strong> Point (točka) v WKT formatu</li>
+        </ul>
+
+        <div class="info-box">
+            <strong>Posebnost: Point</strong>
+            Naslovi se označijo s <strong>točko</strong> (Point), ne linijo ali poligonom. Kliknite ikono "Riši naslov", nato kliknite na karto za postavitev točke.
+        </div>
+
+        <h3>Dodajanje naslova</h3>
+        <div class="step">
+            <span class="step-number">1</span>
+            <h4>Nariši točko</h4>
+            <p>Ikona "Riši naslov" → Klik na karto → WKT se avtomatsko vnese v obrazec.</p>
+        </div>
+
+        <div class="step">
+            <span class="step-number">2</span>
+            <h4>Izpolni podatke o naslovu</h4>
+            <p>Vnesite ulico, hišno številko, poštno številko in ostale atribute.</p>
+        </div>
+
+        <div class="step">
+            <span class="step-number">3</span>
+            <h4>Shrani</h4>
+            <p>Kliknite <span class="btn-example success">Vstavi</span>.</p>
+        </div>
+
+        <h3>Filter po ulici</h3>
+        <p>Enako kot pri cestah – vnesite ime ulice v filter, kliknite "Išči". Prikaže se samo naslove z ujemajočim imenom ulice.</p>
+    </section>
+
+    <!-- NAPREDNE FUNKCIJE -->
+    <section id="napredne" class="section">
+        <h2>Napredne funkcije</h2>
+
+        <h3>Izvoz podatkov v GeoPackage</h3>
+        <p>Aplikacija omogoča izvoz VSEH podatkov (parcele, stavbe, ceste, naslovi) v GeoPackage format (.gpkg).</p>
+
+        <div class="step">
+            <span class="step-number">1</span>
+            <h4>Pritisnite tipkovno bližnjico</h4>
+            <p>Pritisnite <span class="kbd">Alt</span> + <span class="kbd">Shift</span> + <span class="kbd">E</span> na tipkovnici.</p>
+        </div>
+
+        <div class="step">
+            <span class="step-number">2</span>
+            <h4>Prenos datoteke</h4>
+            <p>Brskalnik bo samodejno prenesel datoteko <code>podatki.gpkg</code> v mapo za prenose. Datoteko lahko odprete v QGIS ali drugih GIS orodjih.</p>
+        </div>
+
+        <div class="info-box tip">
+            <strong class="icon-tip">Uporaba v QGIS</strong>
+            V QGIS uporabite <strong>Layer → Add Layer → Add Vector Layer</strong> in izberite preneseno .gpkg datoteko. Vsi sloji (parcele, stavbe, ceste, naslovi) se bodo naložili.
+        </div>
+
+        <h3>Prilagajanje panelov</h3>
+        <p>Velikost panelov lahko prilagodite:</p>
+        <ul style="margin-left: 2rem;">
+            <li><strong>Horizontalno:</strong> Vlecite ločnico med levo (tabela/obrazec) in desno (karta) ploščo.</li>
+            <li><strong>Vertikalno:</strong> Vlecite ločnico med zgornjo (tabela) in spodnjo (obrazec) ploščo.</li>
+        </ul>
+
+        <h3>Selekcija objekta na karti</h3>
+        <div class="step">
+            <span class="step-number">1</span>
+            <h4>Kliknite ikono "Izberi" na modulu</h4>
+            <p>Npr. za parcele kliknite ikono "Izberi parcelo" (kazalec miške).</p>
+        </div>
+
+        <div class="step">
+            <span class="step-number">2</span>
+            <h4>Kliknite na objekt na karti</h4>
+            <p>Objekt se označi (magenta obroba), podatki se naložijo v obrazec in tabela se samodejno pozicionira na izbran zapis.</p>
+        </div>
+
+        <h3>Upravljanje slojev</h3>
+        <p>Kliknite gumb "Sloji" zgoraj desno na karti. Označite/odznačite sloje za prikaz:</p>
+        <ul style="margin-left: 2rem;">
+            <li><strong>Podlage:</strong> OSM, Ortofoto, Google</li>
+            <li><strong>WFS GURS:</strong> Podatki iz GURS servisa (parcele, stavbe, KO, občine)</li>
+            <li><strong>Moji WMS sloji:</strong> Podatki iz GeoServerja (WMS format)</li>
+            <li><strong>Moji delovni sloji:</strong> Podatki iz PostgreSQL baze (vektorski sloji)</li>
+        </ul>
+
+        <div class="info-box warning">
+            <strong>Opozorilo</strong>
+            Prikaz WFS slojev GURS lahko upočasni aplikacijo, saj nalaga veliko podatkov. Priporočamo uporabo samo na manjših območjih ali za referenčni prikaz.
+        </div>
+
+        <h3>Statusna vrstica</h3>
+        <p>Na dnu aplikacije se nahaja <strong>rumena statusna vrstica</strong>, ki prikazuje trenutno stanje aplikacije:</p>
+        
+        <img src="images/img_status.png" alt="Statusna vrstica" style="width: 100%; margin: 1rem 0; border-radius: 6px; border: 2px solid var(--primary);">
+        
+        <table style="margin-top: 1rem;">
+            <thead>
+                <tr>
+                    <th>Sporočilo</th>
+                    <th>Pomen</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>"Zbirka je med prenosom"</strong></td>
+                    <td>Podatki se nalagajo iz baze ali GeoServerja</td>
+                </tr>
+                <tr>
+                    <td><strong>"Parcela uspešno shranjena"</strong></td>
+                    <td>CRUD operacija je bila uspešna</td>
+                </tr>
+                <tr>
+                    <td><strong>"Nimate pravic za urejanje"</strong></td>
+                    <td>Niste prijavljeni ali niste v skupini 'editors'/'admin'</td>
+                </tr>
+                <tr>
+                    <td><strong>"Prijavljen: [ime] (editors)"</strong></td>
+                    <td>Prikaže vaše uporabniško ime in skupino po prijavi</td>
+                </tr>
+                <tr>
+                    <td><strong>"Napaka pri shranjevanju"</strong></td>
+                    <td>Prišlo je do napake (preverite konzolo brskalnika)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="info-box tip">
+            <strong class="icon-tip">Opazujte statusno vrstico</strong>
+            Statusna vrstica vam pove, kaj se dogaja v aplikaciji. Če se operacija ne zaključi ali dobite napako, vam bo statusna vrstica pokazala, kje je težava.
+        </div>
+
+        <h3>Swagger API dokumentacija</h3>
+        <p>Aplikacija uporablja <strong>Django REST Framework</strong> za backend API. Vsi API endpoints so dokumentirani v Swagger vmesniku:</p>
+        
+        <img src="images/img_swagger.png" alt="Swagger API dokumentacija" style="width: 100%; margin: 1rem 0; border-radius: 6px; border: 2px solid var(--border); box-shadow: 0 4px 12px var(--shadow);">
+        
+        <div class="step">
+            <span class="step-number">1</span>
+            <h4>Dostop do Swagger vmesnika</h4>
+            <p>V brskalniku odprite: <code style="background: var(--code-bg); padding: 0.3rem 0.6rem; border-radius: 4px; font-family: monospace;">http://[naslov-strežnika]/swagger/</code></p>
+        </div>
+
+        <div class="step">
+            <span class="step-number">2</span>
+            <h4>Razpoložljivi API endpoints</h4>
+            <p><strong>Parcels:</strong></p>
+            <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                <li><span class="btn-example" style="background: #61AFFE; font-size: 0.8rem; padding: 0.3rem 0.6rem;">GET</span> <code>/parcels/parcels/</code> - Seznam vseh parcel</li>
+                <li><span class="btn-example success" style="font-size: 0.8rem; padding: 0.3rem 0.6rem;">POST</span> <code>/parcels/parcels_view/insert2/</code> - Vnos nove parcele</li>
+                <li><span class="btn-example warning" style="font-size: 0.8rem; padding: 0.3rem 0.6rem;">PUT</span> <code>/parcels/parcels_view/update/{id}/</code> - Posodobitev parcele</li>
+                <li><span class="btn-example danger" style="font-size: 0.8rem; padding: 0.3rem 0.6rem;">DELETE</span> <code>/parcels/parcels/{id}/</code> - Brisanje parcele</li>
+            </ul>
+            <p style="margin-top: 1rem;"><strong>Buildings, Roads, Addresses:</strong> Enaka struktura kot Parcels</p>
+        </div>
+
+        <div class="step">
+            <span class="step-number">3</span>
+            <h4>Testiranje API v Swagger</h4>
+            <p>V Swagger vmesniku lahko direktno testirate vse API klice:</p>
+            <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                <li>Kliknite na endpoint (npr. GET /parcels/parcels/)</li>
+                <li>Kliknite "Try it out"</li>
+                <li>Izpolnite parametre (če so potrebni)</li>
+                <li>Kliknite "Execute"</li>
+                <li>Vidite Response body (JSON) in Status code</li>
+            </ul>
+        </div>
+
+        <div class="info-box">
+            <strong>Avtentikacija v Swagger</strong>
+            Za POST/PUT/DELETE operacije potrebujete avtentikacijo. V Swagger uporabite "Authorize" gumb in vnesite svoje credentials ali API token.
+        </div>
+
+        <h3>Avtentikacija in pravice</h3>
+        <p>Aplikacija podpira Django avtentikacijo z različnimi nivoji pravic:</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Skupina</th>
+                    <th>Pravice</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>admin</strong></td>
+                    <td>Polne pravice (vnos, urejanje, brisanje vseh podatkov)</td>
+                </tr>
+                <tr>
+                    <td><strong>editors</strong></td>
+                    <td>Vnos, urejanje in brisanje podatkov</td>
+                </tr>
+                <tr>
+                    <td><strong>viewers</strong></td>
+                    <td>Samo branje podatkov (brez urejanja)</td>
+                </tr>
+                <tr>
+                    <td><strong>Brez prijave</strong></td>
+                    <td>Omejen dostop (samo branje)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="info-box">
+            <strong>Prijava</strong>
+            Kliknite na jezičko <strong>"Login"</strong> zgoraj desno. Vnesite uporabniško ime in geslo. Po uspešni prijavi se prikaže vaše ime in skupina v statusni vrstici.
+        </div>
+    </section>
+
+    <!-- FAQ / POMOČ -->
+    <section id="pomoc" class="section">
+        <h2>Pogosta vprašanja (FAQ)</h2>
+
+        <h3>❓ Kako lahko spremenim geometrijo obstoječe parcele?</h3>
+        <p>V tabeli kliknite <span class="btn-example warning">Uredi</span>, nato na karti kliknite ikono "Uredi parcelo". Povlecite oglišča na novo pozicijo. Ko končate, ponovno kliknite ikono (se ugasne). WKT v obrazcu se posodobi. Kliknite <span class="btn-example warning">Posodobi</span>.</p>
+
+        <h3>❓ Zakaj se mi ne prikaže gumb "Vstavi" ali "Briši"?</h3>
+        <p>Nimate ustreznih pravic. Preverite, ali ste prijavljeni in ali ste član skupine <strong>'editors'</strong> ali <strong>'admin'</strong>. Kontaktirajte administratorja za dodelitev pravic.</p>
+
+        <h3>❓ Kako izvozim podatke v QGIS?</h3>
+        <p>Pritisnite <span class="kbd">Alt</span> + <span class="kbd">Shift</span> + <span class="kbd">E</span> za izvoz GeoPackage (.gpkg) datoteke. V QGIS-u uporabite <strong>Layer → Add Layer → Add Vector Layer</strong> in izberite preneseno datoteko.</p>
+
+        <h3>❓ Zakaj se karta počasi nalaga?</h3>
+        <p>Verjetno imate vklopljene WFS sloje GURS, ki nalagajo veliko podatkov. Izklopite WFS sloje v kontroli "Sloji" zgoraj desno na karti.</p>
+
+        <h3>❓ Kako lahko resetiram obrazec?</h3>
+        <p>Kliknite gumb <span class="btn-example">Počisti</span> v obrazcu. Vsa polja se resetirajo na prazne vrednosti.</p>
+
+        <h3>❓ Kaj pomeni "POLYGON(...)" v polju Geom?</h3>
+        <p>To je <strong>WKT (Well-Known Text)</strong> format za zapis geometrije. Aplikacija samodejno pretvori geometrijo iz karte v WKT format. Ne spreminjajte tega polja ročno, razen če ste prepričani v pravilnost WKT sintakse.</p>
+
+        <h3>❓ Kako lahko najdem parcelo po KO in parcelni številki?</h3>
+        <p>Nad tabelo parcel vnesite <strong>Šifra KO</strong> in <strong>Parc. št.</strong> v ustrezni polji, nato kliknite <span class="btn-example">Išči</span>. Tabela se samodejno pozicionira na najdeno parcelo.</p>
+
+        <h3>❓ Ali lahko narišem več objektov hkrati?</h3>
+        <p>Ne. Vsakič, ko narišete objekt, se WKT prenese v obrazec in morate shraniti objekt, preden nadaljujete z risanjem naslednjega.</p>
+
+        <h3>❓ Kako spremenimo koordinatni sistem?</h3>
+        <p>Aplikacija uporablja koordinatni sistem <strong>EPSG:3794 (Slovenska projekcija)</strong>. Sprememba projekcije ni mogoča v vmesniku – potrebna je prilagoditev kode.</p>
+
+        <h3>❓ Kje lahko vidim, ali je operacija uspela?</h3>
+        <p>Poglejte <strong>rumeno statusno vrstico na dnu zaslona</strong>. Tam se prikaže sporočilo o uspehu ("Parcela uspešno shranjena") ali napaki ("Napaka pri shranjevanju").</p>
+
+        <h3>❓ Kako lahko direktno testiram API brez uporabniškega vmesnika?</h3>
+        <p>Odprite <strong>Swagger vmesnik</strong> na naslovu <code>http://[strežnik]/swagger/</code>. Tam lahko testirate vse GET/POST/PUT/DELETE operacije direktno v brskalniku.</p>
+
+        <h3>❓ Zakaj mi statusna vrstica prikazuje "Zbirka je med prenosom" zelo dolgo?</h3>
+        <p>Verjetno nalagate veliko podatkov (npr. vsi WFS sloji GURS). Izklopite nepotrebne sloje ali preklopite na manjše območje. Če težava vztraja, preverite mrežno povezavo.</p>
+
+        <h3>❓ Kako lahko prijavim napako ali predlagam izboljšavo?</h3>
+        <p>Kontaktirajte razvijalca ali IT podporo na vaši organizaciji. Opišite težavo, priložite posnetke zaslona in korak-za-korakom postopek za reproduciranje težave.</p>
+
+        <div class="info-box tip">
+            <strong class="icon-tip">Dodatna pomoč</strong>
+            Če potrebujete dodatno pomoč, se obrnite na IT podporo ali razvijalca aplikacije. Pripravite natančen opis težave in korak-za-korakom postopek.
+        </div>
+    </section>
+
+</div>
+
+<div class="footer">
+    <p>&copy; 2025 GeoSG GIS Aplikacija | Razvil: GURS IT oddelek</p>
+    <p style="margin-top: 0.5rem; font-size: 0.9rem;">Verzija: 1.0 | Zadnja posodobitev: Februar 2025</p>
+</div>
+
+<script>
+    function showSection(sectionId) {
+        // Hide all sections
+        const sections = document.querySelectorAll('.section');
+        sections.forEach(section => section.classList.remove('active'));
+
+        // Remove active class from all buttons
+        const buttons = document.querySelectorAll('.nav-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+
+        // Show selected section
+        const selectedSection = document.getElementById(sectionId);
+        if (selectedSection) {
+            selectedSection.classList.add('active');
+        }
+
+        // Highlight active button
+        const activeButton = event.target;
+        if (activeButton) {
+            activeButton.classList.add('active');
+        }
+
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function toggleExpand(card) {
+        card.classList.toggle('expanded');
+    }
+
+    // Search functionality (optional enhancement)
+    function setupSearch() {
+        const searchInput = document.querySelector('.search-input');
+        if (searchInput) {
+            searchInput.addEventListener('input', function() {
+                const query = this.value.toLowerCase();
+                const sections = document.querySelectorAll('.section');
+                
+                sections.forEach(section => {
+                    const text = section.textContent.toLowerCase();
+                    if (text.includes(query)) {
+                        section.style.display = 'block';
+                    } else {
+                        section.style.display = 'none';
+                    }
+                });
+            });
+        }
+    }
+</script>
+
+</body>
+</html>
