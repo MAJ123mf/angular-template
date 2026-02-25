@@ -119,3 +119,37 @@ app-map {
   cursor: row-resize;
   z-index: 10;
 }
+
+.help-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.help-dialog {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  min-width: 400px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.help-dialog h2 {
+  margin-top: 0;
+}
+
+.help-dialog table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+}
+
+.help-dialog td, .help-dialog th {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  text-align: left;
+}
