@@ -765,6 +765,49 @@
                 <li><strong>WFS GURS:</strong> Izklopite (razen za kontrolo manjših območij)</li>
             </ul>
         </div>
+
+        <h3>Kako uporabljati kontrolo slojev</h3>
+
+        <div class="step">
+            <span class="step-number">1</span>
+            <h4>Odpri kontrolo</h4>
+            <p>Na karti (desna plošča) poiščite gumb <strong>"Sloji"</strong> v zgornjem desnem kotu. Kliknite nanj za odpiranje menija slojev.</p>
+        </div>
+        <div class="step">
+            <span class="step-number">2</span>
+            <h4>Vklopi/izklopi sloje</h4>
+            <p>Kliknite na checkbox poleg imena sloja ali skupine:</p>
+            <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                <li><strong>Označen checkbox (✓):</strong> Sloj je viden na karti</li>
+                <li><strong>Neoznačen checkbox (☐):</strong> Sloj je skrit</li>
+            </ul>
+        </div>
+        <div class="step">
+            <span class="step-number">3</span>
+            <h4>Upravljanje skupin</h4>
+            <p>Sloji so organizirani v skupine. Klik na checkbox skupine vklopi/izklopi VSE sloje v tej skupini naenkrat.</p>
+        </div>
+
+        <div class="info-box warning">
+            <strong>⚠️ Zmogljivost</strong>
+            <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                <li>Če se aplikacija upočasni, najprej izklopite <strong>WFS GURS</strong> sloje</li>
+                <li>Na počasni povezavi uporabljajte samo <strong>WMS</strong> sloje za referenčni prikaz</li>
+                <li>Za editiranje morate imeti vklopljen vsaj en <strong>vektorski delovni sloj</strong></li>
+            </ul>
+        </div>
+
+        <h3>Vrstni red slojev</h3>
+        <p>Sloji se prikazujejo v naslednjem vrstnem redu (od spodaj navzgor):</p>
+        <ol style="margin-left: 2rem; line-height: 2;">
+            <li><strong>Podlaga</strong> (OSM, Google satelit…) – najspodaj</li>
+            <li><strong>WMS GURS</strong> (referenčni sloji GURS)</li>
+            <li><strong>WFS GURS</strong> (vektorski sloji GURS)</li>
+            <li><strong>Moji WMS sloji</strong> (iz GeoServerja)</li>
+            <li><strong>Moji vektorski sloji</strong> (iz baze)</li>
+            <li><strong>Uvoženi sloji</strong> (GeoPackage, Shapefile, KML)</li>
+            <li><strong>Highlight sloj</strong> (označeni objekti - magenta obroba) – na vrhu</li>
+        </ol>
     </section>
 
     <!-- PARCELE -->
@@ -821,6 +864,19 @@
             <h4>Shrani spremembe</h4>
             <p>Kliknite <span class="btn-example warning">Posodobi</span>.</p>
         </div>
+
+        <h3>Brisanje parcele</h3>
+        <p>V tabeli kliknite <span class="btn-example danger">Briši</span> ob parceli. V potrditvenem dialogu potrdite brisanje.</p>
+
+        <div class="info-box">
+            <strong>Snap funkcionalnost</strong>
+            Pri risanju ali urejanju se oglišča samodejno "pripnejo" (snap) na obstoječa oglišča drugih parcel, če ste znotraj 5 metrov. Kurzor se spremeni v "pointer" ob bližini oglišča.
+        </div>
+
+        <div class="info-box warning">
+            <strong class="icon-warn">Pravice</strong>
+            Za shranjevanje, urejanje in brisanje morate biti član skupine <strong>'editors'</strong> ali <strong>'admin'</strong>. Če nimate pravic, se prikaže opozorilo.
+        </div>
     </section>
 
     <!-- STAVBE -->
@@ -842,6 +898,30 @@
             <strong>Iskanje stavbe</strong>
             Vnesite <strong>KO</strong> in <strong>Št. stavbe</strong>, nato kliknite "Išči". Stavba se označi v tabeli in karta se prilagodi.
         </div>
+
+        <h3>Postopek dela</h3>
+        <div class="step">
+            <span class="step-number">1</span>
+            <h4>Preklopite na jezičko "Stavbe"</h4>
+            <p>V tabeli se prikažejo vse stavbe iz baze.</p>
+        </div>
+        <div class="step">
+            <span class="step-number">2</span>
+            <h4>Nariši poligon stavbe</h4>
+            <p>Ikona "Riši stavbo" na zemljevidu. Narišite poligon, dvojni klik zaključi.</p>
+        </div>
+        <div class="step">
+            <span class="step-number">3</span>
+            <h4>Izpolni obrazec in shrani</h4>
+            <p>WKT se avtomatsko vnese. Dodajte ostale atribute in kliknite <span class="btn-example success">Vstavi</span>.</p>
+        </div>
+
+        <h3>Urejanje in brisanje</h3>
+        <p>Enako kot pri parcelah:</p>
+        <ul style="margin-left: 2rem;">
+            <li><strong>Uredi:</strong> Klik na <span class="btn-example warning">Uredi</span> → Spremeni atribute ali geometrijo → <span class="btn-example warning">Posodobi</span></li>
+            <li><strong>Briši:</strong> Klik na <span class="btn-example danger">Briši</span> → Potrdi</li>
+        </ul>
     </section>
 
     <!-- CESTE -->
@@ -861,6 +941,26 @@
             <strong>Posebnost: LineString</strong>
             Ceste se narišejo kot <strong>linija</strong>. Kliknite ikono "Riši cesto", klikajte po karti za vozlišča. Dvojni klik zaključi.
         </div>
+
+        <h3>Filter po imenu ulice</h3>
+        <div class="step">
+            <span class="step-number">1</span>
+            <h4>Vnesite ime ulice</h4>
+            <p>Nad tabelo je vnosno polje "Filter po imenu ulice". Vnesite del imena (npr. "Dunaj").</p>
+        </div>
+        <div class="step">
+            <span class="step-number">2</span>
+            <h4>Kliknite "Išči"</h4>
+            <p>Tabela se filtrira in prikaže samo ceste z ujemajočim imenom. Karta se osveži s filtriranimi cestami.</p>
+        </div>
+        <div class="step">
+            <span class="step-number">3</span>
+            <h4>Počisti filter</h4>
+            <p>Gumb "Počisti filter" odstrani filter in prikaže vse ceste.</p>
+        </div>
+
+        <h3>Urejanje geometrije ceste</h3>
+        <p>Enako kot pri parcelah, vendar urejate linijo (dodajate/pomikate vozlišča), ne poligon.</p>
     </section>
 
     <!-- NASLOVI -->
@@ -880,6 +980,26 @@
             <strong>Posebnost: Point</strong>
             Naslovi se označijo s <strong>točko</strong>. Kliknite ikono "Riši naslov", nato kliknite na karto.
         </div>
+
+        <h3>Dodajanje naslova</h3>
+        <div class="step">
+            <span class="step-number">1</span>
+            <h4>Nariši točko</h4>
+            <p>Ikona "Riši naslov" → Klik na karto → WKT se avtomatsko vnese v obrazec.</p>
+        </div>
+        <div class="step">
+            <span class="step-number">2</span>
+            <h4>Izpolni podatke o naslovu</h4>
+            <p>Vnesite ulico, hišno številko, poštno številko in ostale atribute.</p>
+        </div>
+        <div class="step">
+            <span class="step-number">3</span>
+            <h4>Shrani</h4>
+            <p>Kliknite <span class="btn-example success">Vstavi</span>.</p>
+        </div>
+
+        <h3>Filter po ulici</h3>
+        <p>Enako kot pri cestah – vnesite ime ulice v filter, kliknite "Išči". Prikazani so samo naslovi z ujemajočim imenom ulice.</p>
     </section>
 
     <!-- NAPREDNE FUNKCIJE -->
@@ -954,6 +1074,27 @@
             Uvoženi sloji so vidni samo v trenutni seji brskalnika. Po osvežitvi strani (<kbd>F5</kbd>) se izgubijo. Za trajno shranjevanje podatkov uporabite funkcijo CRUD (vnos v bazo) ali izvoz GeoPackage.
         </div>
 
+        <h3>Prilagajanje panelov</h3>
+        <p>Velikost panelov lahko prilagodite:</p>
+        <ul style="margin-left: 2rem;">
+            <li><strong>Horizontalno:</strong> Vlecite ločnico med levo (tabela/obrazec) in desno (karta) ploščo.</li>
+            <li><strong>Vertikalno:</strong> Vlecite ločnico med zgornjo (tabela) in spodnjo (obrazec) ploščo.</li>
+        </ul>
+
+        <h3>Upravljanje slojev</h3>
+        <p>Kliknite gumb "Sloji" zgoraj desno na karti. Označite/odznačite sloje za prikaz:</p>
+        <ul style="margin-left: 2rem;">
+            <li><strong>Podlage:</strong> OSM, Ortofoto, Google</li>
+            <li><strong>WFS GURS:</strong> Podatki iz GURS servisa (parcele, stavbe, KO, občine)</li>
+            <li><strong>Moji WMS sloji:</strong> Podatki iz GeoServerja (WMS format)</li>
+            <li><strong>Moji delovni sloji:</strong> Podatki iz PostgreSQL baze (vektorski sloji)</li>
+        </ul>
+
+        <div class="info-box warning">
+            <strong>Opozorilo</strong>
+            Prikaz WFS slojev GURS lahko upočasni aplikacijo, saj nalaga veliko podatkov. Priporočamo uporabo samo na manjših območjih ali za referenčni prikaz.
+        </div>
+
         <h3>Selekcija objekta na karti</h3>
         <div class="step">
             <span class="step-number">1</span>
@@ -984,6 +1125,22 @@
         <h3>Swagger API dokumentacija</h3>
         <p>Dostop do API dokumentacije: <code style="background: var(--code-bg); padding: 0.3rem 0.6rem; border-radius: 4px;">http://[naslov-strežnika]/swagger/</code></p>
         <img src="images/img_swagger.png" alt="Swagger API" style="width: 100%; margin: 1rem 0; border-radius: 6px; border: 2px solid var(--border); box-shadow: 0 4px 12px var(--shadow);">
+        <h3>Avtentikacija in pravice</h3>
+        <p>Aplikacija podpira Django avtentikacijo z različnimi nivoji pravic:</p>
+        <table>
+            <thead><tr><th>Skupina</th><th>Pravice</th></tr></thead>
+            <tbody>
+                <tr><td><strong>admin</strong></td><td>Polne pravice (vnos, urejanje, brisanje vseh podatkov) + dostop do Django admin</td></tr>
+                <tr><td><strong>editors</strong></td><td>Vnos, urejanje in brisanje podatkov</td></tr>
+                <tr><td><strong>viewers</strong></td><td>Samo branje podatkov (brez urejanja)</td></tr>
+                <tr><td><strong>Brez prijave</strong></td><td>Omejen dostop (samo branje)</td></tr>
+            </tbody>
+        </table>
+
+        <div class="info-box">
+            <strong>Prijava</strong>
+            Kliknite na jezičko <strong>"Login"</strong> zgoraj desno. Vnesite uporabniško ime in geslo. Po uspešni prijavi se prikaže vaše ime in skupina v statusni vrstici.
+        </div>
     </section>
 
     <!-- VEČJEZIČNOST -->
@@ -1151,8 +1308,26 @@
         <h3>❓ Kako spremenimo koordinatni sistem?</h3>
         <p>Aplikacija je fiksirana na <strong>EPSG:3794</strong>. Sprememba projekcije zahteva prilagoditev kode.</p>
 
+        <h3>❓ Kako lahko resetiram obrazec?</h3>
+        <p>Kliknite gumb <span class="btn-example">Počisti</span> v obrazcu. Vsa polja se resetirajo na prazne vrednosti.</p>
+
+        <h3>❓ Kaj pomeni "POLYGON(...)" v polju Geom?</h3>
+        <p>To je <strong>WKT (Well-Known Text)</strong> format za zapis geometrije. Aplikacija samodejno pretvori geometrijo iz karte v WKT format. Ne spreminjajte tega polja ročno, razen če ste prepričani v pravilnost WKT sintakse.</p>
+
+        <h3>❓ Kako najdem parcelo po KO in parcelni številki?</h3>
+        <p>Nad tabelo parcel vnesite <strong>Šifra KO</strong> in <strong>Parc. št.</strong> v ustrezni polji, nato kliknite <span class="btn-example">Išči</span>. Tabela se samodejno pozicionira na najdeno parcelo.</p>
+
+        <h3>❓ Ali lahko narišem več objektov hkrati?</h3>
+        <p>Ne. Vsakič, ko narišete objekt, se WKT prenese v obrazec in morate shraniti objekt, preden nadaljujete z risanjem naslednjega.</p>
+
+        <h3>❓ Zakaj mi statusna vrstica prikazuje "Zbirka je med prenosom" zelo dolgo?</h3>
+        <p>Verjetno nalagate veliko podatkov (npr. vsi WFS sloji GURS). Izklopite nepotrebne sloje ali preklopite na manjše območje. Če težava vztraja, preverite mrežno povezavo.</p>
+
         <h3>❓ Kako direktno testiram API?</h3>
         <p>Odprite <strong>Swagger vmesnik</strong> na naslovu <code>http://[strežnik]/swagger/</code>.</p>
+
+        <h3>❓ Kako prijavim napako ali predlagam izboljšavo?</h3>
+        <p>Kontaktirajte razvijalca ali IT podporo na vaši organizaciji. Opišite težavo, priložite posnetke zaslona in korak-za-korakom postopek za reproduciranje težave.</p>
 
         <div class="info-box tip">
             <strong class="icon-tip">Dodatna pomoč</strong>
