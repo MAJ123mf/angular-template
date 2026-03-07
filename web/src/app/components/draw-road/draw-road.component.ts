@@ -13,11 +13,12 @@ import { DrawModeService } from '../../services/draw-mode.service';
 import { EventModel } from '../../models/event.model';
 import { WktGeometryTransferService} from'../../services/wkt-geometry-transfer.service';
 import { Subscription } from 'rxjs';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-draw-road',
   standalone: true,
-  imports: [MatIconModule, MatTooltip],
+  imports: [MatIconModule, MatTooltip, TranslateModule],
   templateUrl: './draw-road.component.html',
   styleUrl: './draw-road.component.scss'
 })
