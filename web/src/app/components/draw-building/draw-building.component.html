@@ -5,13 +5,11 @@ https://www.angularjswiki.com/angular/angular-material-icons-list-mat-icon-list/
 oblikovanje gumbov je v map.component.scss (tam je določen položaj gumba na karti)
 -->
 
-
-
 @if (drawMode) {
   <button 
     mat-button 
     (click)="toggleDrawMode()" 
-    matTooltip="Stop drawing buildings">
+    [matTooltip]="'BUILDING_DRAW_STOP' | translate">
     <mat-icon>clear</mat-icon>
   </button>
 } @else {
@@ -19,8 +17,7 @@ oblikovanje gumbov je v map.component.scss (tam je določen položaj gumba na ka
     mat-button 
     (click)="toggleDrawMode()" 
     [disabled]="!canDraw"
-    matTooltip="Start drawing buildings">
-    <!-- <mat-icon>format_shapes</mat-icon> -->
+    [matTooltip]="'BUILDING_DRAW_START' | translate">
     <mat-icon>home</mat-icon>
   </button>
 
@@ -29,7 +26,7 @@ oblikovanje gumbov je v map.component.scss (tam je določen položaj gumba na ka
     mat-button 
     (click)="selectBuilding()" 
     [disabled]="!canDraw || drawMode"
-    [matTooltip]="selectMode ? 'Stop selecting buildings' : 'Select a building'">
+    [matTooltip]="(selectMode ? 'BUILDING_SELECT_STOP' : 'BUILDING_SELECT_START') | translate">
     <mat-icon>{{ (!canDraw || drawMode) ? 'near_me' : (selectMode ? 'select_all' : 'near_me') }}</mat-icon>
   </button>
 
@@ -38,7 +35,7 @@ oblikovanje gumbov je v map.component.scss (tam je določen položaj gumba na ka
     mat-button 
     (click)="editBuilding()" 
     [disabled]="!canDraw || drawMode"
-    [matTooltip]="editMode ? 'Stop editing buildings' : 'Edit a building'">
+    [matTooltip]="(editMode ? 'BUILDING_EDIT_STOP' : 'BUILDING_EDIT_START') | translate">
     <mat-icon>{{ (!canDraw || drawMode) ? 'create' : (editMode ? 'done_outline' : 'create') }}</mat-icon>
   </button>
 }
