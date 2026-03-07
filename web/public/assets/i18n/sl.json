@@ -149,6 +149,13 @@
   "ADDRESS_SELECT_STOP": "Ustavi izbiranje naslovov",
   "ADDRESS_SELECT_START": "Izberi naslov",
   "ADDRESS_EDIT_STOP": "Ustavi urejanje naslovov",
-  "ADDRESS_EDIT_START": "Uredi naslov"   
+  "ADDRESS_EDIT_START": "Uredi naslov",
+  "HELP_TITLE": "Bližnice - kombinacije tipk",
+  "HELP_COL_SHORTCUT": "Bližnjica",
+  "HELP_COL_DESC": "Opis",
+  "HELP_ALT_F1": "Prikaži/skrij to okno",
+  "HELP_F1": "Prikaži/skrij uporabniška navodila",
+  "HELP_ALT_SHIFT_E": "Prenesi GeoPackage",
+  "HELP_CLOSE": "Zapri"   
      
 }
