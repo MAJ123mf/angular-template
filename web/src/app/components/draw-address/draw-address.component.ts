@@ -12,11 +12,12 @@ import { EventModel } from '../../models/event.model';
 import { MatTooltip } from '@angular/material/tooltip';   // če hočeš da dela Tooltip ko se z miško postaviš na gumb na karti...
 import { WktGeometryTransferService} from'../../services/wkt-geometry-transfer.service';
 import { Subscription } from 'rxjs';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-draw-address',
   standalone: true,
-  imports: [MatIconModule, MatTooltip],
+  imports: [MatIconModule, MatTooltip, TranslateModule],
   templateUrl: './draw-address.component.html',
   styleUrl: './draw-address.component.scss'
 })
