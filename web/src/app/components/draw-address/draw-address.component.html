@@ -2,16 +2,16 @@
     <button 
         mat-button 
         (click)="toggleDrawMode()" 
-        matTooltip="Stop pointing addresses">
-        <mat-icon >clear</mat-icon>
+        [matTooltip]="'ADDRESS_DRAW_STOP' | translate">
+        <mat-icon>clear</mat-icon>
     </button>
 } @else {
     <button 
         mat-button 
         (click)="toggleDrawMode()" 
         [disabled]="!canDraw"
-        matTooltip="Start pointing addresses">
-        <mat-icon >mail_outline</mat-icon>
+        [matTooltip]="'ADDRESS_DRAW_START' | translate">
+        <mat-icon>mail_outline</mat-icon>
     </button>
 
     <button 
@@ -19,7 +19,7 @@
         mat-button 
         (click)="selectAddress()" 
         [disabled]="!canDraw || drawMode"
-        [matTooltip]="selectMode ? 'Stop selecting addresses' : 'Select a address'">
+        [matTooltip]="(selectMode ? 'ADDRESS_SELECT_STOP' : 'ADDRESS_SELECT_START') | translate">
         <mat-icon>{{ (!canDraw || drawMode) ? 'near_me' : (selectMode ? 'select_all' : 'near_me') }}</mat-icon>
     </button>
 
@@ -28,8 +28,7 @@
         mat-button 
         (click)="editAddress()" 
         [disabled]="!canDraw || drawMode"
-        [matTooltip]="editMode ? 'Stop editing addresses' : 'Edit a address'">
+        [matTooltip]="(editMode ? 'ADDRESS_EDIT_STOP' : 'ADDRESS_EDIT_START') | translate">
         <mat-icon>{{ (!canDraw || drawMode) ? 'create' : (editMode ? 'done_outline' : 'create') }}</mat-icon>
-  </button>
+    </button>
 }
-
