@@ -23,12 +23,13 @@ import Point from 'ol/geom/Point';
 import Feature from 'ol/Feature';
 import Polygon from 'ol/geom/Polygon';
 import Modify from 'ol/interaction/Modify';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 @Component({
   selector: 'app-draw-building',
   standalone: true,
-  imports: [MatIconModule, MatTooltip],
+  imports: [MatIconModule, MatTooltip, TranslateModule],
   templateUrl: './draw-building.component.html',
   styleUrl: './draw-building.component.scss'
 })
