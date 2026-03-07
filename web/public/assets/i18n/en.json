@@ -149,6 +149,13 @@
   "ADDRESS_SELECT_STOP": "Stop selecting addresses",
   "ADDRESS_SELECT_START": "Select an address",
   "ADDRESS_EDIT_STOP": "Stop editing addresses",
-  "ADDRESS_EDIT_START": "Edit an address"
+  "ADDRESS_EDIT_START": "Edit an address",
+  "HELP_TITLE": "Shortcuts - key combinations",
+  "HELP_COL_SHORTCUT": "Shortcut",
+  "HELP_COL_DESC": "Description",
+  "HELP_ALT_F1": "Show/hide this window",
+  "HELP_F1": "Show/hide user manual",
+  "HELP_ALT_SHIFT_E": "Download GeoPackage",
+  "HELP_CLOSE": "Close"
   
 }
