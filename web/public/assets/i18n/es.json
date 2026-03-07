@@ -149,6 +149,13 @@
   "ADDRESS_SELECT_STOP": "Detener selección de direcciones",
   "ADDRESS_SELECT_START": "Seleccionar una dirección",
   "ADDRESS_EDIT_STOP": "Detener edición de direcciones",
-  "ADDRESS_EDIT_START": "Editar una dirección"
+  "ADDRESS_EDIT_START": "Editar una dirección",
+  "HELP_TITLE": "Atajos - combinaciones de teclas",
+  "HELP_COL_SHORTCUT": "Atajo",
+  "HELP_COL_DESC": "Descripción",
+  "HELP_ALT_F1": "Mostrar/ocultar esta ventana",
+  "HELP_F1": "Mostrar/ocultar manual de usuario",
+  "HELP_ALT_SHIFT_E": "Descargar GeoPackage",
+  "HELP_CLOSE": "Cerrar"
   
 }
