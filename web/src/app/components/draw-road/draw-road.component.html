@@ -8,7 +8,7 @@ https://www.angularjswiki.com/angular/angular-material-icons-list-mat-icon-list/
     <button 
         mat-button 
         (click)="toggleDrawMode()" 
-        matTooltip="Stop drawing road">
+        [matTooltip]="'ROAD_DRAW_STOP' | translate">
         <mat-icon>clear</mat-icon>
     </button>
 } @else {
@@ -16,19 +16,16 @@ https://www.angularjswiki.com/angular/angular-material-icons-list-mat-icon-list/
         mat-button 
         (click)="toggleDrawMode()" 
         [disabled]="!canDraw"         
-        matTooltip="Start drawing road">
+        [matTooltip]="'ROAD_DRAW_START' | translate">
         <mat-icon>timeline</mat-icon>
     </button>
 
-
-    <!--  Tu se začne dogodek za izbiro ceste ob pritisku na gumb za izbiranje ceste,  -->    
-    <!--  Nadaljuje se z SelectRoad() funkcijo, 4 vrstice dol Ta je v draw-road.component.ts vrstica 73-->
     <button 
         id="select-road"
         mat-button 
         (click)="selectRoad()" 
         [disabled]="!canDraw || drawMode"
-        [matTooltip]="selectMode ? 'Stop selecting roads' : 'Select a road'">
+        [matTooltip]="(selectMode ? 'ROAD_SELECT_STOP' : 'ROAD_SELECT_START') | translate">
         <mat-icon>{{ (!canDraw || drawMode) ? 'near_me' : (selectMode ? 'select_all' : 'near_me') }}</mat-icon>
     </button>
 
@@ -37,11 +34,10 @@ https://www.angularjswiki.com/angular/angular-material-icons-list-mat-icon-list/
         mat-button 
         (click)="editRoad()" 
         [disabled]="!canDraw || drawMode"
-        [matTooltip]="editMode ? 'Stop editing roads' : 'Edit a road'">
+        [matTooltip]="(editMode ? 'ROAD_EDIT_STOP' : 'ROAD_EDIT_START') | translate">
         <mat-icon>{{ (!canDraw || drawMode) ? 'create' : (editMode ? 'done_outline' : 'create') }}</mat-icon>
     </button>
 }
-
 
 
 
