@@ -1,0 +1,54 @@
+<div class="kontrolna-vrstica">
+  <div class="izbira-del">
+    <INPUT type="radio" id="all" name="izbira" value="all" checked (click)="setIzbira('all')">  
+    <label for="all">{{ 'BUILDING_TABLE_SELECT_ALL' | translate }}</label> 
+    &nbsp; &nbsp; &nbsp;
+    <INPUT type="radio" id="one" name="izbira" value="one" (click)="setIzbira('one')"> 
+    <label for="one">{{ 'BUILDING_TABLE_SELECT_ONE' | translate }}</label> 
+    &nbsp; &nbsp; &nbsp;
+    <label for="e_izb">{{ 'BUILDING_TABLE_ID' | translate }}</label>
+    <input type="text" id="e_izb" name="e_izb" size="3" [value]="inputId" (input)="onInputIdChange($event)">
+  </div>  
+
+  <div class="iskanje-del">
+    <label for="i_ko">{{ 'BUILDING_TABLE_SEARCH_KO' | translate }}</label>
+    <input type="number" id="i_ko" name="i_ko" size="4" [(ngModel)]="iskanjeKO" placeholder="KO" style="width: 60px;">
+    &nbsp;&nbsp;&nbsp;
+    <label for="i_parc">{{ 'BUILDING_TABLE_ST_STAVBE' | translate }}</label>
+    <input type="number" id="i_stavba" name="i_stavba" size="5" [(ngModel)]="iskanjeStavbe" [placeholder]="'BUILDING_TABLE_ST_STAVBE' | translate" style="width: 80px;">
+    <button type="button" class="btn btn-primary btn-sm me-1" (click)="isciStavbo()">{{ 'BUILDING_TABLE_SEARCH' | translate }}</button>
+  </div>
+</div>
+
+<div class="scrollable-table" #scrollContainer>
+  <table class="table table-sm">
+    <thead>
+      <tr>
+        <th scope="col" style="width: 70px;">Id</th>
+        <th scope="col" style="width: 70px;">{{ 'BUILDING_TABLE_KO' | translate }}</th>
+        <th scope="col" style="width: 90px;">{{ 'BUILDING_TABLE_ST_STAVBE_COL' | translate }}</th>
+        <th scope="col" style="width: 250px;">{{ 'BUILDING_TABLE_OPIS' | translate }}</th>
+        <th scope="col">{{ 'BUILDING_TABLE_AREA' | translate }}</th>
+        <th scope="col">{{ 'BUILDING_TABLE_GEOM' | translate }}</th>
+        <th scope="col">{{ 'BUILDING_TABLE_ACTION' | translate }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let building of BuildingsArray" 
+          [class.selected]="isBuildingSelected(building.id)">
+        <a href="#" (click)="drawBuildingGeometry(building); $event.preventDefault()">{{ building.id }}</a>
+        <td>{{building.sifko}}</td>
+        <td>{{building.st_stavbe}}</td>
+        <td>{{building.description}}</td>
+        <td>{{building.area}}</td>
+        <td>{{building.geom_wkt}}</td>
+        <td style="white-space: nowrap; width: 120px;">
+          <div class="d-flex justify-content-between">
+            <button type="button" class="geosg-btn-edit geosg-btn-sm me-1" (click)="setUpdate(building)">{{ 'BUILDING_TABLE_EDIT' | translate }}</button>
+            <button type="button" class="geosg-btn-delete geosg-btn-sm" (click)="setDelete(building)">{{ 'BUILDING_TABLE_DELETE' | translate }}</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table> 
+</div>

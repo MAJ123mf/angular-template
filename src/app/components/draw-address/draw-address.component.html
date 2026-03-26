@@ -1,0 +1,49 @@
+@if (drawMode) {
+    <button 
+        mat-button 
+        (click)="toggleDrawMode()" 
+        [matTooltip]="'ADDRESS_DRAW_STOP' | translate">
+        <mat-icon>clear</mat-icon>
+    </button>
+    <button 
+        id="select-address"
+        mat-button 
+        (click)="selectAddress()" 
+        [disabled]="drawMode"
+        [matTooltip]="(selectMode ? 'ADDRESS_SELECT_STOP' : 'ADDRESS_SELECT_START') | translate">
+        <mat-icon>{{ selectMode ? 'select_all' : 'near_me' }}</mat-icon>    
+    </button>
+    <button 
+        id="edit-address"
+        mat-button 
+        (click)="editAddress()" 
+        [disabled]="drawMode"
+        [matTooltip]="(editMode ? 'ADDRESS_EDIT_STOP' : 'ADDRESS_EDIT_START') | translate">
+        <mat-icon>{{ editMode ? 'done_outline' : 'create' }}</mat-icon> 
+    </button>
+} @else {
+    <button 
+        mat-button 
+        (click)="toggleDrawMode()" 
+        [disabled]="!canDraw"
+        [matTooltip]="'ADDRESS_DRAW_START' | translate">
+        <mat-icon>mail_outline</mat-icon>
+    </button>
+    <button 
+        id="select-address"
+        mat-button 
+        (click)="selectAddress()" 
+        [disabled]="!canDraw || drawMode"
+        [matTooltip]="(selectMode ? 'ADDRESS_SELECT_STOP' : 'ADDRESS_SELECT_START') | translate">
+        <mat-icon>{{ (!canDraw || drawMode) ? 'near_me' : (selectMode ? 'select_all' : 'near_me') }}</mat-icon>
+    </button>
+    <button 
+        id="edit-address"
+        mat-button 
+        (click)="editAddress()" 
+        [disabled]="!canDraw || drawMode"
+        [matTooltip]="(editMode ? 'ADDRESS_EDIT_STOP' : 'ADDRESS_EDIT_START') | translate">
+        <mat-icon>{{ (!canDraw || drawMode) ? 'create' : (editMode ? 'done_outline' : 'create') }}</mat-icon>
+    </button>
+}
+

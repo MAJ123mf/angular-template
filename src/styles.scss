@@ -1,0 +1,548 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* =============================================
+   OpenLayers Layer Switcher pozicioniranje
+   ============================================= */
+.ol-layerswitcher {
+  top: 10px !important;
+  left: 10px !important;
+  z-index: 1000 !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.ol-layerswitcher .panel {
+  max-height: 300px !important;
+  overflow-y: auto !important;
+}
+
+// =============================================
+// CSS SPREMENLJIVKE ZA TEME
+// Vsaka tema definira svoje barve prek CSS
+// custom properties (--ime-spremenljivke).
+// Te spremenljivke se potem uporabljajo v
+// komponentah prek var(--ime-spremenljivke).
+// =============================================
+
+// ---------------------------------------------
+// SVETLA TEMA (privzeta)
+// Siva menijska vrstica, belo ozadje
+// ---------------------------------------------
+:root, [data-theme="light"] {
+  --primary: #b0bec5;          // barva menija, statusa, razdelilnikov
+  --primary-dark: #90a4ae;     // temnejša za hover efekte
+  --divider-color: #b0bec5;    // barva razdelilnikov med paneli
+  --bg-main: #ffffff;          // glavno ozadje aplikacije
+  --bg-panel: #f8f9fa;         // ozadje panelov in kartic
+  --bg-table-header: #f8f9fa;  // ozadje glave tabele
+  --text-main: #333333;        // glavna barva besedila
+  --text-muted: #666666;       // zbledela barva besedila
+  --border-color: #cccccc;     // barva robov
+  --selected-row: yellow;      // ozadje izbrane vrstice v tabeli
+  --selected-row-hover: #ffff99; // ozadje izbrane vrstice pri hover
+  --input-bg: #ffffff;         // ozadje vnosnih polj
+  --input-text: #333333;       // barva besedila v vnosnih poljih
+  --input-border: #ced4da;     // rob vnosnih polj
+  --overlay-bg: rgba(0, 0, 0, 0.5); // ozadje overlay-a (help dialog)
+}
+
+// ---------------------------------------------
+// TEMNA TEMA
+// Zelena menijska vrstica, temno ozadje
+// ---------------------------------------------
+[data-theme="dark"] {
+  --primary: #8fa832;          // zelena barva menija in razdelilnikov
+  --primary-dark: #7a9228;     // temnejša zelena za hover
+  --divider-color: #8fa832;
+  --bg-main: #1e1e1e;          // temno ozadje
+  --bg-panel: #2d2d2d;         // malo svetlejši paneli
+  --bg-table-header: #3a3a3a;  // glava tabele
+  --text-main: #e0e0e0;        // svetlo besedilo
+  --text-muted: #aaaaaa;
+  --border-color: #555555;
+  --divider-color: #8fa832;
+  --selected-row: #7a7a00;     // rumenkasto-temna izbrana vrstica
+  --selected-row-hover: #909000;
+  --input-bg: #3a3a3a;
+  --input-text: #e0e0e0;
+  --input-border: #555555;
+  --overlay-bg: rgba(0, 0, 0, 0.7);
+}
+
+// ---------------------------------------------
+// CUSTOM TEMA
+// Temno modra menijska vrstica, svetlo ozadje,
+// oranžni razdelilniki, sivi gumbi
+// ---------------------------------------------
+[data-theme="custom"] {
+  --primary: #2c3e50;          // temno modra barva menija
+  --primary-dark: #1a252f;     // še temnejša za hover
+  --bg-main: #f4f6f8;          // svetlo sivo-modro ozadje
+  --bg-panel: #ffffff;         // beli paneli
+  --bg-table-header: #2c3e50;  // temno modra glava tabele
+  --text-main: #2c3e50;        // temno modro besedilo
+  --text-muted: #7f8c8d;
+  --border-color: #dce1e7;
+  --divider-color: #e67e22;    // oranžni razdelilniki
+  --selected-row: #fdebd0;     // toplo oranžna izbrana vrstica
+  --selected-row-hover: #fad7a0;
+  --input-bg: #ffffff;
+  --input-text: #2c3e50;
+  --input-border: #bdc3c7;
+  --overlay-bg: rgba(44, 62, 80, 0.7);
+}
+
+// =============================================
+// BOOTSTRAP OVERRIDES - SVETLA TEMA
+// btn-primary ostane Bootstrap modra (privzeto)
+// btn-success → zelena
+// btn-danger → rdeča
+// geosg-btn-edit → zelena (Uredi v tabeli)
+// geosg-btn-delete → rdeča (Briši v tabeli)
+// =============================================
+[data-theme="light"] {
+
+  // Gumb za uspeh (npr. shranjevanje) → zelena
+  body .btn-success {
+    background-color: #43a047 !important;
+    border-color: #43a047 !important;
+    color: #ffffff !important;
+    &:hover { background-color: #2e7d32 !important; border-color: #2e7d32 !important; }
+  }
+
+  // Gumb za nevarnost (npr. brisanje) → rdeča
+  body .btn-danger {
+    background-color: #e53935 !important;
+    border-color: #e53935 !important;
+    color: #ffffff !important;
+    &:hover { background-color: #c62828 !important; border-color: #c62828 !important; }
+  }
+
+  // Gumb Uredi v tabeli → zelena
+  html body .geosg-btn-edit,
+  html body .geosg-btn-edit:not(:disabled) {
+    background-color: #43a047 !important;
+    border-color: #43a047 !important;
+    color: #ffffff !important;
+    &:hover { background-color: #2e7d32 !important; border-color: #2e7d32 !important; }
+  }
+
+  // Gumb Briši v tabeli → rdeča
+  html body .geosg-btn-delete,
+  html body .geosg-btn-delete:not(:disabled) {
+    background-color: #e53935 !important;
+    border-color: #e53935 !important;
+    color: #ffffff !important;
+    &:hover { background-color: #c62828 !important; border-color: #c62828 !important; }
+  }
+
+  // Puščice na razdelilnikih
+  .collapse-btn-left,
+  .collapse-btn-table {
+    color: #333333 !important;
+    background: var(--primary) !important;
+  }
+}
+
+// =============================================
+// BOOTSTRAP OVERRIDES - TEMNA TEMA
+// btn-primary → indigo modra
+// btn-success → teal zelena
+// btn-danger → coral rdeča
+// geosg-btn-edit → teal zelena
+// geosg-btn-delete → coral rdeča
+// =============================================
+[data-theme="dark"] {
+
+  body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+  }
+
+
+  label { color: var(--text-main); }
+
+  // Izjema - layer switcher mora imeti temno besedilo
+  .ol-layerswitcher-buttons,
+  .panel li,
+  .panel label,
+  .layer-switcher li,
+  .layer-switcher label {
+    color: #333333 !important;
+  }
+
+
+  // Vnosna polja
+  .form-control {
+    background-color: var(--input-bg) !important;
+    color: var(--input-text) !important;
+    border-color: var(--input-border) !important;
+
+    &:focus {
+      background-color: var(--input-bg) !important;
+      color: var(--input-text) !important;
+      border-color: var(--primary) !important;
+      box-shadow: 0 0 0 0.2rem rgba(143, 168, 50, 0.25) !important;
+    }
+
+    &:disabled {
+      background-color: #2a2a2a !important;
+      color: #777 !important;
+    }
+  }
+
+  // Navadna vnosna polja (izven Bootstrap form-control)
+  input[type="text"],
+  input[type="number"] {
+    background-color: var(--input-bg) !important;
+    color: var(--input-text) !important;
+    border-color: var(--input-border) !important;
+  }
+
+  // Bootstrap kartice (forme)
+  .card {
+    background-color: var(--bg-panel);
+    color: var(--text-main);
+    border-color: var(--border-color);
+  }
+
+  .col-form-label { color: var(--text-main); }
+  h2 { color: var(--text-main); }
+
+  // Tabela
+  .table {
+    color: var(--text-main);
+    --bs-table-bg: var(--bg-panel);
+    --bs-table-striped-bg: #353535;
+    --bs-table-hover-bg: rgba(255,255,255,0.05);
+    --bs-table-border-color: var(--border-color);
+  }
+
+  // Glava tabele
+  .table thead th {
+    background-color: var(--bg-table-header) !important;
+    color: var(--text-main) !important;
+    border-bottom-color: var(--primary) !important;
+  }
+
+  // Celice tabele - Bootstrap 5 visoko specifičen selektor
+  .table > :not(caption) > * > * {
+    color: var(--text-main) !important;
+    background-color: var(--bg-panel) !important;
+  }
+
+  // Linki v tabeli
+  .table a { color: #7eb8f7 !important; }
+
+  // Izbrana vrstica
+  tr.selected > * {
+    background-color: var(--selected-row) !important;
+    color: #000 !important;
+  }
+
+  tr.selected:hover > * {
+    background-color: var(--selected-row-hover) !important;
+    color: #000 !important;
+  }
+
+  // Hover na navadnih vrsticah
+  tr:not(.selected):hover > * {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    color: var(--text-main) !important;
+  }
+
+  .scrollable-table { border-color: var(--border-color) !important; }
+  label { color: var(--text-main); }
+
+  // btn-primary → indigo
+  html body .btn-primary,
+  html body .btn-primary:not(:disabled) {
+    background-color: #5c6bc0 !important;
+    border-color: #5c6bc0 !important;
+    color: #ffffff !important;
+    &:hover { background-color: #3949ab !important; border-color: #3949ab !important; }
+  }
+
+  // btn-success → teal
+  html body .btn-success,
+  html body .btn-success:not(:disabled) {
+    background-color: #26a69a !important;
+    border-color: #26a69a !important;
+    color: #ffffff !important;
+    &:hover { background-color: #00897b !important; border-color: #00897b !important; }
+  }
+
+  // btn-danger → coral
+  html body .btn-danger,
+  html body .btn-danger:not(:disabled) {
+    background-color: #ef5350 !important;
+    border-color: #ef5350 !important;
+    color: #ffffff !important;
+    &:hover { background-color: #e53935 !important; border-color: #e53935 !important; }
+  }
+
+  // Gumb Uredi v tabeli → teal
+  html body .geosg-btn-edit,
+  html body .geosg-btn-edit:not(:disabled) {
+    background-color: #26a69a !important;
+    border-color: #26a69a !important;
+    color: #ffffff !important;
+    &:hover { background-color: #00897b !important; border-color: #00897b !important; }
+  }
+
+  // Gumb Briši v tabeli → coral
+  html body .geosg-btn-delete,
+  html body .geosg-btn-delete:not(:disabled) {
+    background-color: #ef5350 !important;
+    border-color: #ef5350 !important;
+    color: #ffffff !important;
+    &:hover { background-color: #e53935 !important; border-color: #e53935 !important; }
+  }
+
+  // Puščice na razdelilnikih
+  .collapse-btn-left,
+  .collapse-btn-table {
+    color: var(--text-main) !important;
+    background: var(--primary) !important;
+  }
+
+  // Kontrolna vrstica nad tabelo
+  .kontrolna-vrstica {
+    background-color: var(--bg-panel);
+    color: var(--text-main);
+  }
+
+  // Panel za uvoz slojev
+  .import-panel {
+    background: var(--bg-panel) !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-main) !important;
+
+    .panel-header {
+      background: var(--bg-table-header) !important;
+      border-bottom-color: var(--border-color) !important;
+    }
+
+    .layer-title { color: var(--text-main) !important; }
+  }
+
+}
+
+// =============================================
+// BOOTSTRAP OVERRIDES - CUSTOM TEMA
+// VSI gumbi so v sivih odtenkih:
+// btn-primary, btn-success, geosg-btn-edit → #546e7a (sivo-modra)
+// btn-danger, geosg-btn-delete → #78909c (svetlejša siva)
+// =============================================
+[data-theme="custom"] {
+
+  body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+  }
+
+  // Meni in statusna vrstica imata temno ozadje
+  // zato besedilo mora biti belo
+  .menu { color: #ffffff !important; }
+  .menu button { color: #ffffff !important; }
+  .status { color: #ffffff !important; }
+
+  // Puščice na razdelilnikih → bele na temnem ozadju
+  .collapse-btn-left,
+  .collapse-btn-table {
+    color: #ffffff !important;
+    background: var(--primary) !important;
+  }
+
+  // Vnosna polja
+  .form-control {
+    background-color: var(--input-bg) !important;
+    color: var(--input-text) !important;
+    border-color: var(--input-border) !important;
+    border-radius: 6px !important;
+
+    &:focus {
+      border-color: #e67e22 !important;
+      box-shadow: 0 0 0 0.2rem rgba(230, 126, 34, 0.25) !important;
+    }
+
+    &:disabled {
+      background-color: #ecf0f1 !important;
+      color: #95a5a6 !important;
+    }
+  }
+
+  // Navadna vnosna polja
+  input[type="text"],
+  input[type="number"] {
+    background-color: var(--input-bg) !important;
+    color: var(--input-text) !important;
+    border-color: var(--input-border) !important;
+  }
+
+  // Bootstrap kartice z rahlo senco
+  .card {
+    background-color: var(--bg-panel);
+    color: var(--text-main);
+    border-color: var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(44, 62, 80, 0.08);
+  }
+
+  .col-form-label { color: var(--text-main); }
+  h2 { color: var(--text-main); }
+  label { color: var(--text-main); }
+
+  // Tabela
+  .table {
+    color: var(--text-main);
+    --bs-table-bg: var(--bg-panel);
+    --bs-table-border-color: var(--border-color);
+  }
+
+  // Glava tabele → temno modra z belim besedilom
+  .table thead th {
+    background-color: var(--bg-table-header) !important;
+    color: #ffffff !important;
+    border-bottom-color: var(--divider-color) !important;
+  }
+
+  // Celice tabele
+  .table > :not(caption) > * > * {
+    color: var(--text-main) !important;
+    background-color: var(--bg-panel) !important;
+  }
+
+  // Linki v tabeli → oranžni (ujema se z razdelilniki)
+  .table a {
+    color: #e67e22 !important;
+    font-weight: bold;
+  }
+
+  // Izbrana vrstica → toplo oranžna
+  tr.selected > * {
+    background-color: var(--selected-row) !important;
+    color: #2c3e50 !important;
+  }
+
+  tr.selected:hover > * {
+    background-color: var(--selected-row-hover) !important;
+    color: #2c3e50 !important;
+  }
+
+  // Hover na navadnih vrsticah → svetlo modrikasto
+  tr:not(.selected):hover > * {
+    background-color: #eaf0fb !important;
+    color: var(--text-main) !important;
+  }
+
+  .scrollable-table {
+    border-color: var(--border-color) !important;
+    border-radius: 6px;
+  }
+
+  // -----------------------------------------------
+  // VSI gumbi v custom temi → SIVINE
+  // btn-primary (Vstavi, Posodobi, Počisti, Išči)
+  // btn-success → enaka siva kot primary
+  // geosg-btn-edit (Uredi v tabeli) → enaka siva
+  // -----------------------------------------------
+  html body .btn-primary,
+  html body .btn-primary:not(:disabled),
+  html body .btn-success,
+  html body .btn-success:not(:disabled),
+  html body .geosg-btn-edit,
+  html body .geosg-btn-edit:not(:disabled) {
+    background-color: #546e7a !important;  // sivo-modra
+    border-color: #546e7a !important;
+    color: #ffffff !important;
+    &:hover { background-color: #37474f !important; border-color: #37474f !important; }
+  }
+
+  // -----------------------------------------------
+  // btn-danger (Bootstrap) in geosg-btn-delete
+  // → svetlejša siva (razlikuje se od primary)
+  // -----------------------------------------------
+  html body .btn-danger,
+  html body .btn-danger:not(:disabled),
+  html body .geosg-btn-delete,
+  html body .geosg-btn-delete:not(:disabled) {
+    background-color: #78909c !important;  // svetlejša sivo-modra
+    border-color: #78909c !important;
+    color: #ffffff !important;
+    &:hover { background-color: #546e7a !important; border-color: #546e7a !important; }
+  }
+
+  // Kontrolna vrstica nad tabelo
+  .kontrolna-vrstica {
+    background-color: var(--bg-panel);
+    color: var(--text-main);
+  }
+
+  // Panel za uvoz slojev
+  .import-panel {
+    background: var(--bg-panel) !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-main) !important;
+
+    .panel-header {
+      background: var(--bg-table-header) !important;
+      color: #ffffff !important;
+      border-bottom-color: var(--divider-color) !important;
+    }
+
+    .layer-title { color: var(--text-main) !important; }
+  }
+}
+
+// =============================================
+// GUMBI ZA TABELE - neodvisni od Bootstrap
+// Uporabljamo lastne razrede geosg-btn-edit in
+// geosg-btn-delete namesto btn-success/btn-danger
+// da se izognemo Bootstrap specifičnosti.
+// Barve se nato override-ajo po temah zgoraj.
+// =============================================
+
+.geosg-btn-edit,
+.geosg-btn-delete {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 4px;
+  border-width: 1px;
+  border-style: solid;
+  transition: color .15s ease-in-out, background-color .15s ease-in-out;
+}
+
+// Velikost gumba (ekvivalent Bootstrap btn-sm)
+.geosg-btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  border-radius: 3px;
+}
+
+// Privzete barve (brez data-theme atributa)
+// Te se override-ajo v posameznih temah zgoraj
+.geosg-btn-edit {
+  background-color: #43a047;   // zelena
+  border-color: #43a047;
+  color: #ffffff;
+  &:hover { background-color: #2e7d32; border-color: #2e7d32; }
+}
+
+.geosg-btn-delete {
+  background-color: #e53935;   // rdeča
+  border-color: #e53935;
+  color: #ffffff;
+  &:hover { background-color: #c62828; border-color: #c62828; }
+}
+
+

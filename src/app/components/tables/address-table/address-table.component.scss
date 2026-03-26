@@ -1,0 +1,100 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.kontrolna-vrstica {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding-top: 12px;
+  padding-left: 8px;
+}
+
+.scrollable-table {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+  border: 1px solid #ccc;
+  display: block;  /* ← dodaj to! */
+}
+
+.scrollable-table table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.scrollable-table thead th {
+  position: sticky;
+  top: 0;
+  background-color: #f8f9fa;
+  z-index: 2;
+}
+
+
+
+
+tr.selected {
+  background-color: yellow !important;
+  font-weight: bold;
+}
+
+tr:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+}
+
+tr.selected:hover {
+  background-color: #ffff99 !important;
+}
+
+tr.selected {
+  transition: background-color 0.3s ease;
+}
+
+.kontrolna-vrstica {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding-top: 12px;
+  padding-left: 8px;
+}
+
+.izbira-del {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.iskanje-del {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+// Custom tema - gumbi v sivinah
+:host-context([data-theme="custom"]) {
+  .btn-primary {
+    background-color: #546e7a !important;
+    border-color: #546e7a !important;
+    color: #ffffff !important;
+    &:hover { background-color: #37474f !important; border-color: #37474f !important; }
+  }
+  .geosg-btn-edit {
+    background-color: #546e7a !important;
+    border-color: #546e7a !important;
+    color: #ffffff !important;
+    &:hover { background-color: #37474f !important; border-color: #37474f !important; }
+  }
+  .geosg-btn-delete {
+    background-color: #78909c !important;
+    border-color: #78909c !important;
+    color: #ffffff !important;
+    &:hover { background-color: #546e7a !important; border-color: #546e7a !important; }
+  }
+}

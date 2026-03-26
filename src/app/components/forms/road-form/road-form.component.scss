@@ -1,0 +1,27 @@
+textarea, button {
+  margin-top: 2px;
+  margin-bottom: 4px;
+}
+h2 {
+    margin-bottom: 4px; /* ali še manj */
+    margin-top: 0px; /* ali še manj */
+}
+
+// okvir okoli vnosne forme za cesto
+.road-card,     
+{
+  outline: 1px solid lightgray;
+}
+
+// Custom tema - gumbi v sivinah
+:host-context([data-theme="custom"]) {
+  .btn-primary {
+    background-color: #546e7a !important;
+    border-color: #546e7a !important;
+    color: #ffffff !important;
+    &:hover {
+      background-color: #37474f !important;
+      border-color: #37474f !important;
+    }
+  }
+}

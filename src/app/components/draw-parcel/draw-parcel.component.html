@@ -1,0 +1,50 @@
+
+@if (drawMode) {
+  <button 
+    mat-button 
+    (click)="toggleDrawMode()" 
+    [matTooltip]="drawMode ? ('PARCEL_DRAW_STOP' | translate) : ('PARCEL_DRAW_START' | translate)"
+    [disabled]="!canDraw && !drawMode">
+    <mat-icon>{{ drawMode ? 'clear' : 'format_shapes' }}</mat-icon>
+  </button>
+  <button 
+    id="select-parcel"
+    mat-button 
+    (click)="selectParcel()" 
+    [disabled]="!canDraw || drawMode"
+    [matTooltip]="(selectMode ? 'PARCEL_SELECT_STOP' : 'PARCEL_SELECT_START') | translate">
+    <mat-icon>{{ selectMode ? 'select_all' : 'near_me' }}</mat-icon>
+  </button>
+  <button 
+    id="edit-parcel"
+    mat-button 
+    (click)="editParcel()" 
+    [disabled]="!canDraw || drawMode"
+    [matTooltip]="(editMode ? 'PARCEL_EDIT_STOP' : 'PARCEL_EDIT_START') | translate">
+    <mat-icon>{{ editMode ? 'done_outline' : 'create' }}</mat-icon>
+  </button>
+} @else {
+  <button 
+    mat-button 
+    (click)="toggleDrawMode()" 
+    [disabled]="!canDraw"
+    [matTooltip]="'PARCEL_DRAW_START' | translate">
+    <mat-icon>format_shapes</mat-icon>
+  </button>
+  <button 
+    id="select-parcel"
+    mat-button 
+    (click)="selectParcel()" 
+    [disabled]="!canDraw || drawMode"
+    [matTooltip]="(selectMode ? 'PARCEL_SELECT_STOP' : 'PARCEL_SELECT_START') | translate">
+    <mat-icon>{{ (!canDraw || drawMode) ? 'near_me' : (selectMode ? 'select_all' : 'near_me') }}</mat-icon>
+  </button>
+  <button 
+    id="edit-parcel"
+    mat-button 
+    (click)="editParcel()" 
+    [disabled]="!canDraw || drawMode"
+    [matTooltip]="(editMode ? 'PARCEL_EDIT_STOP' : 'PARCEL_EDIT_START') | translate">
+    <mat-icon>{{ (!canDraw || drawMode) ? 'create' : (editMode ? 'done_outline' : 'create') }}</mat-icon>
+  </button>
+}

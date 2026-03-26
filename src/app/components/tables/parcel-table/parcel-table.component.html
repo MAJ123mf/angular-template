@@ -1,0 +1,52 @@
+<div class="kontrolna-vrstica">
+  <div class="izbira-del">
+    <input type="radio" id="all" name="izbira" value="naloži vse" checked (click)="setIzbira('all')">
+    <label for="all">{{ 'PARCEL_TABLE_SELECT_ALL' | translate }}</label>
+    &nbsp;&nbsp;&nbsp;
+    <input type="radio" id="one" name="izbira" value="naloži enega" (click)="setIzbira('one')">
+    <label for="one">{{ 'PARCEL_TABLE_SELECT_ONE' | translate }}</label>
+    &nbsp;&nbsp;&nbsp;
+    <label for="fname">{{ 'PARCEL_TABLE_ID' | translate }}</label>
+    <input type="text" id="e_izb" name="e_izb" size="3" [value]="inputId" (input)="onInputIdChange($event)">
+  </div>
+
+  <div class="iskanje-del">
+    <label for="i_ko">{{ 'PARCEL_TABLE_SEARCH_KO' | translate }}</label>
+    <input type="text" id="i_ko" name="i_ko" size="4" [(ngModel)]="iskanjeKO" placeholder="KO">
+    &nbsp;&nbsp;&nbsp;
+    <label for="i_parc">{{ 'PARCEL_TABLE_PARC_NO' | translate }}</label>
+    <input type="text" id="i_parc" name="i_parc" size="7" [(ngModel)]="iskanjeParc" [placeholder]="'PARCEL_TABLE_PARC_NO' | translate">
+    <button type="button" class="btn btn-primary btn-sm me-1" (click)="isciParcelo()">{{ 'PARCEL_TABLE_SEARCH' | translate }}</button>
+  </div>
+</div>
+
+<div class="scrollable-table" #scrollContainer>       
+  <table class="table table-sm" style="--bs-table-cell-padding-y:0.1rem; --bs-table-cell-padding-x:0.25rem;">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th style="width: 90px;">{{ 'PARCEL_TABLE_PARC_NO' | translate }}</th>
+        <th>{{ 'PARCEL_TABLE_KO' | translate }}</th>
+        <th>{{ 'PARCEL_TABLE_AREA' | translate }}</th>
+        <th>{{ 'PARCEL_TABLE_GEOM' | translate }}</th>
+        <th>{{ 'PARCEL_TABLE_ACTION' | translate }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let parcel of ParcelsArray" 
+          [class.selected]="isParcelSelected(parcel.id)">
+        <a href="#" (click)="drawParcelGeometry(parcel); $event.preventDefault()">{{ parcel.id }}</a>
+        <td style="white-space: nowrap;">{{parcel.parc_st}}</td>
+        <td style="white-space: nowrap;">{{parcel.sifko}}</td>
+        <td>{{parcel.area}}</td>
+        <td>{{parcel.geom_wkt}}</td>
+        <td style="white-space: nowrap; width: 120px;">
+          <div class="d-flex justify-content-between">
+            <button type="button" class="geosg-btn-edit geosg-btn-sm me-1" (click)="setUpdate(parcel)">{{ 'PARCEL_TABLE_EDIT' | translate }}</button>
+            <button type="button" class="geosg-btn-delete geosg-btn-sm" (click)="setDelete(parcel)">{{ 'PARCEL_TABLE_DELETE' | translate }}</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table> 
+</div>

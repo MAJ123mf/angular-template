@@ -1,0 +1,56 @@
+<div class="kontrolna-vrstica">
+  <div class="izbira-del">
+    <INPUT type="radio" id="all" name="izbira" value="all" checked (click)="setIzbira('all')">  
+    <label for="all">{{ 'ROAD_TABLE_SELECT_ALL' | translate }}</label> 
+    &nbsp; &nbsp; &nbsp;
+    <INPUT type="radio" id="one" name="izbira" value="one" (click)="setIzbira('one')"> 
+    <label for="one">{{ 'ROAD_TABLE_SELECT_ONE' | translate }}</label> 
+    &nbsp; &nbsp; &nbsp;
+    <label for="fname">{{ 'ROAD_TABLE_ID' | translate }}</label>
+    <input type="text" id="e_izb" name="e_izb" size="3" [value]="inputId" (input)="onInputIdChange($event)">
+  </div>
+  <div class="iskanje-del">
+    <label for="fiu">{{ 'ROAD_TABLE_FILTER_LABEL' | translate }}</label>
+    <input type="text" id="fiu" name="flu" size="25" [(ngModel)]="filterImeUlice" [placeholder]="'ROAD_TABLE_FILTER_PLACEHOLDER' | translate">
+    <button type="button" class="btn btn-primary btn-sm me-1" (click)="filtrirajImeUlice()">{{ 'ROAD_TABLE_FILTER_BTN' | translate }}</button>
+    <button type="button" class="btn btn-secondary btn-sm" (click)="clearFilter()">{{ 'ROAD_TABLE_CLEAR_BTN' | translate }}</button>
+    
+    <span *ngIf="filtriranArray.length > 0 && filterImeUlice" style="margin-left: 10px; font-weight: bold;">
+      {{ 'ROAD_TABLE_FOUND' | translate }} {{ filtriranArray.length }}
+    </span>
+  </div>
+</div> 
+
+<div class="scrollable-table" #scrollContainer>          
+  <table class="table table-sm" style="--bs-table-cell-padding-y:0.1rem; --bs-table-cell-padding-x:0.25rem;">
+    <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col" style="width: 240px;">{{ 'ROAD_TABLE_IME_ULICE' | translate }}</th>
+        <th scope="col" style="width: 250px;">{{ 'ROAD_TABLE_UPRAVLJALEC' | translate }}</th>
+        <th scope="col" style="width: 250px;">{{ 'ROAD_TABLE_VZDRZEVALEC' | translate }}</th>
+        <th scope="col">{{ 'ROAD_TABLE_DOLZINA' | translate }}</th>
+        <th scope="col">{{ 'ROAD_TABLE_GEOM' | translate }}</th>
+        <th scope="col">{{ 'ROAD_TABLE_ACTION' | translate }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let road of filtriranArray" [class.selected]="isRoadSelected(road.id)">
+        <td>
+          <a href="#" (click)="drawRoadGeometry(road); $event.preventDefault()">{{ road.id }}</a>
+        </td>
+        <td style="white-space: nowrap;">{{road.str_name}}</td>
+        <td style="white-space: nowrap;">{{road.administrator}}</td>
+        <td>{{road.maintainer}}</td>
+        <td>{{road.length}}</td>
+        <td>{{road.geom_wkt}}</td>
+        <td style="white-space: nowrap; width: 120px;">
+          <div class="d-flex justify-content-between">
+            <button type="button" class="geosg-btn-edit geosg-btn-sm me-1" (click)="setUpdate(road)">{{ 'ROAD_TABLE_EDIT' | translate }}</button>
+            <button type="button" class="geosg-btn-delete geosg-btn-sm" (click)="setDelete(road)">{{ 'ROAD_TABLE_DELETE' | translate }}</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table> 
+</div>
