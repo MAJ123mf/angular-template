@@ -36,7 +36,9 @@
     <tbody>
       <tr *ngFor="let building of BuildingsArray" 
           [class.selected]="isBuildingSelected(building.id)">
-        <a href="#" (click)="drawBuildingGeometry(building); $event.preventDefault()">{{ building.id }}</a>
+        <td>
+           <a href="#" (click)="drawBuildingGeometry(building); $event.preventDefault()">{{ building.id }}</a>
+        </td>
         <td>{{building.sifko}}</td>
         <td>{{building.st_stavbe}}</td>
         <td>{{building.description}}</td>

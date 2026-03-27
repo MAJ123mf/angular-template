@@ -89,3 +89,29 @@ tr.selected {
     &:hover { background-color: #546e7a !important; border-color: #546e7a !important; }
   }
 }
+
+.scrollable-table td {
+  vertical-align: middle;
+  line-height: 1;
+}
+
+.scrollable-table td a {
+  vertical-align: middle;
+  display: inline;
+  line-height: 1;
+  margin: 0;
+  padding: 0;
+}
+
+.scrollable-table td a {
+  vertical-align: middle;
+  display: inline;
+  line-height: 1;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+

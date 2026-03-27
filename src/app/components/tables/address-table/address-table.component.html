@@ -36,7 +36,9 @@
     </thead>
     <tbody>
       <tr *ngFor="let address of filtriranArray" [class.selected]="isAddressSelected(address.id)">
-        <a href="#" (click)="drawAddressGeometry(address); $event.preventDefault()">{{ address.id }}</a>
+        <td>
+          <a href="#" (click)="drawAddressGeometry(address); $event.preventDefault()">{{ address.id }}</a>
+        </td>
         <td>{{address.building_num}}</td>
         <td>{{address.street}}</td>
         <td>{{address.house_num}}</td>

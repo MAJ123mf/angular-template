@@ -55,7 +55,7 @@ export class BuildingService {
       'Content-Type': 'application/x-www-form-urlencoded',
     });
 
-    return this.http.post(this.insertUrl, body.toString(), { headers }).pipe(
+    return this.http.post(this.baseUrl, body.toString(), { headers }).pipe(
       tap(res => console.log('Odgovor po shranjevanju stavbe:', res))
     );
   }

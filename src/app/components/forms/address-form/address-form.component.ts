@@ -135,7 +135,8 @@ export class AddressFormComponent implements OnInit {
     this.addressService.save(payload).subscribe({
       next: (res) => {
         // Prikaži backendovo message polje, če obstaja
-        this.statusMessage.emit(JSON.stringify(res));          // dejansko sporočilo od Django
+                // dejansko sporočilo od Django
+        this.statusMessage.emit(`Naslov uspešno poknjižen: ID=${res.id} | Ulica=${res.street} | Hišna št.=${res.house_num} | Pošta=${res.post_name}  | ${JSON.stringify(res)}`);
         console.log(res);
         this.clearForm();
         this.saved.emit();

@@ -117,7 +117,6 @@ export class RoadFormComponent implements OnInit, OnDestroy {
    }
 
    saveRecords() {
-
      // preveri če imaš pravice za shrajevanje cest
      if (!this.authService.ensureCanEdit()) {
        this.statusMessage.emit('You do not have permission to save data.');
@@ -134,7 +133,7 @@ export class RoadFormComponent implements OnInit, OnDestroy {
      };
      this.roadService.save(payload).subscribe({
        next: (res) => {
-         this.statusMessage.emit(JSON.stringify(res));
+         this.statusMessage.emit(`Cesta je uspešno poknjižena: ID=${res.id} | Ime ceste.=${res.str_name} | Dolžina=${res.length} m | ${JSON.stringify(res)}`);
          this.clearForm();
          this.saved.emit();
        },

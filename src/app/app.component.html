@@ -111,13 +111,16 @@
 <!-- POMOČ - Alt+F1 -->
 <div *ngIf="helpVisible" class="help-overlay" (click)="helpVisible = false">
   <div class="help-dialog" (click)="$event.stopPropagation()">
-    <h2>Bližnice - kombinacije tipk</h2>
+    <h2>{{ 'HELP_TITLE' | translate }}</h2>
     <table>
-      <tr><th>Bližnjica</th><th>Opis</th></tr>
-      <tr><td>Alt + F1</td><td>Prikaži/skrij to okno</td></tr>
-      <tr><td>Fn + F1 ali samo F1</td><td>Prikaži/skrij uporabniška navodila</td></tr>
-      <tr><td>Alt + Shift + E</td><td>Prenesi GeoPackage</td></tr>
+      <tr><th>{{ 'HELP_COL_SHORTCUT' | translate }}</th><th>{{ 'HELP_COL_DESC' | translate }}</th></tr>
+      <tr><td>Alt + F1</td><td>{{ 'HELP_ALT_F1' | translate }}</td></tr>
+      <tr><td>Fn + F1 / F1</td><td>{{ 'HELP_F1' | translate }}</td></tr>
+      <tr><td>Alt + Shift + E</td><td>{{ 'HELP_ALT_SHIFT_E' | translate }}</td></tr>
+      <tr><td>Escape</td><td>{{ 'HELP_ESCAPE' | translate }}</td></tr>
     </table>
-    <button (click)="helpVisible = false">Zapri</button>
+    <div class="help-footer">
+      <button (click)="helpVisible = false">{{ 'HELP_CLOSE' | translate }}</button>
+    </div>
   </div>
 </div>

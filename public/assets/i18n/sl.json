@@ -146,6 +146,7 @@
   "HELP_F1": "Prikaži/skrij uporabniška navodila",
   "HELP_ALT_SHIFT_E": "Prenesi GeoPackage",
   "HELP_CLOSE": "Zapri",
+  "HELP_ESCAPE": "Počisti statusno vrstico",
   "IMPORT_TOOLTIP": "Uvozi sloj (gpkg, shp, geojson)",
   "IMPORT_PANEL_TITLE": "Uvoženi sloji",
   "IMPORT_ADD_TOOLTIP": "Dodaj sloj",
@@ -154,5 +155,33 @@
   "IMPORT_HIDE": "Skrij",
   "IMPORT_SHOW": "Prikaži",
   "IMPORT_ZOOM": "Zoom na sloj",
-  "IMPORT_DELETE": "Odstrani sloj"          
+  "IMPORT_DELETE": "Odstrani sloj",
+  "LAYERGROUP_IMPORTED": "Uvoženi sloji",
+  "PARCEL_DRAW_START": "Začni risanje parcele",
+  "PARCEL_DRAW_STOP": "Ustavi risanje parcele",
+  "PARCEL_SELECT_START": "Izberi parcelo",
+  "PARCEL_SELECT_STOP": "Ustavi izbiranje parcele",
+  "PARCEL_EDIT_START": "Uredi parcelo",
+  "PARCEL_EDIT_STOP": "Končaj urejanje parcele",
+  "BUILDING_DRAW_START": "Začni risanje stavbe",
+  "BUILDING_DRAW_STOP": "Ustavi risanje stavbe",
+  "BUILDING_SELECT_START": "Izberi stavbo",
+  "BUILDING_SELECT_STOP": "Ustavi izbiranje stavbe",
+  "BUILDING_EDIT_START": "Uredi stavbo",
+  "BUILDING_EDIT_STOP": "Končaj urejanje stavbe",
+  "ROAD_DRAW_START": "Začni risanje ceste",
+  "ROAD_DRAW_STOP": "Ustavi risanje ceste",
+  "ROAD_SELECT_START": "Izberi cesto",
+  "ROAD_SELECT_STOP": "Ustavi izbiranje ceste",
+  "ROAD_EDIT_START": "Uredi cesto",
+  "ROAD_EDIT_STOP": "Končaj urejanje ceste",
+  "ADDRESS_DRAW_START": "Začni risanje naslova",
+  "ADDRESS_DRAW_STOP": "Ustavi risanje naslova",
+  "ADDRESS_SELECT_START": "Izberi naslov",
+  "ADDRESS_SELECT_STOP": "Ustavi izbiranje naslova",
+  "ADDRESS_EDIT_START": "Uredi naslov",
+  "ADDRESS_EDIT_STOP": "Končaj urejanje naslova"
+ 
+
+
 }

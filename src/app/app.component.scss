@@ -75,14 +75,27 @@ app-map {
   left: 0;
 }
 
-.bottom {
+// NOVO - dodaj
+.help-footer {
+  padding: 0.75rem 1.5rem;
   display: flex;
-  flex-direction: column;
-  overflow: hidden;       // ← ključno: ne auto
-  min-height: 0;
-  padding-top: 0;         // ← padding je zdaj v kontrolna-vrstica
-  background-color: var(--bg-main);
-  color: var(--text-main);
+  justify-content: flex-end;
+  border-top: 1px solid var(--border-color);
+  background-color: var(--bg-panel);
+
+  button {
+    padding: 4px 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    background: var(--primary);
+    border: none;
+    color: var(--text-main);
+    font-weight: bold;
+    font-size: 0.85rem;
+    transition: background 0.15s ease;
+
+    &:hover { background: var(--primary-dark); }
+  }
 }
 
 .status {

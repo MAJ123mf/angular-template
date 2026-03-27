@@ -35,7 +35,9 @@
     <tbody>
       <tr *ngFor="let parcel of ParcelsArray" 
           [class.selected]="isParcelSelected(parcel.id)">
-        <a href="#" (click)="drawParcelGeometry(parcel); $event.preventDefault()">{{ parcel.id }}</a>
+        <td>
+          <a href="#" (click)="drawParcelGeometry(parcel); $event.preventDefault()">{{ parcel.id }}</a>
+        </td> 
         <td style="white-space: nowrap;">{{parcel.parc_st}}</td>
         <td style="white-space: nowrap;">{{parcel.sifko}}</td>
         <td>{{parcel.area}}</td>
@@ -50,3 +52,6 @@
     </tbody>
   </table> 
 </div>
+
+
+

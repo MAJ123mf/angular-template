@@ -122,7 +122,7 @@ export class BuildingFormComponent implements OnInit {
 
     this.buildingService.save(payload).subscribe({
       next: (res) => {
-        this.statusMessage.emit(JSON.stringify(res));
+        this.statusMessage.emit(`Stavba uspešno poknjižena: ID=${res.id} | št. stavbe=${res.st_stavbe} | KO=${res.sifko} | Površina=${res.area} m² | ${JSON.stringify(res)}`);
         console.log('[Building-form] Django response: ', res);
         this.clearForm();
         this.saved.emit();

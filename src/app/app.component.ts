@@ -99,6 +99,11 @@ handleKeyboardEvent(event: KeyboardEvent) {
     console.log('[App.Component.ts] F1 detected!');
     window.open('uporabniska_navodila/index.html', '_blank');
   }
+
+  // Escape → počisti statusno vrstico
+  if (event.key === 'Escape') {
+    this.statusText = '';
+  }
 }
 
 showHelp() {
