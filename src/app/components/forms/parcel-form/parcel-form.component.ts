@@ -125,7 +125,7 @@ export class ParcelFormComponent implements OnInit {
 
     this.parcelService.save(payload).subscribe({
       next: (res) => {
-        this.statusMessage.emit(JSON.stringify(res));
+        this.statusMessage.emit(`Parcela uspešno poknjižena: ID=${res.id} | Parc. št.=${res.parc_st} | KO=${res.sifko} | Površina=${res.area} m² | ${JSON.stringify(res)}`);
         console.log('[Parcel-form] Django response: ', res);
         this.clearForm();
         this.saved.emit();

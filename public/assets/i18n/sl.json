@@ -145,5 +145,14 @@
   "HELP_ALT_F1": "Prikaži/skrij to okno",
   "HELP_F1": "Prikaži/skrij uporabniška navodila",
   "HELP_ALT_SHIFT_E": "Prenesi GeoPackage",
-  "HELP_CLOSE": "Zapri"        
+  "HELP_CLOSE": "Zapri",
+  "IMPORT_TOOLTIP": "Uvozi sloj (gpkg, shp, geojson)",
+  "IMPORT_PANEL_TITLE": "Uvoženi sloji",
+  "IMPORT_ADD_TOOLTIP": "Dodaj sloj",
+  "IMPORT_NO_LAYERS": "Ni uvoženih slojev",
+  "IMPORT_OPEN_FILE": "Odpri datoteko",
+  "IMPORT_HIDE": "Skrij",
+  "IMPORT_SHOW": "Prikaži",
+  "IMPORT_ZOOM": "Zoom na sloj",
+  "IMPORT_DELETE": "Odstrani sloj"          
 }

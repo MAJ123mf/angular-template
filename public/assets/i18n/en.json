@@ -145,7 +145,16 @@
   "HELP_ALT_F1": "Show/hide this window",
   "HELP_F1": "Show/hide user manual",
   "HELP_ALT_SHIFT_E": "Export GeoPackage",
-  "HELP_CLOSE": "Close"  
+  "HELP_CLOSE": "Close",
+  "IMPORT_TOOLTIP": "Import layer (gpkg, shp, geojson)",
+  "IMPORT_PANEL_TITLE": "Imported layers",
+  "IMPORT_ADD_TOOLTIP": "Add layer",
+  "IMPORT_NO_LAYERS": "No imported layers",
+  "IMPORT_OPEN_FILE": "Open file",
+  "IMPORT_HIDE": "Hide",
+  "IMPORT_SHOW": "Show",
+  "IMPORT_ZOOM": "Zoom to layer",
+  "IMPORT_DELETE": "Remove layer"    
     
 
 }

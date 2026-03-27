@@ -145,6 +145,15 @@
   "HELP_ALT_F1": "Mostrar/ocultar esta ventana",
   "HELP_F1": "Mostrar/ocultar manual de usuario",
   "HELP_ALT_SHIFT_E": "Exportar GeoPackage",
-  "HELP_CLOSE": "Cerrar"  
+  "HELP_CLOSE": "Cerrar",
+  "IMPORT_TOOLTIP": "Importar capa (gpkg, shp, geojson)",
+  "IMPORT_PANEL_TITLE": "Capas importadas",
+  "IMPORT_ADD_TOOLTIP": "Añadir capa",
+  "IMPORT_NO_LAYERS": "No hay capas importadas",
+  "IMPORT_OPEN_FILE": "Abrir archivo",
+  "IMPORT_HIDE": "Ocultar",
+  "IMPORT_SHOW": "Mostrar",
+  "IMPORT_ZOOM": "Zoom a la capa",
+  "IMPORT_DELETE": "Eliminar capa"
 
 }
