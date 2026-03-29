@@ -108,7 +108,6 @@ export class ParcelFormComponent implements OnInit {
 
 
   saveRecords() {
-
     // preveri če imaš pravice za shrajevanje
     if (!this.authService.ensureCanEdit()) {
       this.statusMessage.emit('You do not have permission to save data.');

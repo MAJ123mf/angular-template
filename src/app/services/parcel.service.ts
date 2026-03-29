@@ -51,7 +51,7 @@ export class ParcelService {
       'Content-Type': 'application/x-www-form-urlencoded',
     });
 
-    return this.http.post(this.baseUrl, body.toString(), { headers }).pipe(
+    return this.http.post(this.baseUrl, body.toString(), { headers }).pipe(          // tu lahko izbiramo med insertUrl in baseUrl, odvisno od tega ali hočemo uporabit custom metodo insert2 ali kar DRFViewset
       tap(res => console.log('Odgovor po shranjevanju parcele:', res))
     );
   }

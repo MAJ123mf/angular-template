@@ -20,6 +20,7 @@ import { GeoService } from './services/geo.service';
 import { TranslateModule } from '@ngx-translate/core';  // dodano za večjezičnost
 import { LanguageService } from './services/language.service';  // dodano za večjezičnost
 import { makeObjectPropertyPusher } from 'ol/xml';
+import { EventService } from './services/event.service';
 
 
 @Component({
@@ -62,6 +63,7 @@ export class AppComponent {
   tableCollapsed = false;
   currentTheme = 'light';
   isDarkTheme = false;
+  private allLayersLoaded = false;
   private tableHeightBeforeCollapse = 60; // shranimo pred collapse
 
 
@@ -71,7 +73,8 @@ export class AppComponent {
     private dialog: MatDialog,
     private mapService: MapService,
     private geoService: GeoService,
-    public languageService: LanguageService   // dodano za večjezičnost
+    public languageService: LanguageService,   // dodano za večjezičnost
+    private eventService: EventService
    ) {}
   statusText = '';
 
@@ -176,13 +179,11 @@ showHelp() {
 
 
   ngOnInit(): void {
-    // Obnovi shranjeno temo
-  const savedTheme = localStorage.getItem('geosg_theme') || 'light';
-  this.currentTheme = savedTheme;
-  this.isDarkTheme = savedTheme === 'dark';
-  document.documentElement.setAttribute('data-theme', savedTheme); // ← mora biti 'light' eksplicitno
-  
-
+    const savedTheme = localStorage.getItem('geosg_theme') || 'light';   // Obnovi shranjeno temo
+    this.currentTheme = savedTheme;
+    this.isDarkTheme = savedTheme === 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme); // ← mora biti 'light' eksplicitno
+    
     this.languageService.init();               // dodano za večjezičnost inicializacija jezika
 
     this.authService.statusMessage$.subscribe(message => {
@@ -192,6 +193,16 @@ showHelp() {
         this.statusText = message;
     });
     this.authService.checkIsLoggedInInServer().subscribe();
+
+    this.eventService.eventActivated$.subscribe(event => {
+      if (event.type === 'parcelsAddedToMap' && !this.allLayersLoaded) {
+        this.allLayersLoaded = true;  // samo enkrat naloži sloje
+        setTimeout(() => this.switchForm('building'), 500);
+        setTimeout(() => this.switchForm('road'), 1000);
+        setTimeout(() => this.switchForm('address'), 1500);
+        setTimeout(() => this.switchForm('parcel'), 2000);
+      }
+    });
   }
 
 
