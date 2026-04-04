@@ -1,0 +1,1937 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual de usuario - GeoSG</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #C9DB31;
+            --primary-dark: #A4B828;
+            --secondary: #2E7D32;
+            --text: #1a1a1a;
+            --text-light: #666;
+            --bg: #f8f9fa;
+            --white: #ffffff;
+            --border: #e0e0e0;
+            --shadow: rgba(0, 0, 0, 0.08);
+            --code-bg: #f5f5f5;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.7;
+            color: var(--text);
+            background: var(--bg);
+        }
+
+        /* Header */
+		
+		.top-sticky {
+			position: sticky;
+			top: 0;
+			z-index: 100;
+		}
+		
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--text);
+            padding: 1.2rem 2rem 1.2rem;
+            box-shadow: 0 4px 20px var(--shadow);
+
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.85;
+        }
+
+        /* Navigation */
+        .nav {
+            background: var(--white);
+            padding: 0.5rem 2rem;
+            box-shadow: 0 2px 8px var(--shadow);
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .nav-btn {
+            padding: 0.7rem 1.2rem;
+            background: transparent;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            color: var(--text);
+        }
+
+        .nav-btn:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem 4rem;
+        }
+
+        /* Sections */
+        .section {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 12px var(--shadow);
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section h2 {
+            font-size: 1.8rem;
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .section h3 {
+            font-size: 1.3rem;
+            color: var(--text);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section h3::before {
+            content: "▸";
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        /* Step cards */
+        .step {
+            background: var(--bg);
+            border-left: 4px solid var(--primary);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+        }
+
+        .step-number {
+            display: inline-block;
+            background: var(--primary);
+            color: var(--text);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 32px;
+            font-weight: bold;
+            margin-right: 0.8rem;
+        }
+
+        .step h4 {
+            display: inline;
+            font-size: 1.1rem;
+            color: var(--secondary);
+        }
+
+        .step p {
+            margin-top: 0.8rem;
+            color: var(--text-light);
+        }
+
+        /* Info boxes */
+        .info-box {
+            background: #E8F5E9;
+            border-left: 4px solid var(--secondary);
+            padding: 1.2rem;
+            margin: 1.5rem 0;
+            border-radius: 6px;
+        }
+
+        .info-box.warning {
+            background: #FFF3E0;
+            border-left-color: #F57C00;
+        }
+
+        .info-box.tip {
+            background: #E3F2FD;
+            border-left-color: #1976D2;
+        }
+
+        .info-box strong {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .info-box.warning strong {
+            color: #F57C00;
+        }
+
+        .info-box.tip strong {
+            color: #1976D2;
+        }
+
+        /* Feature list */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .feature-card {
+            background: var(--bg);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 2px solid var(--border);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .feature-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px var(--shadow);
+        }
+
+        .feature-card h4 {
+            color: var(--secondary);
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+        }
+
+        .feature-card p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        /* Expandable cards */
+        .feature-card.expandable {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .feature-card.expandable h4::after {
+            content: " ▼";
+            font-size: 0.8rem;
+            color: var(--primary);
+            transition: transform 0.3s;
+            display: inline-block;
+        }
+
+        .feature-card.expandable.expanded h4::after {
+            transform: rotate(180deg);
+        }
+
+        .expand-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+        }
+
+        .feature-card.expanded .expand-content {
+            max-height: 3000px;
+            transition: max-height 0.6s ease-in;
+        }
+
+        .expand-content img {
+            margin-top: 1rem;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+
+        /* Keyboard shortcuts */
+        .kbd {
+            display: inline-block;
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 0.2rem 0.5rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+
+        table th {
+            background: var(--secondary);
+            color: white;
+            padding: 0.9rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        table td {
+            padding: 0.9rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        table tr:hover {
+            background: var(--bg);
+        }
+
+        /* Code blocks */
+        .code-block {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+		
+		code {
+			 font-size: 130%;
+		}
+
+        /* Screenshot placeholder */
+        .screenshot {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            font-style: italic;
+            margin: 1.5rem 0;
+        }
+
+        /* Button examples */
+		.btn-example {
+			display: inline-block;
+			padding: 0.6rem 1.2rem;
+			background: #2F6FDB;   /* modra kot v app */
+			color: white;
+			border: none;
+			border-radius: 6px;
+			font-weight: 500;
+			margin: 0.3rem;
+			cursor: default;
+		}
+		
+		/* Vstavi, Posodobi, Počisti */
+		.btn-example.primary { 
+			background: #2F6FDB; 
+		}
+		
+		/* Uredi */
+		.btn-example.success { 
+			background: #2E7D32; 
+		}
+		
+		/* Briši */
+		.btn-example.danger { 
+			background: #D32F2F; 
+		}        
+
+        /* Search box */
+        .search-container {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(201, 219, 49, 0.2);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-light);
+            border-top: 1px solid var(--border);
+            margin-top: 3rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 1.5rem 1rem 2rem;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .nav {
+                padding: 0.5rem 1rem;
+            }
+
+            .container {
+                padding: 0 1rem 2rem;
+                margin-top: 2rem;
+            }
+
+            .section {
+                padding: 1.5rem;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Icons using Unicode */
+        .icon-map::before { content: "🗺️ "; }
+        .icon-edit::before { content: "✏️ "; }
+        .icon-list::before { content: "📋 "; }
+        .icon-save::before { content: "💾 "; }
+        .icon-delete::before { content: "🗑️ "; }
+        .icon-search::before { content: "🔍 "; }
+        .icon-key::before { content: "⌨️ "; }
+        .icon-warn::before { content: "⚠️ "; }
+        .icon-tip::before { content: "💡 "; }
+        .icon-user::before { content: "👤 "; }
+		
+		.panel-layout {
+    display: grid;
+    grid-template-columns: 7fr 3fr;
+    gap: 1.5rem;
+    align-items: stretch;
+    margin: 1.5rem 0;
+}
+
+.panel-layout-text {
+    background: #E3F2FD;
+    border-left: 4px solid #1976D2; ;
+    padding: 1.2rem;
+    border-radius: 6px;
+}
+
+.panel-layout-text strong {
+    display: block;
+    margin-bottom: 0.7rem;
+    color: #1976D2;
+}
+
+.panel-layout-image {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.panel-layout-image img {
+    max-width: 108%;
+    height: auto;
+    border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+    .panel-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* === IKONE ORODIJ NA KARTI === */
+
+.tool-icon-inline {
+    height: 36px;
+    width: 36px;
+    vertical-align: middle;
+    margin: 0 6px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: #fff;
+    padding: 2px;
+}
+
+.tool-icon-block {
+    height: 72px;
+    width: 72px;
+    object-fit: contain;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: #fff;
+    padding: 4px;
+    margin-right: 0.8rem;
+}
+
+.tool-row {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin: 1rem 0;
+    flex-wrap: wrap;
+}
+
+.tool-row span {
+    color: var(--text-light);
+}
+
+/* === OBLIKA ZA FAQ === */
+
+.faq-item {
+    background: var(--bg);
+    border-left: 4px solid var(--primary);
+    padding: 1.2rem 1.4rem;
+    margin: 1rem 0;
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+
+.faq-item:hover {
+    box-shadow: 0 4px 12px var(--shadow);
+    transform: translateY(-2px);
+}
+
+.faq-question {
+    font-weight: 600;
+    color: var(--secondary);
+    margin-bottom: 0.5rem;
+}
+
+.faq-answer {
+    color: var(--text-light);
+}
+
+    </style>
+</head>
+<body>
+
+<div class="top-sticky">
+    <div class="header">
+        <h1>🗺️ GeoSG - Manual de usuario</h1>
+        <p>Guía de usuario para el uso del geoportal web GeoSG para la gestión eficiente de datos espaciales.</p>
+    </div>
+
+    <nav class="nav">
+        <button class="nav-btn active" onclick="showSection('uvod', this)">Introducción</button>
+        <button class="nav-btn" onclick="showSection('osnove', this)">Conceptos básicos</button>
+        <button class="nav-btn" onclick="showSection('parcele', this)">Parcelas</button>
+        <button class="nav-btn" onclick="showSection('stavbe', this)">Edificios</button>
+        <button class="nav-btn" onclick="showSection('ceste', this)">Vías</button>
+        <button class="nav-btn" onclick="showSection('naslovi', this)">Direcciones</button>
+        <button class="nav-btn" onclick="showSection('sloji', this)">Gestión de capas</button>
+        <button class="nav-btn" onclick="showSection('napredne', this)">Funciones avanzadas</button>
+        <button class="nav-btn" onclick="showSection('auth', this)">Acceso y permisos</button>
+		<button class="nav-btn" onclick="showSection('prilagoditve', this)">Configuración del entorno</button>
+        <button class="nav-btn" onclick="showSection('pomoc', this)">FAQ</button>
+    </nav>
+</div>
+
+<div class="container">
+
+    <!-- INTRODUCCIÓN -->
+    <section id="uvod" class="section active">
+        <h2>Bienvenido al geoportal GeoSG</h2>
+        
+        <p>El geoportal GeoSG permite <b>consultar, visualizar y gestionar datos espaciales</b> como parcelas catastrales, edificios, vías y direcciones.</p>
+
+        <img src="images/img_main.png" alt="Pantalla principal de la aplicación" style="width: 100%; border-radius: 8px; margin: 1.5rem 0; border: 2px solid var(--border); box-shadow: 0 4px 12px var(--shadow);">
+		<p> Las principales funcionalidades del geoportal están divididas en pestañas accesibles a través del menú de navegación en la parte superior de la página.
+			Seleccione la pestaña deseada y siga las instrucciones para cada funcionalidad.</p>
+       
+		<h3>Requisitos del sistema para usar el geoportal GeoSG</h3>
+		<ul style="margin-left: 2rem; line-height: 2;">
+			<li>un navegador web moderno (Chrome, Firefox, Edge, Safari),</li>
+			<li>resolución de pantalla mínima de 1280 × 720 px,</li>
+			<li>conexión a Internet activa,</li>
+			<li>una cuenta de usuario con los permisos de acceso adecuados (para la edición de datos).</li>
+		</ul>
+    </section>
+
+    <!-- CONCEPTOS BÁSICOS -->
+    <section id="osnove" class="section">
+        <h2>Conceptos básicos del geoportal</h2>
+
+        <h3>Partes principales de la interfaz de usuario del geoportal</h3>
+        <p>La interfaz de usuario del geoportal consta de cinco partes principales:</p>
+
+		<div class="step">
+			<span class="step-number">1</span>
+			<h4>Menú de navegación</h4> <br>
+		
+			<!-- SLIKA NAVIGACIJSKE VRSTICE -->
+			<p>			
+			El menú de navegación permite <b>cambiar entre los distintos módulos del geoportal</b>. Al hacer clic en una pestaña, se muestran la tabla y el formulario correspondientes para trabajar con los datos.<br><br>
+			En el lado derecho del menú de navegación hay configuraciones adicionales donde puede cambiar el <strong>idioma del geoportal</strong> (SI, EN, ESP) y seleccionar el <strong>tema de color</strong> de la interfaz. Además del tema claro predeterminado, también están disponibles un tema de color alternativo y el modo oscuro.
+			</p>
+		</div>
+		
+		<div class="step">
+			<span class="step-number">2</span>
+			<h4>Formulario de introducción y edición de datos</h4>
+			<p>El formulario permite <strong>introducir nuevos objetos espaciales</strong> con sus datos de atributos y <strong>editar objetos existentes</strong>.</p>
+		</div>	
+		
+		<div class="step">
+			<span class="step-number">3</span>
+			<h4>Vista cartográfica</h4>
+			<p>El mapa interactivo permite <strong>revisar datos, seleccionar objetos</strong> y <strong>dibujar y editar geometría</strong>.</p>
+		</div>
+		
+		<div class="step">
+			<span class="step-number">4</span>
+			<h4>Vista tabular de datos</h4>
+			<p>La tabla muestra una <strong>lista de registros</strong> y permite <strong>revisar, buscar y seleccionar datos</strong> para su uso posterior.</p>
+		</div>
+		
+		<div class="step">
+			<span class="step-number">5</span>
+			<h4>Barra de estado</h4>
+			<p>La barra de estado <b>muestra el estado actual del geoportal</b> y sus respuestas a los comandos del usuario. Una descripción detallada está disponible en la sección "Funciones avanzadas".</p>
+		</div>
+
+		<div class="panel-layout">
+			<div class="panel-layout-text">
+				<strong>💡 Ajuste de paneles</strong>
+				Puede ajustar el tamaño de las secciones individuales de la interfaz arrastrando los divisores entre ellas. Tome el divisor con el ratón y arrástrelo en la dirección deseada. Al hacer clic en la flecha, la sección se cierra o se vuelve a abrir por completo. <br><br>
+				El divisor vertical cambia el ancho del formulario y la vista del mapa, mientras que el divisor horizontal cambia la altura de la parte superior de la interfaz y la vista tabular.
+			</div>
+		
+			<div class="panel-layout-image">
+				<img src="images/delitev_vmesnika.PNG" alt="Esquema de distribución de la interfaz de usuario">
+			</div>
+		</div><br>
+
+        <h3>Visualización de capas</h3>
+        <p> En la vista del mapa (parte superior derecha) hay un botón "<b>Capas</b>" para gestionar la visibilidad de las capas espaciales. <br>
+			Las capas individuales se pueden activar y desactivar con casillas de verificación, y también puede gestionar grupos de capas (por ejemplo, WMS GURS, WFS GURS, capas propias y de trabajo). Para mostrar una capa, tanto la capa como su grupo principal deben estar seleccionados.
+		</p>
+		<p>
+		Una explicación detallada de las capas individuales está disponible en la pestaña <strong>"Gestión de capas"</strong>.
+		</p><br>
+
+        <h3>Edición de capas</h3>
+		<p>
+		Las pestañas del menú de navegación del geoportal (Parcelas, Edificios, Vías, Direcciones) permiten trabajar con los tipos de datos espaciales correspondientes. <br>
+		Los botones para agregar, seleccionar y editar geometrías se encuentran en el lado izquierdo de la vista del mapa. Están activos según la pestaña seleccionada en el menú de navegación, lo que significa que siempre trabaja con datos del módulo seleccionado.
+		El uso detallado de las funciones se presenta por separado para cada módulo en las pestañas siguientes. El trabajo con diferentes tipos de datos espaciales se basa en los mismos principios, por lo que revisar un ejemplo (por ejemplo, parcelas) es suficiente para comprenderlo.
+		Los módulos individuales se diferencian principalmente por sus atributos, que se presentan al inicio de cada capítulo.
+		</p> <br>
+
+        <h3>Elementos básicos de interacción con el mapa</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Función</th>
+                    <th>Descripción</th>
+                    <th>Acción</th> 
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Zoom</strong></td>
+                    <td>Acercar/alejar la vista</td>
+                    <td>Girar la rueda del ratón</td>
+                </tr>
+                <tr>
+                    <td><strong>Desplazamiento</strong></td>
+                    <td>Mover la vista por el mapa</td>
+                    <td>Mantener pulsado el botón izquierdo del ratón y arrastrar por el mapa</td>
+                </tr>
+
+            </tbody>
+        </table>
+    </section>
+
+
+    <!-- PARCELAS -->
+		
+    <section id="parcele" class="section">
+        			<h3>Atributos de parcelas</h3>
+		<ul style="margin-left: 2rem; line-height: 2;">
+			<li><strong>ID:</strong> Identificador único (<em>generado por la base de datos</em>)</li>
+			<li><strong>Número de parcela</strong> (<em>N.º parcela</em>): p. ej. "1234"</li>
+			<li><strong>Código de municipio catastral</strong> (<em>MC</em>): p. ej. "850"</li>
+			<li><strong>Superficie</strong> (<em>Superficie</em>): Superficie de la parcela (m²)</li>
+			<li><strong>Geometría</strong> (<em>Geom WKT</em>): Polígono de la parcela en formato WKT</li>
+		</ul> <br><br>
+		<h2>Trabajo con parcelas</h2>
+        <h3>Visualización de datos de parcelas en la tabla</h3>
+        <div class="step">
+            <span class="step-number">1</span>
+            <h4>Seleccione la pestaña "Parcelas" en el menú de navegación del geoportal</h4>
+            <p>En la tabla se muestran todas las parcelas de la base de datos con las columnas: ID, N.º parcela, MC, Superficie, Geom WKT.</p>
+        </div>
+
+        <div class="step">
+            <span class="step-number">2</span>
+            <h4>Selección del modo de visualización de datos en la tabla</h4>
+            <p>Hay dos botones de selección disponibles sobre la tabla:</p>
+            <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                <li><strong>Seleccionar todo:</strong> Muestra todas las parcelas</li>
+                <li><strong>Seleccionar una:</strong> Muestra solo la parcela con un ID específico (introduzca el ID en el campo)</li>
+            </ul>
+        </div>
+
+        <div class="info-box tip">
+            <strong class="icon-tip">Búsqueda de parcela por atributos</strong>
+            Utilice la función de búsqueda: introduzca el <b>código MC</b> y el <b>número de parcela</b>, luego haga clic en "Buscar". <br> La tabla se desplazará automáticamente a la parcela encontrada.
+        </div>
+
+        <h3>Añadir una nueva parcela</h3>
+        <div class="step">
+            <span class="step-number">1</span>
+            <h4>Dibujar geometría en el mapa</h4>
+            <p>
+				Debe estar seleccionada la pestaña de parcelas. Luego, en el lado izquierdo de la vista del mapa, seleccione el icono
+				<img src="images/risi_parcelo.png" alt="Icono para dibujar parcela" class="tool-icon-inline">
+				para dibujar una parcela.
+				Al pasar el cursor sobre el icono, aparece un tooltip con la descripción: <strong>"Iniciar dibujo de parcela"</strong>.
+				Dibuje el polígono haciendo clics sucesivos en la vista del mapa; finalice la captura con un doble clic.
+			</p>
+        </div>
+
+        <div class="step">
+            <span class="step-number">2</span>
+            <h4>Completar el formulario</h4>
+            <p>La geometría WKT se transfiere automáticamente al formulario (campo "Geom"). Puede modificarla si lo desea. Los demás campos son obligatorios:</p>
+            <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                <li><strong>Número de parcela (parc_st):</strong> p. ej. "1234/5"</li>
+                <li><strong>Código MC (sifko):</strong> p. ej. "850"</li>
+            </ul>
+			<p> El cálculo de la superficie se realiza automáticamente en función de la geometría y no se puede modificar. </p>
+			
+        </div>
+
+        <div class="step">
+            <span class="step-number">3</span>
+            <h4>Guardar la parcela</h4>
+            <p>	Haga clic en el botón <span class="btn-example primary">Insertar</span>. Con los permisos adecuados, la parcela se guarda en la base de datos y se muestra en la tabla. También pasa a formar parte de la capa vectorial que muestra este tipo de datos espaciales.</p>
+        </div>
+
+        <h3>Editar una parcela existente</h3>
+		<div class="step">
+			<span class="step-number">1</span>
+			<h4>Seleccionar una parcela</h4>
+			<p>
+				Puede seleccionar una parcela de dos maneras: en la tabla haciendo clic en el botón
+				<span class="btn-example success">Uredi</span>
+				o directamente en el mapa con la herramienta
+				<img src="images/izberi.png" alt="Icono de selección de objeto" class="tool-icon-inline">
+				<strong>"Seleccionar parcela"</strong>.
+				Independientemente del método elegido, los datos de la parcela se cargan en el formulario.
+			</p>
+		</div>
+
+        <div class="step">
+            <span class="step-number">2</span>
+            <h4>Editar atributos o geometría</h4>
+            <p><strong>Atributos</strong>: Cambie los valores en el formulario (número de parcela o código MC).</p>
+            <p><strong>Geometría</strong>: Cambie las coordenadas de los puntos en el registro de geometría.</p>
+			<p>
+				<strong>Edición de geometría directamente en el mapa</strong>:
+				Izberite ikono
+				<img src="images/uredi.png" alt="Icono de edición de geometría" class="tool-icon-inline">
+				<b>Editar parcela</b>.
+				A continuación, puede arrastrar los vértices de la parcela existente para cambiar su forma.
+				Cuando termine, haga clic en el icono
+				<img src="images/konec_urejanja.png" alt="Icono para finalizar edición" class="tool-icon-inline">
+				para desactivar la función de edición.
+				El WKT se actualiza en el formulario de la izquierda.
+			</p>
+        </div>
+
+        <div class="step">
+            <span class="step-number">3</span>
+            <h4>Guardar cambios</h4>
+            <p>Para actualizar la geometría en la base de datos, haga clic en el botón: <span class="btn-example primary">Actualizar</span>. <br> Los cambios en la parcela se guardan en la base de datos.</p>
+        </div>
+
+        <h3>Eliminar una parcela</h3>
+        <p>Busque la parcela que desea eliminar en la tabla. <br> En el extremo derecho de la tabla, en la columna "Acción", seleccione el botón: <span class="btn-example danger">Eliminar</span>.<br> En la ventana de confirmación, confirme la eliminación de la parcela.</p>
+
+        <div class="info-box warning">
+            <strong class="icon-warn">Permisos</strong>
+            Para guardar, editar y eliminar, debe haber iniciado sesión y tener el rol de <b>editor</b> o <b>admin</b>. <br> Si no tiene los permisos necesarios, se mostrará una advertencia y la operación no se ejecutará.
+        </div>
+    </section>
+
+	<!-- EDIFICIOS -->
+	<section id="stavbe" class="section">
+		<h3>Atributos de edificios</h3>
+		<ul style="margin-left: 2rem; line-height: 2;">
+			<li><strong>ID:</strong> Identificador único (<em>generado por la base de datos</em>)</li>
+			<li><strong>Código de municipio catastral</strong> (<em>MC</em>): p. ej. "850"</li>
+			<li><strong>Número de edificio</strong> (<em>N.º edificio</em>): p. ej. "1234"</li>
+			<li><strong>Descripción del edificio</strong> (<em>Descripción</em>): Descripción breve del edificio</li>
+			<li><strong>Superficie</strong> (<em>Superficie</em>): Superficie de la planta del edificio (m²)</li>
+			<li><strong>Geometría</strong> (<em>Geom WKT</em>): Polígono del edificio en formato WKT</li>
+		</ul>
+		<br><br>
+	
+		<h2>Trabajo con edificios</h2>
+	
+		<h3>Visualización de datos de edificios en la tabla</h3>
+		<div class="step">
+			<span class="step-number">1</span>
+			<h4>Seleccione la pestaña "Edificios"</h4>
+			<p>En la tabla se muestran todos los edificios de la base de datos (columnas: ID, N.º edificio, MC, Descripción, Superficie, Geom WKT).</p>
+		</div>
+	
+		<div class="step">
+			<span class="step-number">2</span>
+			<h4>Selección del modo de visualización de datos en la tabla</h4>
+			<p>Hay dos botones de selección disponibles sobre la tabla:</p>
+			<ul style="margin-left: 2rem; margin-top: 0.5rem;">
+				<li><strong>Seleccionar todo:</strong> Muestra todos los edificios</li>
+				<li><strong>Seleccionar uno:</strong> Muestra solo el edificio con un ID específico (introduzca el ID en el campo)</li>
+			</ul>
+		</div>
+	
+		<div class="info-box tip">
+			<strong class="icon-tip">Búsqueda de edificio por atributos</strong>
+			Utilice la función de búsqueda: introduzca el <b>código MC</b> y el <b>número de edificio</b>, luego haga clic en "Buscar". <br>
+			La tabla se desplazará automáticamente al edificio encontrado.
+		</div>
+	
+		<h3>Añadir un nuevo edificio</h3>
+		<div class="step">
+			<span class="step-number">1</span>
+			<h4>Dibujar geometría en el mapa</h4>
+			<p>
+				Izbran mora biti zavihek stavb. Nato na levi strani kartografskega prikaza izberite ikono
+				<img src="images/risi_stavbo.png" alt="Icono para dibujar edificio" class="tool-icon-inline">
+				para dibujar un edificio.
+				Ob premiku kazalca nad ikono se prikaže namig z opisom funkcije: <strong>"Iniciar dibujo de edificio"</strong>.
+				Dibuje el polígono haciendo clics sucesivos en la vista del mapa; finalice la captura con un doble clic.
+			</p>
+		</div>
+	
+		<div class="step">
+			<span class="step-number">2</span>
+			<h4>Completar el formulario</h4>
+			<p>La geometría WKT se transfiere automáticamente al formulario (campo "Geom"). Complete también:</p>
+			<ul style="margin-left: 2rem; margin-top: 0.5rem;">
+				<li><strong>Número de edificio:</strong> p. ej. "1234"</li>
+				<li><strong>Código MC (sifko):</strong> p. ej. "850"</li>
+				<li><strong>Descripción del edificio:</strong> p. ej. "Casa residencial"</li>
+				<li><strong>Superficie (area):</strong> p. ej. "180"</li>
+			</ul>
+		</div>
+	
+		<div class="step">
+			<span class="step-number">3</span>
+			<h4>Guardar el edificio</h4>
+			<p>Haga clic en el botón <span class="btn-example primary">Insertar</span>. Con los permisos adecuados, el edificio se guarda en la base de datos y se muestra en la tabla. También pasa a formar parte de la capa vectorial.</p>
+		</div>
+	
+		<h3>Editar un edificio existente</h3>
+		<div class="step">
+			<span class="step-number">1</span>
+			<h4>Seleccionar un edificio</h4>
+			<p>
+				Puede seleccionar un edificio de dos maneras:
+				en la tabla haciendo clic en el botón <span class="btn-example success">Uredi</span>
+				o directamente en el mapa con la herramienta
+				<img src="images/izberi.png" alt="Icono de selección de objeto" class="tool-icon-inline">
+				<strong>"Seleccionar edificio"</strong>.
+				Po izbiri se podatki samodejno naložijo v obrazec.
+			</p>
+		</div>
+	
+		<div class="step">
+			<span class="step-number">2</span>
+			<h4>Editar atributos o geometría</h4>
+			<p><strong>Atributos</strong>: Cambie los valores en el formulario (número de edificio, código MC, descripción o superficie).</p>
+		
+			<p>
+				<strong>Edición de geometría directamente en el mapa</strong>:
+				Izberite ikono
+				<img src="images/uredi.png" alt="Icono de edición de geometría" class="tool-icon-inline">
+				<b>Editar edificio</b>.
+				A continuación, puede arrastrar los vértices del edificio existente para cambiar su forma.
+				Cuando termine, haga clic en el icono
+				<img src="images/konec_urejanja.png" alt="Icono para finalizar edición" class="tool-icon-inline">
+				para desactivar la función de edición.
+				El WKT se actualiza automáticamente en el formulario.
+			</p>
+		</div>
+	
+		<div class="step">
+			<span class="step-number">3</span>
+			<h4>Guardar cambios</h4>
+			<p>Para actualizar la geometría o los atributos en la base de datos, haga clic en: <span class="btn-example primary">Actualizar</span>. <br>
+			Los cambios en el edificio se guardan en la base de datos.</p>
+		</div>
+	
+		<h3>Eliminar un edificio</h3>
+		<p>Busque el edificio que desea eliminar en la tabla. <br>
+		En el extremo derecho de la columna "Acción", haga clic en: <span class="btn-example danger">Eliminar</span>.<br>
+		En la ventana de confirmación, confirme la eliminación del edificio.</p>
+	
+		<div class="info-box warning">
+			<strong class="icon-warn">Permisos</strong>
+			Para guardar, editar y eliminar, debe haber iniciado sesión y tener el rol de <b>editor</b> o <b>admin</b>. <br> Si no tiene los permisos necesarios, se mostrará una advertencia y la operación no se ejecutará.
+		</div>
+	</section>
+	
+	<!-- VÍAS -->
+	<section id="ceste" class="section">
+		<h3>Atributos de vías</h3>
+		<ul style="margin-left: 2rem; line-height: 2;">
+			<li><strong>ID:</strong> Identificador único (<em>generado por la base de datos</em>)</li>
+			<li><strong>Nombre de la vía</strong> (<em>Nombre de la vía</em>): p. ej. "Dunajska cesta"</li>
+			<li><strong>Gestor</strong> (<em>Gestor</em>): Gestor de la vía</li>
+			<li><strong>Mantenedor</strong> (<em>Mantenedor</em>): Quien mantiene la vía</li>
+			<li><strong>Longitud</strong> (<em>Longitud</em>): Longitud de la vía en metros</li>
+			<li><strong>Geometría</strong> (<em>Geom WKT</em>): Línea de la vía en formato WKT</li>
+		</ul>
+		<br><br>
+	
+		<h2>Trabajo con vías</h2>
+	
+		<h3>Visualización de datos de vías en la tabla</h3>
+		<div class="step">
+			<span class="step-number">1</span>
+			<h4>Seleccione la pestaña "Vías"</h4>
+			<p>En la tabla se muestran todas las vías de la base de datos (columnas: ID, Nombre de la vía, Gestor, Mantenedor, Longitud, Geom WKT).</p>
+		</div>
+	
+		<div class="step">
+			<span class="step-number">2</span>
+			<h4>Selección del modo de visualización de datos en la tabla</h4>
+			<p>Hay dos botones de selección disponibles sobre la tabla:</p>
+			<ul style="margin-left: 2rem; margin-top: 0.5rem;">
+				<li><strong>Seleccionar todo:</strong> Muestra todas las vías</li>
+				<li><strong>Seleccionar una:</strong> Muestra solo la vía con un ID específico (introduzca el ID en el campo)</li>
+			</ul>
+		</div>
+	
+		<div class="info-box tip">
+			<strong class="icon-tip">Búsqueda de vía por atributos</strong>
+			Utilice la función de búsqueda: introduzca el <b>nombre de la calle o vía</b>, luego haga clic en "Buscar". <br>
+			La tabla se actualizará y mostrará solo los resultados coincidentes.
+		</div>
+	
+		<h3>Añadir una nueva vía</h3>
+		<div class="step">
+			<span class="step-number">1</span>
+			<h4>Dibujar geometría en el mapa</h4>
+			<p>
+				Izbran mora biti zavihek cest. Nato na levi strani kartografskega prikaza izberite ikono
+				<img src="images/risi_cesto.png" alt="Icono para dibujar vía" class="tool-icon-inline">
+				para dibujar una vía.
+				Ob premiku kazalca nad ikono se prikaže namig z opisom funkcije: <strong>"Iniciar dibujo de vía"</strong>.
+				Dibuje la vía como una línea haciendo clics sucesivos en la vista del mapa; finalice la captura con un doble clic.
+			</p>
+		</div>
+	
+		<div class="step">
+			<span class="step-number">2</span>
+			<h4>Completar el formulario</h4>
+			<p>La geometría WKT se transfiere automáticamente al formulario (campo "Geom"). Complete también:</p>
+			<ul style="margin-left: 2rem; margin-top: 0.5rem;">
+				<li><strong>Nombre de la vía:</strong> p. ej. "Dunajska cesta"</li>
+				<li><strong>Gestor:</strong> p. ej. "Municipio de Liubliana"</li>
+				<li><strong>Mantenedor:</strong> p. ej. "Empresa de servicios públicos"</li>
+				<li><strong>Longitud:</strong> p. ej. "245"</li>
+			</ul>
+		</div>
+	
+		<div class="step">
+			<span class="step-number">3</span>
+			<h4>Guardar la vía</h4>
+			<p>Haga clic en el botón <span class="btn-example primary">Insertar</span>. Con los permisos adecuados, la vía se guarda en la base de datos y se muestra en la tabla. También pasa a formar parte de la capa vectorial.</p>
+		</div>
+	
+		<h3>Editar una vía existente</h3>
+		<div class="step">
+			<span class="step-number">1</span>
+			<h4>Seleccionar una vía</h4>
+			<p>
+				Puede seleccionar una vía de dos maneras:
+				en la tabla haciendo clic en el botón <span class="btn-example success">Uredi</span>
+				o directamente en el mapa con la herramienta
+				<img src="images/izberi.png" alt="Icono de selección de objeto" class="tool-icon-inline">
+				<strong>"Seleccionar vía"</strong>.
+				Po izbiri se podatki samodejno naložijo v obrazec.
+			</p>
+		</div>
+	
+		<div class="step">
+			<span class="step-number">2</span>
+			<h4>Editar atributos o geometría</h4>
+			<p><strong>Atributos</strong>: Cambie los valores en el formulario (nombre de la vía, gestor, mantenedor o longitud).</p>
+		
+			<p>
+				<strong>Edición de geometría directamente en el mapa</strong>:
+				Izberite ikono
+				<img src="images/uredi.png" alt="Icono de edición de geometría" class="tool-icon-inline">
+				<b>Editar vía</b>.
+				A continuación, puede arrastrar los nodos para cambiar el trazado de la vía.
+				Cuando termine, haga clic en el icono
+				<img src="images/konec_urejanja.png" alt="Icono para finalizar edición" class="tool-icon-inline">
+				para desactivar la función de edición.
+				El WKT se actualiza automáticamente en el formulario.
+			</p>
+		</div>
+	
+		<div class="step">
+			<span class="step-number">3</span>
+			<h4>Guardar cambios</h4>
+			<p>Para actualizar la geometría o los atributos en la base de datos, haga clic en: <span class="btn-example primary">Actualizar</span>. <br>
+			Los cambios en la vía se guardan en la base de datos.</p>
+		</div>
+	
+		<h3>Eliminar una vía</h3>
+		<p>Busque la vía que desea eliminar en la tabla. <br>
+		En el extremo derecho de la columna "Acción", haga clic en: <span class="btn-example danger">Eliminar</span>.<br>
+		En la ventana de confirmación, confirme la eliminación de la vía.</p>
+	
+		<div class="info-box warning">
+			<strong class="icon-warn">Permisos</strong>
+			Para guardar, editar y eliminar, debe haber iniciado sesión y tener el rol de <b>editor</b> o <b>admin</b>. <br> Si no tiene los permisos necesarios, se mostrará una advertencia y la operación no se ejecutará.
+		</div>
+	</section>
+	
+	<!-- DIRECCIONES -->
+	<section id="naslovi" class="section">
+		<h3>Atributos de direcciones</h3>
+		<ul style="margin-left: 2rem; line-height: 2;">
+			<li><strong>ID:</strong> Identificador único (<em>generado por la base de datos</em>)</li>
+			<li><strong>Número de edificio</strong> (<em>Número de edificio</em>): Código o número del edificio asociado</li>
+			<li><strong>Calle</strong> (<em>Calle</em>): Nombre de la calle</li>
+			<li><strong>Número de casa</strong> (<em>Número de casa</em>): p. ej. "25A"</li>
+			<li><strong>Código postal</strong> (<em>Código postal</em>): p. ej. "1000"</li>
+			<li><strong>Oficina de correos</strong> (<em>Nombre de la oficina</em>): p. ej. "Liubliana"</li>
+			<li><strong>Geometría</strong> (<em>Geom WKT</em>): Punto de la dirección en formato WKT</li>
+		</ul>
+		<br><br>
+	
+		<h2>Trabajo con direcciones</h2>
+	
+		<h3>Visualización de datos de direcciones en la tabla</h3>
+		<div class="step">
+			<span class="step-number">1</span>
+			<h4>Seleccione la pestaña "Direcciones"</h4>
+			<p>En la tabla se muestran todas las direcciones de la base de datos (columnas: ID, Calle, Número de casa, Código postal, Oficina, Geom WKT).</p>
+		</div>
+		
+		<div class="step">
+			<span class="step-number">2</span>
+			<h4>Selección del modo de visualización de datos en la tabla</h4>
+			<p>Hay dos botones de selección disponibles sobre la tabla:</p>
+			<ul style="margin-left: 2rem; margin-top: 0.5rem;">
+				<li><strong>Seleccionar todo:</strong> Muestra todas las direcciones</li>
+				<li><strong>Seleccionar una:</strong> Muestra solo la dirección con un ID específico (introduzca el ID en el campo)</li>
+			</ul>
+		</div>
+	
+		<div class="info-box tip">
+			<strong class="icon-tip">Búsqueda de dirección por atributos</strong>
+			Utilice la función de búsqueda: introduzca el <b>nombre de la calle</b>, luego haga clic en "Buscar". <br>
+			La tabla se actualizará y mostrará solo los resultados coincidentes.
+		</div>
+	
+		<h3>Añadir una nueva dirección</h3>
+		<div class="step">
+			<span class="step-number">1</span>
+			<h4>Dibujar geometría en el mapa</h4>
+			<p>
+				Izbran mora biti zavihek naslovov. Nato na levi strani kartografskega prikaza izberite ikono
+				<img src="images/risi_naslov.png" alt="Icono para dibujar dirección" class="tool-icon-inline">
+				para dibujar una dirección.
+				Ob premiku kazalca nad ikono se prikaže namig z opisom funkcije: <strong>"Iniciar dibujo de dirección"</strong>.
+				Defina la dirección haciendo clic en la vista del mapa, donde se crea un punto.
+			</p>
+		</div>
+	
+		<div class="step">
+			<span class="step-number">2</span>
+			<h4>Completar el formulario</h4>
+			<p>La geometría WKT se transfiere automáticamente al formulario (campo "Geom"). Complete también:</p>
+			<ul style="margin-left: 2rem; margin-top: 0.5rem;">
+				<li><strong>Número de edificio:</strong> p. ej. "1234"</li>
+				<li><strong>Calle:</strong> p. ej. "Dunajska cesta"</li>
+				<li><strong>Número de casa:</strong> p. ej. "25A"</li>
+				<li><strong>Código postal:</strong> p. ej. "1000"</li>
+				<li><strong>Oficina de correos:</strong> p. ej. "Liubliana"</li>
+			</ul>
+		</div>
+	
+		<div class="step">
+			<span class="step-number">3</span>
+			<h4>Guardar la dirección</h4>
+			<p>Haga clic en el botón <span class="btn-example primary">Insertar</span>. Con los permisos adecuados, la dirección se guarda en la base de datos y se muestra en la tabla. También pasa a formar parte de la capa vectorial.</p>
+		</div>
+	
+		<h3>Editar una dirección existente</h3>
+		<div class="step">
+			<span class="step-number">1</span>
+			<h4>Seleccionar una dirección</h4>
+			<p>
+				Puede seleccionar una dirección de dos maneras:
+				en la tabla haciendo clic en el botón <span class="btn-example success">Uredi</span>
+				o directamente en el mapa con la herramienta
+				<img src="images/izberi.png" alt="Icono de selección de objeto" class="tool-icon-inline">
+				<strong>"Seleccionar dirección"</strong>.
+				Po izbiri se podatki samodejno naložijo v obrazec.
+			</p>
+		</div>
+	
+		<div class="step">
+			<span class="step-number">2</span>
+			<h4>Editar atributos o geometría</h4>
+			<p><strong>Atributos</strong>: Cambie los valores en el formulario (calle, número de casa, código postal u oficina de correos).</p>
+		
+			<p>
+				<strong>Edición de geometría directamente en el mapa</strong>:
+				Izberite ikono
+				<img src="images/uredi.png" alt="Icono de edición de geometría" class="tool-icon-inline">
+				<b>Editar dirección</b>.
+				A continuación, puede arrastrar el punto para cambiar la posición de la dirección.
+				Cuando termine, haga clic en el icono
+				<img src="images/konec_urejanja.png" alt="Icono para finalizar edición" class="tool-icon-inline">
+				para desactivar la función de edición.
+				El WKT se actualiza automáticamente en el formulario.
+			</p>
+		</div>
+	
+		<div class="step">
+			<span class="step-number">3</span>
+			<h4>Guardar cambios</h4>
+			<p>Para actualizar la geometría o los atributos en la base de datos, haga clic en: <span class="btn-example primary">Actualizar</span>. <br>
+			Los cambios en la dirección se guardan en la base de datos.</p>
+		</div>
+	
+		<h3>Eliminar una dirección</h3>
+		<p>Busque la dirección que desea eliminar en la tabla. <br>
+		En el extremo derecho de la columna "Acción", haga clic en: <span class="btn-example danger">Eliminar</span>.<br>
+		En la ventana de confirmación, confirme la eliminación de la dirección.</p>
+	
+		<div class="info-box warning">
+			<strong class="icon-warn">Permisos</strong>
+			Para guardar, editar y eliminar, debe haber iniciado sesión y tener el rol de <b>editor</b> o <b>admin</b>. <br> Si no tiene los permisos necesarios, se mostrará una advertencia y la operación no se ejecutará.
+		</div>
+	</section>
+
+    <!-- GESTIÓN DE CAPAS -->
+    <section id="sloji" class="section">
+        <h2>Capas y gestión de capas</h2>
+
+        <p>El control "Capas" en la esquina superior derecha de la vista del mapa permite activar y desactivar capas espaciales individuales y grupos de capas.
+		Para mostrar una capa, tanto la capa como su grupo principal deben estar marcados. Al iniciar la aplicación de forma predeterminada, todas las capas individuales están habilitadas, pero solo el último grupo de capas está activo.
+		Por lo tanto, al entrar en la aplicación solo se ven las capas de trabajo. La imagen siguiente muestra este estado inicial y una vista general de todas las capas disponibles en la aplicación.</p>
+
+        <img src="images/img_layers.png" alt="Control de capas" style="width: 240px; margin: 1.5rem auto; display: block; border-radius: 8px; border: 2px solid var(--border); box-shadow: 0 4px 12px var(--shadow);">
+		<br>
+		<h3>Activación y gestión de capas (paso a paso)</h3>
+		
+		<div class="step">
+			<span class="step-number">1</span>
+			<h4>Abrir el control</h4>
+			<p>
+				En el mapa (panel derecho), busque el botón 
+				<strong>"Sloji"</strong>
+				<img src="images/znak_za_sloje.png" alt="Icono de capas" style="height: 40px; vertical-align: middle; margin: 0 4px;">
+				en la esquina superior derecha. Haga clic en él para abrir el menú de capas.
+			</p>
+		</div>
+		
+		<div class="step">
+			<span class="step-number">2</span>
+			<h4>Activar o desactivar una capa</h4>
+			<p>
+				Haga clic en la casilla junto al nombre de una capa individual o de un grupo de capas.
+				Una capa solo se mostrará en el mapa si tanto la <strong>capa individual</strong> como su <strong>grupo</strong> están activos simultáneamente.
+			</p>
+		</div>
+		
+		<h4>Una capa individual puede tener tres estados diferentes</h4>
+		
+		<ul style="margin-left: 2rem; margin-top: 1rem; line-height: 2.1;">
+			<li>
+				<img src="images/izklopljen.png" alt="Capa desactivada" style="height: 20px; vertical-align: middle; margin-right: 6px;">
+				<strong>Capa desactivada</strong>: la capa no está seleccionada y, por lo tanto, no se muestra en el mapa, aunque su grupo esté activo.
+			</li>
+			<li>
+				<img src="images/pripravljen.png" alt="Capa preparada" style="height: 20px; vertical-align: middle; margin-right: 6px;">
+				<strong>Capa preparada</strong>: la capa está seleccionada, pero su grupo no está activo, por lo que la capa aún no se muestra en el mapa.
+			</li>
+			<li>
+				<img src="images/aktiviran.png" alt="Capa activa" style="height: 20px; vertical-align: middle; margin-right: 6px;">
+				<strong>Capa activa</strong>: la capa está seleccionada y pertenece a un grupo activo, por lo que se muestra en el mapa.
+			</li>
+		</ul>
+		
+		<div class="info-box warning">
+			<strong>⚠️ Importante</strong>
+			Si una capa individual está seleccionada pero su grupo no está activo, la capa no se mostrará.  
+			Del mismo modo, un grupo activo por sí solo no significa que todas las capas dentro de él se muestren; cada capa individual también debe estar marcada.
+		</div> <br> 
+		
+        <h3>Tipos de capas</h3>
+		
+		<p>GeoSG utiliza varios tipos de capas, que difieren en el método de visualización, el volumen de datos y el uso previsto.</p>
+		
+		<div class="step">
+			<span class="step-number">1</span>
+			<h4>WMS GURS (Web Map Service)</h4>
+			<p>
+			WMS (Web Map Service) es un estándar <strong>OGC (Open Geospatial Consortium)</strong> para acceder a datos cartográficos en forma de imágenes a través de la web. 
+			Las capas WMS se muestran como imágenes raster (por ejemplo, PNG o JPEG), lo que permite una visualización rápida de áreas espaciales grandes, pero no permite el acceso directo a la geometría o los atributos.
+			La aplicación GeoSG proporciona capas WMS seleccionadas de la <strong>Autoridad de Cartografía y Geodesia de la República de Eslovenia (GURS)</strong>, accesibles a través de enlaces publicados en el portal <strong>eProstor</strong>. 
+			Las capas disponibles son:
+			</p>
+		
+			<ul style="margin-left: 2rem; margin-top: 0.5rem;">
+				<li><strong>Parcelas:</strong> visualización de parcelas catastrales</li>
+				<li><strong>Edificios:</strong> visualización del catastro de edificios</li>
+				<li><strong>DOF25:</strong> ortofoto digital (resolución espacial 25 cm)</li>
+			</ul>
+		
+			<div class="info-box tip" style="margin-top: 1rem;">
+				<strong>💡 Propósito y uso de las capas WMS GURS</strong>
+				Las capas WMS GURS se utilizan como capas de referencia para una revisión visual rápida de los datos espaciales oficiales y como base cartográfica al trabajar en la aplicación.
+			</div>
+		</div>
+
+        <div class="step">
+            <span class="step-number">2</span>
+            <h4>WFS GURS (Web Feature Service)</h4>
+			<p>
+			WFS (Web Feature Service) es un estándar <strong>OGC (Open Geospatial Consortium)</strong> para acceder a datos espaciales vectoriales a través de la web. 
+			Permite la transferencia de geometría y atributos asociados, posibilitando su análisis y procesamiento posterior.
+			
+			En la aplicación GeoSG, las capas WFS de GURS se utilizan como datos de referencia, permitiendo revisar objetos espaciales individuales (entidades) junto con sus atributos. 
+			Los enlaces a estos datos se obtuvieron a través del portal <strong>eProstor</strong>.
+			</p>
+
+			Las capas disponibles son:
+			</p>
+			
+			<ul style="margin-left: 2rem; margin-top: 0.5rem;">
+				<li><strong>Municipios catastrales:</strong> límites de los municipios catastrales (polígonos)</li>
+				<li><strong>Parcelas:</strong> parcelas catastrales con atributos (número de parcela, superficie, MC, etc.)</li>
+				<li><strong>Edificios:</strong> edificios con datos de atributos</li>
+				<li><strong>Municipios (RPE):</strong> límites municipales del registro de unidades espaciales</li>
+			</ul>
+			<div class="info-box tip" style="margin-top: 1rem;">
+				<strong>💡 Propósito y uso de las capas WFS GURS</strong>
+				Las capas WFS GURS se utilizan para una revisión detallada de los objetos espaciales individuales (entidades) y <b>sus atributos</b>, y para verificar los datos en comparación con las capas propias.
+				En la aplicación, están destinados exclusivamente a la visualización y no a la edición, ya que la edición está habilitada en las capas de trabajo (vectoriales).
+			</div>
+			
+            <div class="info-box warning" style="margin-top: 1rem;">
+                <strong>⚠️ Importante sobre las capas WFS</strong>
+                Las capas WFS transfieren MUCHOS datos (todas las geometrías y atributos). Esto puede ralentizar significativamente la aplicación, especialmente en áreas grandes. Se recomienda utilizarlas solo para áreas pequeñas.
+            </div>
+        </div>
+
+        <div class="step">
+			<span class="step-number">3</span>
+			<h4>Capas WMS propias (GeoServer)</h4>
+		
+			<p>
+			<strong>Capas WMS propias:</strong> Son capas servidas por GeoServer desde la base de datos PostgreSQL/PostGIS del portal GeoSG. 
+			Representan una visualización raster de datos generada dinámicamente en el servidor. Pueden mostrar un estado diferente al de los datos de GURS, ya que los datos fuente pueden haber sido editados, añadidos o eliminados.
+			</p>
+		
+			<ul style="margin-left: 2rem; margin-top: 0.5rem;">
+				<li><strong>Parcelas:</strong> datos de parcelas de su base de datos</li>
+				<li><strong>Edificios:</strong> datos de edificios</li>
+				<li><strong>Vías:</strong> datos de vías</li>
+				<li><strong>Direcciones:</strong> datos de direcciones</li>
+			</ul>
+		
+            <p>
+                El servicio WMS también es accesible directamente a través de GeoServer, lo que permite incluir capas en herramientas GIS externas (por ejemplo, QGIS):
+                <a href="http://64.225.137.73:8080/geoserver/wms?service=WMS&request=GetCapabilities" target="_blank">
+                 http://64.225.137.73:8080/geoserver/wms?service=WMS&request=GetCapabilities
+                </a>
+            </p>
+
+            <p>
+                Las mismas capas también están disponibles a través del servicio WFS, que permite el acceso a datos vectoriales y su procesamiento posterior:
+                <a href="http://64.225.137.73:8080/geoserver/wfs?service=WFS&request=GetCapabilities" target="_blank">
+                http://64.225.137.73:8080/geoserver/wfs?service=WFS&request=GetCapabilities
+                </a>
+            </p>
+		
+			<div class="info-box tip" style="margin-top: 1rem;">
+				<strong>💡 Propósito y uso de las capas WMS propias</strong>
+				Las capas WMS propias permiten una revisión visual rápida de los datos de la base del portal GeoSG, sin transferir geometría. 
+				Son adecuadas para visualizar áreas grandes o como capas de referencia cuando no se necesita información de atributos.
+			</div>
+		</div>	
+
+
+        <div class="step">
+			<span class="step-number">4</span>
+			<h4>Capas de trabajo (vectoriales)</h4>
+		
+			<p>
+			<strong>Capas vectoriales de la base de datos GeoSG:</strong> Son capas cargadas directamente desde la base de datos PostgreSQL/PostGIS del geoportal GeoSG como datos vectoriales. 
+				Contienen geometría y atributos asociados, lo que permite la interacción con los objetos.
+				Las capas vectoriales de trabajo representan el nivel de trabajo básico de la aplicación, ya que permiten la manipulación directa de datos. 
+			</p>
+		
+			<ul style="margin-left: 2rem; margin-top: 0.5rem;">
+				<li><strong>Parcelas:</strong> permite seleccionar, editar y capturar nuevas parcelas</li>
+				<li><strong>Edificios:</strong> permite seleccionar y editar edificios</li>
+				<li><strong>Vías:</strong> permite seleccionar y editar vías</li>
+				<li><strong>Direcciones:</strong> permite seleccionar y editar direcciones</li>
+			</ul>
+		
+			<div class="info-box tip" style="margin-top: 1rem;">
+				<strong>💡 Propósito y uso de las capas vectoriales de trabajo</strong> 
+				Se utilizan para seleccionar objetos, editar geometría, actualizar atributos y capturar nuevos datos. 
+				Todas las operaciones activas sobre los datos en la aplicación se realizan en estas capas.
+			</div>
+		</div>
+		<br>
+
+        <div class="info-box warning">
+            <strong>⚠️ Rendimiento</strong>
+            <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                <li>Si la aplicación se ralentiza, primero desactive las capas <b>WFS GURS</b></li> 
+                <li>Con una conexión lenta, utilice solo capas <b>WMS</b> para visualización de referencia</li> 
+                <li>Para editar geometría y dibujar, debe tener activada la <b>capa vectorial de trabajo</b> que desea modificar</li>
+            </ul>
+        </div> <br> <br>
+		
+                <h3>Comparación: WMS vs WFS vs Capas vectoriales</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Propiedad</th>
+                    <th>WMS (raster)</th>
+                    <th>WFS (vectorial)</th>
+                    <th>Vectorial de trabajo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Formato de transferencia</strong></td>
+                    <td>Imagen PNG/JPEG</td>
+                    <td>Geometría GML/GeoJSON</td>
+                    <td>Geometría GeoJSON</td>
+                </tr>
+                <tr>
+                    <td><strong>Velocidad</strong></td>
+                    <td>Muy rápida</td>
+                    <td>Lenta (gran volumen de datos)</td>
+                    <td>Velocidad media</td>
+                </tr>
+                <tr>
+                    <td><strong>Selección de objetos</strong></td>
+                    <td>Ne</td>
+                    <td>Da</td>
+                    <td>Da</td>
+                </tr>
+                <tr>
+                    <td><strong>Edición de datos</strong></td>
+                    <td>Ne</td>
+                    <td>No (solo visualización)</td>
+                    <td>Da</td>
+                </tr>
+                <tr>
+                    <td><strong>Muestra atributos</strong></td>
+                    <td>Ne</td>
+                    <td>Da</td>
+                    <td>Da</td>
+                </tr>
+            </tbody>
+        </table> <br> 
+
+        <h3>Orden de las capas</h3>
+        <p>Las capas se muestran en el siguiente orden (de abajo hacia arriba):</p>
+        <ol style="margin-left: 2rem; line-height: 2;">
+            <li><strong>Mapa base</strong> (OSM, Google satélite…) – en la parte inferior</li>
+            <li><strong>WMS GURS</strong> (capas de referencia de GURS)</li>
+            <li><strong>WFS GURS</strong> (capas vectoriales de GURS)</li>
+            <li><strong>Mis capas WMS</strong> (desde GeoServer)</li>
+            <li><strong>Mis capas vectoriales</strong> (desde la base de datos)</li>
+			<li><strong>Capas importadas</strong> (GeoPackage, Shapefile, KML)</li>
+            <li><strong>Capa de resaltado</strong> (objetos seleccionados - borde magenta) – en la parte superior</li>
+        </ol>
+    </section>
+	
+    <!-- FUNCIONES AVANZADAS -->
+    <section id="napredne" class="section">
+        <h2>Funciones avanzadas</h2>
+		
+		<h3>Añadir capas propias (GeoPackage, Shapefile, KML)</h3>
+        <p>La aplicación permite importar archivos espaciales propios como capas adicionales en el mapa. 
+			Los formatos admitidos son GeoPackage (.gpkg), Shapefile (.shp) y KML (.kml). 
+			Las capas importadas se muestran sobre las capas existentes y se pueden activar o desactivar libremente.</p>
+
+        <img src="images/img_uvoz1.PNG" alt="Control de capas importadas" style="width: 220px; margin: 1.5rem auto; display: block; border-radius: 8px; border: 2px solid var(--border); box-shadow: 0 4px 12px var(--shadow);">
+
+        <div class="step">
+            <span class="step-number">1</span>
+            <h4>Abrir el panel "Capas importadas"</h4>
+            <p>
+			La sección <strong>"Capas importadas"</strong> 
+			<img src="images/dodajanje_slojev.png" class="tool-icon-inline">
+			se encuentra en la parte superior derecha de la vista del mapa.<br>
+			
+			Haga clic en ella y, en la ventana abierta, pulse el botón 
+			<img src="images/dodaj_sloj_plus.png" class="tool-icon-inline">
+			para importar un archivo.
+			</p>
+        </div>
+
+        <div class="step">
+            <span class="step-number">2</span>
+            <h4>Seleccionar un archivo para importar</h4>
+            <p>Haga clic en el botón de selección de archivo (icono de carpeta). Formatos admitidos:</p>
+            <table style="margin-top: 0.8rem;">
+                <thead><tr><th>Formato</th><th>Extensión</th><th>Nota</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>GeoPackage</strong></td><td><code>.gpkg</code></td><td>Formato recomendado — puede contener varias capas</td></tr>
+                    <tr><td><strong>Shapefile</strong></td><td><code>.shp</code> + <code>.dbf</code> + <code>.prj</code></td><td>Seleccione solo el archivo <code>.shp</code></td></tr>
+                    <tr><td><strong>KML</strong></td><td><code>.kml</code></td><td>Formato Google Earth</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Gestión de capas importadas</h3>
+		<p>Tras seleccionar el archivo, la capa se carga automáticamente en el mapa. En la sección "Capas importadas" aparece el nombre del archivo con iconos de gestión que se muestran en la tabla siguiente.</p>  
+        <table>
+            <thead><tr><th>Ikona</th><th>Función</th><th>Descripción</th></tr></thead>
+			<tbody>
+				<tr>
+					<td><img src="images/oko.png" alt="Visibilidad" class="icon-table"></td>
+					<td><strong>Visibilidad</strong></td>
+					<td>Activa/desactiva la visualización de la capa en el mapa</td>
+				</tr>
+				
+				<tr>
+					<td><img src="images/kos.png" alt="Eliminar" class="icon-table"></td>
+					<td><strong>Eliminar capa</strong></td>
+					<td>Elimina permanentemente la capa de la aplicación</td>
+				</tr>
+            </tbody>
+        </table>
+		<p>
+		Tras la importación, las capas se añaden automáticamente a la lista de capas en el lado derecho, mostradas al final en un grupo separado <strong>"Capas importadas"</strong>.
+		</p>
+		    <img src="images/img_uvoz2.png" alt="Capa importada en el mapa" style="width: 1100px; margin: 1.5rem auto; display: block; border-radius: 8px; border: 2px solid var(--border); box-shadow: 0 4px 12px var(--shadow);">
+        <div class="info-box warning">
+            <strong class="icon-warn">Sistema de coordenadas</strong>
+            La aplicación utiliza el sistema de coordenadas <b>EPSG:3794 (D96/TM – sistema oficial de Eslovenia)</b>. Los archivos importados se convierten automáticamente a este sistema. Si el archivo no contiene información de proyección (por ejemplo, Shapefile sin <code>.prj</code>), se asume EPSG:4326 (WGS84) de forma predeterminada.
+        </div>
+
+        <div class="info-box tip">
+            <strong class="icon-tip">Shapefile — archivos necesarios</strong>
+            El formato Shapefile requiere al menos tres archivos: <code>.shp</code> (geometría), <code>.dbf</code> (atributos) y <code>.prj</code> (proyección). Los tres deben estar en la misma carpeta. Al seleccionar el archivo, elija el <code>.shp</code>; los otros dos se leen automáticamente.
+        </div>
+
+        <div class="info-box">
+            <strong>Las capas importadas son temporales</strong>
+            Las capas importadas solo son visibles durante la sesión actual del navegador. Al actualizar la página (<kbd>F5</kbd>), se pierden. Para el almacenamiento permanente, utilice la función CRUD (entrada en la base de datos) o la exportación GeoPackage.
+        </div>
+		
+		<h3>Exportar datos a GeoPackage</h3>
+		<p>
+		Para exportar todos los datos (parcelas, edificios, vías y direcciones), pulse 
+		<span class="kbd">Alt</span> + <span class="kbd">Shift</span> + <span class="kbd">E</span>. 
+		La aplicación creará automáticamente un archivo GeoPackage (<code>.gpkg</code>) 
+		y lo descargará en su carpeta de descargas como: <code style="margin-left: 0.4rem;">podatki.gpkg</code>.
+		</p> <br> 
+	
+		<h3>Funcionalidad de ajuste (snap automático)</h3>
+		<p>
+		La funcionalidad de ajuste garantiza que, al dibujar o editar geometría, los vértices se ajusten automáticamente a vértices o líneas existentes.
+		Cuando el cursor se acerca a un punto o línea existente, aparece un punto azul en él, indicando que el ajuste está activo.
+		Al hacer clic, el nuevo punto se alinea con precisión con la geometría existente.
+		</p>
+		
+		<div class="info-box warning">
+			<strong class="icon-warn">Atención</strong>
+			Si no se utiliza el ajuste, pueden producirse geometrías inexactas (por ejemplo, superposiciones o huecos entre objetos).
+		</div> <br> 
+
+        <h3>Barra de estado</h3>
+        <p>En la parte inferior de la aplicación se muestra una <strong>barra de estado verde</strong> que muestra el estado actual de la aplicación y sus respuestas. Un ejemplo de respuesta se muestra en la imagen siguiente; otros mensajes posibles se muestran en la tabla que sigue.</p>
+        
+        <img src="images/img_status.png" alt="Barra de estado" style="width: 100%; margin: 1rem 0; border-radius: 6px; border: 2px solid var(--primary);">
+        
+        <table style="margin-top: 1rem;">
+            <thead>
+                <tr>
+                    <th>Mensaje</th>
+                    <th>Significado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>"Cargando datos"</strong></td>
+                    <td>Cargando datos desde la base de datos o GeoServer</td>
+                </tr>
+                <tr>
+                    <td><strong>"Parcela guardada correctamente"</strong></td>
+                    <td>Operación CRUD ejecutada correctamente</td>
+                </tr>
+                <tr>
+                    <td><strong>"No tiene permisos de edición"</strong></td>
+                    <td>El usuario no ha iniciado sesión o no pertenece al grupo 'editors' o 'admin'</td>
+                </tr>
+                <tr>
+                    <td><strong>"Conectado: Miha (editors)"</strong></td>
+                    <td>Tras iniciar sesión, se muestran el nombre de usuario del usuario conectado y el grupo al que pertenece.</td>
+                </tr>
+                <tr>
+                    <td><strong>"Error al guardar"</strong></td>
+                    <td>Se produjo un error (compruebe la consola del navegador)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="info-box tip">
+            <strong class="icon-tip">Observe la barra de estado</strong>
+            La barra de estado actúa como mecanismo de retroalimentación que mejora la experiencia del usuario y permite una detección de errores más eficiente.
+        </div> <br> 
+
+        <h3>Documentación de la API Swagger</h3>
+        <p>La aplicación utiliza Django REST Framework para la API backend. Todos los endpoints de la API están documentados en la interfaz Swagger.</p>
+        
+        <div class="step">
+            <span class="step-number">1</span>
+            <h4>Acceder a la interfaz Swagger</h4>
+            <p>
+				En su navegador, abra:
+				<a href="http://64.225.137.73:8000/accounts/login" target="_blank">
+					<code style="background: var(--code-bg); padding: 0.3rem 0.6rem; border-radius: 4px; font-family: monospace;">
+						http://64.225.137.73:8000/accounts/login
+					</code>
+				</a> .  <br>
+				Será redirigido a la página web introductoria, donde es necesario iniciar sesión con las mismas credenciales que en el geoportal GeoSG.
+			</p>
+        </div>
+
+        <div class="step">
+            <span class="step-number">2</span>
+            <h4>Endpoints de la API disponibles</h4>
+            <p><strong>Parcels:</strong></p>
+            <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                <li><span class="btn-example" style="background: #61AFFE; font-size: 0.8rem; padding: 0.3rem 0.6rem;">GET</span> <code>/parcels/parcels/</code> - Lista de todas las parcelas</li>
+                <li><span class="btn-example success" style="font-size: 0.8rem; padding: 0.3rem 0.6rem;">POST</span> <code>/parcels/parcels_view/insert2/</code> - Insertar nueva parcela</li>
+                <li><span class="btn-example warning" style="font-size: 0.8rem; padding: 0.3rem 0.6rem;">PUT</span> <code>/parcels/parcels_view/update/{id}/</code> - Actualizar parcela</li>
+                <li><span class="btn-example danger" style="font-size: 0.8rem; padding: 0.3rem 0.6rem;">DELETE</span> <code>/parcels/parcels/{id}/</code> - Eliminar parcela</li>
+            </ul>
+            <p style="margin-top: 1rem;"><strong>Buildings, Roads, Addresses:</strong> utilizan la misma estructura de endpoints que la API Parcels</p>
+        </div>
+
+		<div class="step">
+			<span class="step-number">3</span>
+			<h4>Probar la API en la interfaz Swagger</h4>
+			<p>Swagger permite probar los endpoints de la API REST de forma interactiva directamente en el navegador:</p>
+			<ul style="margin-left: 2rem; margin-top: 0.5rem;">
+				<li>Seleccione el endpoint de API deseado (por ejemplo, <code>GET /parcels/parcels/</code>)</li>
+				<li>Haga clic en el botón <em>"Try it out"</em></li>
+				<li>Si es necesario, introduzca los parámetros de la solicitud</li>
+				<li>Haga clic en <em>"Execute"</em> para ejecutar la solicitud</li>
+				<li>Revise la respuesta del servidor (Response body – JSON) y el código de estado</li>
+			</ul>
+		</div>
+
+    </section>
+
+    <!-- ACCESO / PERMISOS -->
+	<section id="auth" class="section">
+	
+		<h2>Acceso y gestión de permisos de usuario</h2>
+		<p>
+			La aplicación utiliza el mecanismo de autenticación de Django para verificar la identidad de los usuarios
+			y controlar el acceso según el grupo de usuario asignado. Los permisos determinan si
+			un usuario solo puede ver los datos o también puede añadirlos, editarlos y eliminarlos.
+		</p>
+	
+		<h3>Grupos de usuarios</h3>
+		<table>
+			<thead>
+				<tr>
+					<th>Grupo</th>
+					<th>Permisos</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><strong>admin</strong></td>
+					<td>Permisos completos, incluida la introducción, edición, eliminación de datos y acceso a la administración.</td>
+				</tr>
+				<tr>
+					<td><strong>editors</strong></td>
+					<td>Introducción, edición y eliminación de datos.</td>
+				</tr>
+				<tr>
+					<td><strong>viewers</strong></td>
+					<td>Solo visualización de datos, sin posibilidad de edición.</td>
+				</tr>
+				<tr>
+					<td><strong>usuario no autenticado</strong></td>
+					<td>Acceso limitado, generalmente solo de visualización.</td>
+				</tr>
+			</tbody>
+		</table> <br>
+	
+		<h3>Procedimiento de inicio de sesión</h3>
+	
+		<div class="step">
+			<span class="step-number">1</span>
+			<h4>Abrir la pestaña "Login"</h4>
+			<p>En la parte superior derecha de la aplicación, haga clic en la pestaña <strong>Login</strong>.</p>
+		</div>
+	
+		<div class="step">
+			<span class="step-number">2</span>
+			<h4>Introducir credenciales</h4>
+			<p>Introduzca su nombre de usuario y contraseña en el formulario de inicio de sesión y haga clic en el botón de inicio de sesión.</p>
+		</div>
+	
+		<div class="step">
+			<span class="step-number">3</span>
+			<h4>Verificar el estado de inicio de sesión</h4>
+			<p>Tras iniciar sesión correctamente, su nombre de usuario y el grupo de usuario correspondiente se muestran en la barra de estado.</p>
+		</div>
+	
+
+		<div class="info-box">
+			<strong>Inicio de sesión</strong>
+			Si el inicio de sesión no tiene éxito, verifique que su nombre de usuario y contraseña sean correctos. 
+			Si tiene problemas de acceso, póngase en contacto con el desarrollador de la aplicación.
+		</div>
+	
+		<div class="info-box warning">
+			<strong class="icon-warn">Importante</strong>
+			Incluso después de iniciar sesión correctamente, no podrá editar datos si no es miembro del grupo 
+			<b>editors</b> o <b>admin</b>.
+		</div>
+	
+	</section>
+
+
+    <!-- CONFIGURACIÓN DEL ENTORNO -->
+    <section id="prilagoditve" class="section">
+        <h2>Configuración del entorno</h2>
+        <p>El geoportal GeoSG permite personalizar la interfaz de usuario según las preferencias del usuario. Hay dos grupos de configuraciones disponibles: <b>soporte multilingüe</b> y <b>temas de color</b>, accesibles en el lado derecho de la barra de navegación.</p>
+        <img src="images/img_prilagoditve.png" 
+        alt="Configuración de idioma y tema en la barra de navegación" 
+        style="width: 40%; display: block; margin: 1.5rem auto; border-radius: 8px; border: 2px solid var(--border); box-shadow: 0 4px 12px var(--shadow);">
+        <br>
+
+        <div class="info-box tip">
+            <strong class="icon-tip">Diferencias en la visualización de la configuración de idioma entre navegadores</strong>
+            La visualización de la configuración de idioma del geoportal en la barra de navegación puede diferir ligeramente entre navegadores. En la mayoría de los navegadores (por ejemplo, Chrome, Edge, Brave), la visualización es como en la imagen anterior; en Firefox también se muestran banderas junto a las etiquetas de idioma debido a la diferente representación de iconos y fuentes. Se muestra un ejemplo en la imagen inferior. <br>
+            <img src="images/img_jezik.png" alt="Configuración de idioma y tema en la barra de navegación del navegador Firefox" style="width: 40%; border-radius: 8px; margin: 1.3rem 0 0.2rem 0; border: 2px solid var(--border); box-shadow: 0 4px 12px var(--shadow);">
+        </div>
+        <br>
+        <h3>Soporte multilingüe</h3>
+        <p>El geoportal GeoSG admite tres idiomas de interfaz de usuario:</p>
+        <ul style="margin-left: 2rem; line-height: 2;">
+            <li>🇸🇮 <strong>SL</strong> — esloveno (idioma predeterminado)</li>
+            <li>🇬🇧 <strong>EN</strong> — inglés</li>
+            <li>🇪🇸 <strong>ESP</strong> — español</li>
+        </ul>
+        <p style="margin-top: 1rem;">El usuario cambia el idioma haciendo clic en el botón correspondiente en la barra de navegación. Tras seleccionar un idioma, se actualizan todos los elementos clave de la interfaz, como menús, formularios, botones, tooltips, mensajes del sistema y nombres de capas en el control de capas.</p>
+        <br>
+        <h3>Temas de color</h3>
+        <p>El geoportal permite elegir entre tres temas de color para la interfaz de usuario. Cambie el tema haciendo clic en el botón de la barra de navegación, que muestra por defecto el símbolo de la luna: 🌙 <br> El botón muestra el tema al que está cambiando.</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Tema</th>
+                    <th>Ikona</th>
+                    <th>Descripción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Tema claro</strong></td>
+                    <td>🌟</td>
+                    <td>Tema predeterminado con fondo claro y texto oscuro. Adecuado para entornos bien iluminados.</td>
+                </tr>
+                <tr>
+                    <td><strong>Tema oscuro</strong></td>
+                    <td>🌙</td>
+                    <td>Esquema de color oscuro (modo nocturno) con texto claro. Adecuado para trabajar en entornos poco iluminados y reduce la fatiga ocular.</td>
+                </tr>
+                <tr>
+                    <td><strong>Tema alternativo</strong></td>
+                    <td>🎨</td>
+                    <td>Combinación de azul oscuro y blanco, una alternativa al tema claro basada en los colores característicos del Municipio de Slovenj Gradec.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div>
+            <h3>Ejemplo – Tema claro:</h3>
+            <img src="images/tema-svetla.PNG" alt="Tema claro" style="width: 100%; border-radius: 8px; margin: 1.5rem 0; border: 2px solid var(--border); box-shadow: 0 4px 12px var(--shadow);">
+            <br>
+            <h3>Ejemplo – Tema oscuro:</h3>
+            <br>
+            <img src="images/tema-temna.png" alt="Tema oscuro" style="width: 100%; border-radius: 8px; margin: 1.5rem 0; border: 2px solid var(--border); box-shadow: 0 4px 12px var(--shadow);">
+            <h3>Ejemplo – Tema alternativo:</h3>
+            <br>
+            <img src="images/tema-custom.PNG" alt="Tema personalizado" style="width: 100%; border-radius: 8px; margin: 1.5rem 0; border: 2px solid var(--border); box-shadow: 0 4px 12px var(--shadow);">
+
+        </div>
+
+        <div class="info-box tip">
+            <strong class="icon-tip">Guardar configuración</strong>
+            El idioma seleccionado y el tema de color se guardan automáticamente en el navegador, por lo que la última configuración seleccionada se conserva en la próxima visita al geoportal.
+        </div>
+
+        <div class="info-box warning">
+            <strong class="icon-warn">Privacidad</strong>
+            La configuración guardada es local y representa datos privados del usuario. Solo es visible en el navegador actual y en el dispositivo actual, y no se transfiere a otros dispositivos o cuentas de usuario.
+        </div>
+
+    </section>
+
+    <!-- FAQ / AYUDA -->
+    <section id="pomoc" class="section">
+        <h2>Preguntas frecuentes (FAQ)</h2>
+
+		<div class="faq-item">
+			<div class="faq-question">¿Cómo puedo cambiar la geometría de una parcela existente?</div>
+			<div class="faq-answer">
+				En la tabla haga clic en <span class="btn-example success">Editar</span>, luego en el mapa haga clic en el icono "Editar parcela". 
+				Arrastre los vértices a la nueva posición. Cuando termine, haga clic de nuevo en el icono (se desactiva). 
+				El WKT en el formulario se actualiza. Haga clic en <span class="btn-example primary">Actualizar</span>.
+			</div>
+		</div>
+		
+		<div class="faq-item">
+			<div class="faq-question">¿Por qué no aparece el botón "Insertar" o "Eliminar"?</div>
+			<div class="faq-answer">
+				No tiene los permisos necesarios. Compruebe si ha iniciado sesión y si es miembro del grupo <strong>'editors'</strong> o <strong>'admin'</strong>. 
+				Contacte con el administrador para que le asigne los permisos correspondientes.
+			</div>
+		</div>
+		
+		<div class="faq-item">
+			<div class="faq-question">¿Cómo exporto los datos a QGIS?</div>
+			<div class="faq-answer">
+				Pulse <span class="kbd">Alt</span> + <span class="kbd">Shift</span> + <span class="kbd">E</span> para exportar el archivo GeoPackage (.gpkg). 
+				En QGIS, use <strong>Layer → Add Layer → Add Vector Layer</strong>.
+			</div>
+		</div>
+		
+		<div class="faq-item">
+			<div class="faq-question">¿Por qué el mapa carga lentamente?</div>
+			<div class="faq-answer">
+				Probablemente tiene activadas las capas WFS de GURS, que cargan muchos datos. 
+				Desactive las capas WFS en el control "Capas" en la parte superior derecha del mapa.
+			</div>
+		</div>
+		
+		<div class="faq-item">
+			<div class="faq-question">¿Cómo puedo restablecer el formulario?</div>
+			<div class="faq-answer">
+				Haga clic en el botón <span class="btn-example">Limpiar</span>. Todos los campos se restablecen.
+			</div>
+		</div>
+		
+		<div class="faq-item">
+			<div class="faq-question">¿Qué significa "POLYGON(...)" en el campo Geom?</div>
+			<div class="faq-answer">
+				Es una representación de geometría en formato <strong>WKT (Well-Known Text)</strong>. 
+				La aplicación lo genera automáticamente.
+			</div>
+		</div>
+		
+		<div class="faq-item">
+			<div class="faq-question">¿Cómo puedo encontrar una parcela por municipio catastral y número de parcela?</div>
+			<div class="faq-answer">
+				Introduzca el <strong>código MC</strong> y el <strong>número de parcela</strong> y haga clic en <span class="btn-example">Buscar</span>.
+			</div>
+		</div>
+		
+		<div class="faq-item">
+			<div class="faq-question">¿Puedo dibujar varios objetos a la vez?</div>
+			<div class="faq-answer">
+				No. Cada objeto debe guardarse antes de continuar dibujando el siguiente.
+			</div>
+		</div>
+		
+		<div class="faq-item">
+			<div class="faq-question">¿Cómo cambiamos el sistema de coordenadas?</div>
+			<div class="faq-answer">
+				La aplicación utiliza <strong>EPSG:3794</strong>. No es posible cambiarlo desde la interfaz de usuario.
+			</div>
+		</div>
+		
+		<div class="faq-item">
+			<div class="faq-question">¿Dónde puedo ver si una operación se realizó correctamente?</div>
+			<div class="faq-answer">
+				En la <strong>barra de estado en la parte inferior de la pantalla</strong>.
+			</div>
+		</div>
+		
+		<div class="faq-item">
+			<div class="faq-question">¿Cómo puedo probar la API?</div>
+			<div class="faq-answer">
+				Odprite <code>http://[strežnik]/swagger/</code>.
+			</div>
+		</div>
+		
+		<div class="faq-item">
+			<div class="faq-question">¿Por qué "Cargando datos" tarda mucho?</div>
+			<div class="faq-answer">
+				Probablemente está cargando muchos datos (por ejemplo, capas WFS). Desactívelas o reduzca el área.
+			</div>
+		</div>
+		
+		<div class="faq-item">
+			<div class="faq-question">¿Cómo informo de un error o sugiero una mejora?</div>
+			<div class="faq-answer">
+				Contacte con el desarrollador e incluya una descripción y los pasos para reproducirlo.
+			</div>
+		</div>
+		
+		<div class="info-box tip">
+			<strong class="icon-tip">Ayuda adicional</strong>
+			En caso de problemas o preguntas, contacte con el desarrollador de la aplicación. 
+			Al informar de un problema, incluya una descripción precisa y la secuencia de pasos para reproducirlo. 
+			La información de contacto está disponible en la pestaña <b>"Acerca de"</b> del menú de navegación del geoportal.
+			La ubicación del icono de contacto se muestra en la imagen inferior.
+		
+			<img src="images/kontakt.png" alt="Ubicación del icono de contacto"
+				style="display: block; max-width: 80%; margin-top: 1rem; border-radius: 6px; border: 1px solid var(--border);">
+		</div>
+
+        <div class="Pomembne_povezave">
+            <h3>Enlaces importantes</h3>
+            <ul style="margin-left: 2rem; line-height: 2;">
+                <li><a href="http://64.225.137.73:4200">Iniciar la aplicación</a></li>
+                <li><a href="http://64.225.137.73:8000/admin/">Django admin</a></li>
+                <li><a href="http://64.225.137.73:8080/geoserver/web/">GeoServer</a></li>
+                <li><a href="http://64.225.137.73:8050">PgAdmin para la base de datos PostgreSQL</a></li>
+                <li><a href="http://64.225.137.73:8000/accounts/login/">Django login</a></li>
+                <li><a href="http://64.225.137.73:8000/swagger/">Documentación API Swagger</a></li>
+                <li><a href="http://64.225.137.73:8000/redoc/">Documentación API Redoc</a></li>
+                <li><a href="https://horizon.cloudferro.com/auth/login/?next=/">Horizon Cloudferro</a></li>
+        </div>
+
+    </section>
+
+
+</div>
+
+<div class="footer">
+    <p>&copy; 2025 GeoSG Aplicación GIS | Desarrollado por: Maj Čapelnik</p>
+    <p style="margin-top: 0.5rem; font-size: 0.9rem;">Versión: 1.0 | Última actualización: Febrero 2025</p>
+</div>
+
+<script>
+	function showSection(sectionId, button) {
+		// Ocultar todas las secciones
+		const sections = document.querySelectorAll('.section');
+		sections.forEach(section => section.classList.remove('active'));
+	
+		// Eliminar active de todos los botones
+		const buttons = document.querySelectorAll('.nav-btn');
+		buttons.forEach(btn => btn.classList.remove('active'));
+	
+		// Mostrar la sección seleccionada
+		const selectedSection = document.getElementById(sectionId);
+		if (selectedSection) {
+			selectedSection.classList.add('active');
+		}
+	
+		// Marcar el botón pulsado
+		if (button) {
+			button.classList.add('active');
+		}
+	
+		// Desplazar al inicio de la página
+		window.scrollTo({ top: 0, behavior: 'smooth' });
+	}
+
+    function toggleExpand(card) {
+        card.classList.toggle('expanded');
+    }
+
+    // Search functionality (optional enhancement)
+    function setupSearch() {
+        const searchInput = document.querySelector('.search-input');
+        if (searchInput) {
+            searchInput.addEventListener('input', function() {
+                const query = this.value.toLowerCase();
+                const sections = document.querySelectorAll('.section');
+                
+                sections.forEach(section => {
+                    const text = section.textContent.toLowerCase();
+                    if (text.includes(query)) {
+                        section.style.display = 'block';
+                    } else {
+                        section.style.display = 'none';
+                    }
+                });
+            });
+        }
+    }
+</script>
+
+</body>
+</html>

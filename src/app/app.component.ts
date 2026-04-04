@@ -100,7 +100,13 @@ handleKeyboardEvent(event: KeyboardEvent) {
   if (!event.altKey && !event.shiftKey && !event.ctrlKey && event.key === 'F1') {
     event.preventDefault();
     console.log('[App.Component.ts] F1 detected!');
-    window.open('uporabniska_navodila/index.html', '_blank');
+    const lang = localStorage.getItem('geosg_language') || 'sl';
+    const helpFiles: Record<string, string> = {
+      'sl': 'uporabniska_navodila/index.html',
+      'en': 'uporabniska_navodila/index_en.html',
+      'es': 'uporabniska_navodila/index_es.html',
+    };
+    window.open(helpFiles[lang] ?? helpFiles['sl'], '_blank');
   }
 
   // Escape → počisti statusno vrstico
@@ -111,8 +117,7 @@ handleKeyboardEvent(event: KeyboardEvent) {
 
 showHelp() {
   this.helpVisible = !this.helpVisible;
-} 
-
+}
 
   @HostListener('document:mousemove', ['$event'])
     onMouseMove(event: MouseEvent) {

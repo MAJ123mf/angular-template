@@ -522,7 +522,7 @@ export class MapService {
        source: this.parcelsVectorSource,
        zIndex: 10,  // nad uvoženim sloji (zIndex: 5)
        style: (feature: any, resolution: number) => {
-        const minResolution = 1; // prilagodimo svojim potrebam
+        const minResolution = 0.2; // prilagodimo svojim potrebam
        
         if (resolution > minResolution) {
           // Ne prikazuj label (lahko vrneš samo osnovni stil brez teksta ali null)
@@ -597,7 +597,7 @@ export class MapService {
      source: this.buildingsVectorSource,
      zIndex: 10,  // nad uvoženim sloji (zIndex: 5)
      style: (feature: any, resolution: number) => {                        // dodan stil za labele
-        const minResolution = 1; // prilagodimo svojim potrebam
+        const minResolution = 0.2; // prilagodimo svojim potrebam
        
         if (resolution > minResolution) {
           // Ne prikazuj label (lahko vrneš samo osnovni stil brez teksta ali null)
@@ -645,7 +645,7 @@ export class MapService {
     source: this.roadsVectorSource,
     zIndex: 10,  // nad uvoženim sloji (zIndex: 5)
     style: (feature: any, resolution: number) => {                        // dodan stil za labele
-        const minResolution = 1; // prilagodimo svojim potrebam
+        const minResolution = 0.2; // prilagodimo svojim potrebam
        
         if (resolution > minResolution) {
           // Ne prikazuj label (lahko vrneš samo osnovni stil brez teksta ali null)
@@ -687,7 +687,7 @@ export class MapService {
       source: this.addressVectorSource,
       zIndex: 10,  // nad uvoženim sloji (zIndex: 5)
       style: (feature: any, resolution: number) => {                        // dodan stil za labele
-        const minResolution = 1; // prilagodimo svojim potrebam
+        const minResolution = 0.2; // prilagodimo svojim potrebam
        
         // Skupne lastnosti (barve ipd.)
         const circle = new CircleStyle({

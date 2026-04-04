@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from '../../services/auth.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatMenuModule } from '@angular/material/menu';
+import { LanguageService } from '../../services/language.service';  // dodano za večjezičnost
 
 @Component({
   selector: 'app-menu',
@@ -31,7 +32,8 @@ export class MenuComponent {
 
   constructor(private drawModeService: DrawModeService,
               private dialog: MatDialog,
-              public authService: AuthService
+              public authService: AuthService,
+              private languageService: LanguageService 
   ) {}
 
   select(type: 'parcel' | 'building' | 'road' | 'address') {
@@ -48,7 +50,16 @@ export class MenuComponent {
 }
 
   openHelp() {
-  window.open('/uporabniska_navodila/index.html', '_blank');
+  const lang = this.languageService.getCurrentLanguage();
+  
+  const helpFiles: Record<string, string> = {
+    'sl': '/uporabniska_navodila/index.html',
+    'en': '/uporabniska_navodila/index_en.html',
+    'es': '/uporabniska_navodila/index_es.html',
+  };
+
+  const url = helpFiles[lang] ?? helpFiles['sl'];
+  window.open(url, '_blank');
 }
 
   openLoginDialog() {
