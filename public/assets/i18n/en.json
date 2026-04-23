@@ -180,7 +180,7 @@
   "ADDRESS_SELECT_START": "Select address",
   "ADDRESS_SELECT_STOP": "Stop selecting address",
   "ADDRESS_EDIT_START": "Edit address",
-  "ADDRESS_EDIT_STOP": "Finish editing address"  
-    
-
+  "ADDRESS_EDIT_STOP": "Finish editing address",
+  "LAYERGROUP_SENTINEL": "Sentinel Hub",
+  "LAYER_SENTINEL_TRUE_COLOR": "True Color"  
 }

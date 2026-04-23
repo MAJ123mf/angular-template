@@ -180,8 +180,8 @@
   "ADDRESS_SELECT_START": "Izberi naslov",
   "ADDRESS_SELECT_STOP": "Ustavi izbiranje naslova",
   "ADDRESS_EDIT_START": "Uredi naslov",
-  "ADDRESS_EDIT_STOP": "Končaj urejanje naslova"
- 
-
+  "ADDRESS_EDIT_STOP": "Končaj urejanje naslova",
+  "LAYERGROUP_SENTINEL": "Sentinel Hub",
+  "LAYER_SENTINEL_TRUE_COLOR": "Resnične barve"
 
 }

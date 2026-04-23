@@ -57,6 +57,8 @@ import { RedirectCommand } from '@angular/router';
 
 import { LanguageService } from './language.service';      // dodano za prevode slojev
 
+import ScaleLine from 'ol/control/ScaleLine';    // dodano za merilo na karti
+
 @Injectable({
   providedIn: 'root'
 })
@@ -77,6 +79,7 @@ export class MapService {
   WFSLayersGroup:LayerGroup;
   myLayersGroup:LayerGroup;
   myWorkingLayersGroup:LayerGroup;
+  sentinelLayersGroup: LayerGroup;   // skupina za Sentinel sloje
   parcelsLayer!: VectorLayer<VectorSource>;
   buildingsLayer!: VectorLayer<VectorSource>;
   roadsLayer!: VectorLayer;
@@ -110,6 +113,7 @@ export class MapService {
       this.WFSLayersGroup= this.createWFSLayers();   // za WMS sloje
       this.myLayersGroup= this.createMyLayers();       // za moje WMS sloje
       this.myWorkingLayersGroup= this.createMyWorkingLayers();   // za moje delovne sloje, na katere rišem
+      this.sentinelLayersGroup = this.createSentinelLayers();   // za Sentinel sloje, ki jih bomo dodali kasneje, ko bo to potrebno
 
       this.eventService.eventActivated$.subscribe(event => {
         if (event.type === 'modeChange') {
@@ -137,6 +141,7 @@ export class MapService {
 
       this.map= this.createMap();//Create the map and store it in the mapService
       this.addMousePositionControl();
+      this.addScaleLineControl();
   }
 
   // poslušamo spremembe v event-service, da to deluje moramo importirat event service, dopolnit konstruktor za map in mu povedat,
@@ -205,6 +210,13 @@ export class MapService {
       myWmsLayers[1]?.set('title', this.languageService.instant('LAYER_BUILDINGS_WMS'));
       myWmsLayers[2]?.set('title', this.languageService.instant('LAYER_ROADS_WMS'));
       myWmsLayers[3]?.set('title', this.languageService.instant('LAYER_ADDRESSES_WMS'));
+    }
+
+    // Sentinel Hub sloji
+    this.sentinelLayersGroup?.set('title', this.languageService.instant('LAYERGROUP_SENTINEL'));
+    const sentinelLayers = this.sentinelLayersGroup?.getLayers().getArray();
+    if (sentinelLayers && sentinelLayers.length >= 1) {
+      sentinelLayers[0]?.set('title', this.languageService.instant('LAYER_SENTINEL_TRUE_COLOR'));
     }
   }
 
@@ -297,6 +309,34 @@ export class MapService {
         layers: [kataster, stavbe, dof]
       });
     return baseLayersGroup;
+  }
+
+
+
+  // zadnji dodan layer Santinel WMS                                                                                                                 // 23.4.2026
+  createSentinelLayers(): LayerGroup {
+    const sentinelTrueColor = new TileLayer({
+      properties: { title: 'Sentinel True Color' },
+      source: new TileWMS({
+        url: 'https://services.sentinel-hub.com/ogc/wms/d7f63811-1331-4885-b890-a038e4b7f9aa',
+        params: {
+          'LAYERS': '1_TRUE_COLOR',
+          'TILED': true,
+          'FORMAT': 'image/png',
+          'TRANSPARENT': true,
+          'CRS': 'EPSG:3794',   
+          'SRS': 'EPSG:3794',   
+        },
+        serverType: 'geoserver',
+        crossOrigin: 'anonymous'
+      })
+    });
+
+    return new LayerGroup({
+      properties: { title: 'Sentinel Hub' },
+      visible: false,
+      layers: [sentinelTrueColor]
+    });
   }
 
 
@@ -764,7 +804,8 @@ export class MapService {
         this.baseLayersGroup, 
         this.WFSLayersGroup, 
         this.myLayersGroup, 
-        this.myWorkingLayersGroup
+        this.myWorkingLayersGroup,
+        this.sentinelLayersGroup 
       ],
       target: undefined
     }); 
@@ -790,19 +831,30 @@ export class MapService {
     this.map.addControl(layerSwitcher); //! --> tells typescript that map is not undefined
   }
 
-  addMousePositionControl(){
+  // addMousePositionControl(){
       //Adds the mouse coordinate position to the map
-      const mousePositionControl = new MousePosition({
-        coordinateFormat: createStringXY(0),
-        projection: 'EPSG:3794',
+  //    const mousePositionControl = new MousePosition({
+  //      coordinateFormat: createStringXY(0),
+  //     projection: 'EPSG:3794',
         // comment the following two lines to have the mouse position
         // be placed within the map.
         //className: 'custom-mouse-position',
         //target: document.getElementById('map_mouse_position_control'),
         //undefinedHTML: '----------------------'
-      });
-      this.map.addControl(mousePositionControl);//! --> tells typescript that map is not undefined
-  }
+   //   });
+   //   this.map.addControl(mousePositionControl);//! --> tells typescript that map is not undefined
+  // }
+
+
+  addMousePositionControl() {
+  const mousePositionControl = new MousePosition({
+    coordinateFormat: (coord) => {
+      return coord ? `EPSG: 3794  ${Math.round(coord[0])}, ${Math.round(coord[1])}` : '';
+    },
+    projection: 'EPSG:3794',
+  });
+  this.map.addControl(mousePositionControl);
+}
 
   /**
    * Poiščite plast na zemljevidu (ali znotraj skupin plasti) po njeni lastnosti »title«.
@@ -1698,4 +1750,16 @@ export class MapService {
       this.map.getView().fit(extent, { duration: 600, maxZoom: 12 });
     }
   } 
+
+  // funkcija, ki doda ScaleLine control na mapo. Ta control prikaže merilo (npr. 100 m, 1 km) glede na trenutno merilo zemljevida.
+  addScaleLineControl(): void {
+    const scaleLine = new ScaleLine({
+      units: 'metric',   // metri / kilometri
+      bar: false,        // false = klasično besedilno merilo, true = grafična vrstica
+      minWidth: 100      // minimalna širina v pikslih
+    });
+    this.map.addControl(scaleLine);
+  }
+
+
 }
