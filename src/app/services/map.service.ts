@@ -100,6 +100,7 @@ export class MapService {
   private drawInteraction: Draw | null = null;
   private snapInteraction: Snap | null = null;
   private layerSwitcherAdded = false;
+  private sentinelRefreshInterval: any = null;
 
 
 
@@ -139,9 +140,10 @@ export class MapService {
         this.updateLayerTitles();
       });
 
-      this.map= this.createMap();//Create the map and store it in the mapService
-      this.addMousePositionControl();
-      this.addScaleLineControl();
+      this.map= this.createMap();            //Create the map and store it in the mapService
+      this.addMousePositionControl();        // Dodamo kontrolko za pozicijo miške
+      this.addScaleLineControl();            // Dodamo merilo na karto
+      this.startSentinelAutoRefresh(1440);   // Osveži enkrat na dan
   }
 
   // poslušamo spremembe v event-service, da to deluje moramo importirat event service, dopolnit konstruktor za map in mu povedat,
@@ -1760,6 +1762,36 @@ export class MapService {
     });
     this.map.addControl(scaleLine);
   }
+
+
+  // Ta fukkcija nastavi interval, ki vsakih X minut osveži Sentinel sloje. 
+  // To je pomembno, ker se Sentinel podatki redno posodabljajo in želimo imeti na karti vedno najnovejše podatke.
+  startSentinelAutoRefresh(intervalMinutes: number = 1440): void { // 1440 = 24 ur
+  // počisti prejšnji interval če obstaja
+  if (this.sentinelRefreshInterval) {
+    clearInterval(this.sentinelRefreshInterval);
+  }
+  this.sentinelRefreshInterval = setInterval(() => {
+    const layers = this.sentinelLayersGroup.getLayers().getArray();
+    layers.forEach(layer => {
+      const source = (layer as TileLayer<TileWMS>).getSource();
+      if (source) {
+        source.updateParams({ 'TIME': new Date().toISOString() }); // prisili nov zahtevek
+        console.log('[MapService] Sentinel sloj osvežen:', new Date().toLocaleString());
+      }
+    });
+  }, intervalMinutes * 60 * 1000);
+}
+
+// Ta funkcija ustavi avtomatsko osveževanje Sentinel slojev. 
+// To je uporabno, če želimo prihraniti hitrost delovanja, ali če ne želimo več imeti najnovejših podatkov na karti.
+stopSentinelAutoRefresh(): void {
+  if (this.sentinelRefreshInterval) {
+    clearInterval(this.sentinelRefreshInterval);
+    this.sentinelRefreshInterval = null;
+    console.log('[MapService] Sentinel osveževanje ustavljeno');
+  }
+}
 
 
 }
