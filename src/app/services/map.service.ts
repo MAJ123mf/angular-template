@@ -1766,22 +1766,40 @@ export class MapService {
 
   // Ta fukkcija nastavi interval, ki vsakih X minut osveži Sentinel sloje. 
   // To je pomembno, ker se Sentinel podatki redno posodabljajo in želimo imeti na karti vedno najnovejše podatke.
-  startSentinelAutoRefresh(intervalMinutes: number = 1440): void { // 1440 = 24 ur
-  // počisti prejšnji interval če obstaja
-  if (this.sentinelRefreshInterval) {
-    clearInterval(this.sentinelRefreshInterval);
-  }
-  this.sentinelRefreshInterval = setInterval(() => {
+  // Podatek o tem, kdaj je bila zadnja osvežitev, shranjujemo v localStorage, da lahko ob zagonu strani preverimo, ali je treba sloje takoj osvežiti.
+startSentinelAutoRefresh(intervalMinutes: number = 1440): void {
+  const STORAGE_KEY = 'sentinel_last_refresh';
+  
+  const refresh = () => {
     const layers = this.sentinelLayersGroup.getLayers().getArray();
     layers.forEach(layer => {
       const source = (layer as TileLayer<TileWMS>).getSource();
       if (source) {
-        source.updateParams({ 'TIME': new Date().toISOString() }); // prisili nov zahtevek
-        console.log('[MapService] Sentinel sloj osvežen:', new Date().toLocaleString());
+        source.updateParams({ 'TIME': new Date().toISOString() });
       }
     });
-  }, intervalMinutes * 60 * 1000);
+    localStorage.setItem(STORAGE_KEY, Date.now().toString());
+    console.log('[MapService] Sentinel osvežen:', new Date().toLocaleString());
+  };
+
+  // Preveri ob zagonu — ali je od zadnje osvežitve minilo več kot X minut?
+  const zadnjaOsvezitev = localStorage.getItem(STORAGE_KEY);
+  const minuteOdZadnje = zadnjaOsvezitev
+    ? (Date.now() - parseInt(zadnjaOsvezitev)) / 60000
+    : Infinity;
+
+  if (minuteOdZadnje >= intervalMinutes) {
+    refresh(); // takoj osveži ob odprtju
+  }
+
+  // Nato še interval za primer, da je stran odprta dolgo
+  if (this.sentinelRefreshInterval) {
+    clearInterval(this.sentinelRefreshInterval);
+  }
+  this.sentinelRefreshInterval = setInterval(refresh, intervalMinutes * 60 * 1000);
 }
+
+
 
 // Ta funkcija ustavi avtomatsko osveževanje Sentinel slojev. 
 // To je uporabno, če želimo prihraniti hitrost delovanja, ali če ne želimo več imeti najnovejših podatkov na karti.
