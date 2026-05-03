@@ -182,5 +182,10 @@
   "ADDRESS_EDIT_START": "Edit address",
   "ADDRESS_EDIT_STOP": "Finish editing address",
   "LAYERGROUP_SENTINEL": "Sentinel Hub",
-  "LAYER_SENTINEL_TRUE_COLOR": "True Color"  
+  "LAYER_SENTINEL_TRUE_COLOR": "True Color",
+  "LAYERGROUP_LOCAL_WFS": "Local WFS layers",
+  "LAYER_LOCAL_WFS_PARCELS": "Parcels (original)",
+  "LAYER_LOCAL_WFS_PARCELS_05": "Parcels (simplified 0.5m)",
+  "LAYER_LOCAL_WFS_PARCELS_1": "Parcels (simplified 1m)",
+  "LAYER_LOCAL_WFS_PARCELS_2": "Parcels (simplified 2m)"  
 }

@@ -79,6 +79,7 @@ export class MapService {
   WFSLayersGroup:LayerGroup;
   myLayersGroup:LayerGroup;
   myWorkingLayersGroup:LayerGroup;
+  localWFSLayersGroup: LayerGroup;
   sentinelLayersGroup: LayerGroup;   // skupina za Sentinel sloje
   parcelsLayer!: VectorLayer<VectorSource>;
   buildingsLayer!: VectorLayer<VectorSource>;
@@ -115,6 +116,7 @@ export class MapService {
       this.myLayersGroup= this.createMyLayers();       // za moje WMS sloje
       this.myWorkingLayersGroup= this.createMyWorkingLayers();   // za moje delovne sloje, na katere rišem
       this.sentinelLayersGroup = this.createSentinelLayers();   // za Sentinel sloje, ki jih bomo dodali kasneje, ko bo to potrebno
+      this.localWFSLayersGroup = this.createLocalWFSLayers();   // za lokalne WFS sloje parcel in njihovih poenostavitev. 4 sloje bomo dodali.  
 
       this.eventService.eventActivated$.subscribe(event => {
         if (event.type === 'modeChange') {
@@ -204,7 +206,17 @@ export class MapService {
       wfsLayers[2]?.set('title', this.languageService.instant('LAYER_WFS_BUILDINGS'));
       wfsLayers[3]?.set('title', this.languageService.instant('LAYER_WFS_MUNICIPALITIES'));
     }
- 
+
+    // Lokalni WFS sloji
+    this.localWFSLayersGroup?.set('title', this.languageService.instant('LAYERGROUP_LOCAL_WFS'));
+    const localWfsLayers = this.localWFSLayersGroup?.getLayers().getArray();
+    if (localWfsLayers && localWfsLayers.length >= 4) {
+      localWfsLayers[0]?.set('title', this.languageService.instant('LAYER_LOCAL_WFS_PARCELS'));
+      localWfsLayers[1]?.set('title', this.languageService.instant('LAYER_LOCAL_WFS_PARCELS_05'));
+      localWfsLayers[2]?.set('title', this.languageService.instant('LAYER_LOCAL_WFS_PARCELS_1'));
+      localWfsLayers[3]?.set('title', this.languageService.instant('LAYER_LOCAL_WFS_PARCELS_2'));
+    }
+    
     // Moji WMS sloji
     const myWmsLayers = this.myLayersGroup?.getLayers().getArray();
     if (myWmsLayers && myWmsLayers.length >= 4) {
@@ -478,6 +490,97 @@ export class MapService {
 
       return WFSLayersGroup;
     }
+
+
+
+
+    // Lokalni WFS sloji - to so sloji, ki jih imamo v svojem Geoserverju, ki črpa podatke iz naše Postgres baze. V tej funkciji dodamo 4 sloje: originalne parcele in poenostavitve parcel na 0.5m, 1m in 2m. Vsi ti sloji so WFS, torej vektorski in ne rastrski kot WMS. To pomeni, da se geometrije prenašajo na frontend in se tam rišejo, medtem ko WMS prenaša že narisano sliko s strežnika.
+    createLocalWFSLayers(): LayerGroup {
+      const parcelsOriginal = new VectorLayer({
+        properties: { title: 'Parcele (originalne)' },
+        source: new VectorSource({
+          format: new GeoJSON(),
+          url: this.settingsService.GEOSERVER_URL + 
+              'wfs?service=WFS&version=2.0.0&request=GetFeature&' +
+              'typeName=ne:parcels_parcels&' +
+              'srsName=EPSG:3794&outputFormat=application/json'
+        }),
+        style: (feature: any, resolution: number) => {
+          const minResolution = 0.2;
+          if (resolution > minResolution) {
+            return new Style({
+              stroke: new Stroke({ color: '#000000', width: 1 }),
+              fill: new Fill({ color: 'rgba(0,0,0,0)' }),
+            });
+          }
+          return new Style({
+            stroke: new Stroke({ color: '#000000', width: 1 }),
+            fill: new Fill({ color: 'rgba(0,0,0,0)' }),
+            text: new Text({
+              text: feature.get('parc_st') || '',
+              font: '11px Calibri,sans-serif',
+              fill: new Fill({ color: '#000' }),
+              stroke: new Stroke({ color: '#fff', width: 2 }),
+              overflow: true,
+              placement: 'point',
+            }),
+          });
+        }
+      });
+
+      const parcelsSimpl05 = new VectorLayer({
+        properties: { title: 'Parcele (0.5m)' },
+        source: new VectorSource({
+          format: new GeoJSON(),
+          url: this.settingsService.GEOSERVER_URL + 
+              'wfs?service=WFS&version=2.0.0&request=GetFeature&' +
+              'typeName=ne:parcele_simpl_05&' +
+              'srsName=EPSG:3794&outputFormat=application/json'
+        }),
+        style: new Style({
+          stroke: new Stroke({ color: '#99ccff', width: 1 }),
+          fill: new Fill({ color: 'rgba(0,0,0,0)' }),
+        })
+      });
+
+      const parcelsSimpl1 = new VectorLayer({
+        properties: { title: 'Parcele (1m)' },
+        source: new VectorSource({
+          format: new GeoJSON(),
+          url: this.settingsService.GEOSERVER_URL + 
+              'wfs?service=WFS&version=2.0.0&request=GetFeature&' +
+              'typeName=ne:parcele_simpl_1&' +
+              'srsName=EPSG:3794&outputFormat=application/json'
+        }),
+        style: new Style({
+          stroke: new Stroke({ color: '#5599ff', width: 1 }),
+          fill: new Fill({ color: 'rgba(0,0,0,0)' }),
+        })
+      });
+
+      const parcelsSimpl2 = new VectorLayer({
+        properties: { title: 'Parcele (2m)' },
+        source: new VectorSource({
+          format: new GeoJSON(),
+          url: this.settingsService.GEOSERVER_URL + 
+              'wfs?service=WFS&version=2.0.0&request=GetFeature&' +
+              'typeName=ne:parcele_simpl_2&' +
+              'srsName=EPSG:3794&outputFormat=application/json'
+        }),
+        style: new Style({
+          stroke: new Stroke({ color: '#2266cc', width: 1 }),
+          fill: new Fill({ color: 'rgba(0,0,0,0)' }),
+        })
+      });
+
+      return new LayerGroup({
+        properties: { title: 'Lokalni WFS sloji' },
+        visible: false,
+        layers: [parcelsOriginal, parcelsSimpl05, parcelsSimpl1, parcelsSimpl2]
+      });
+    }
+
+
 
 
 
@@ -805,6 +908,7 @@ export class MapService {
       layers: [
         this.baseLayersGroup, 
         this.WFSLayersGroup, 
+        this.localWFSLayersGroup,  
         this.myLayersGroup, 
         this.myWorkingLayersGroup,
         this.sentinelLayersGroup 

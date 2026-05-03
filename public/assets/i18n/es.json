@@ -182,5 +182,10 @@
   "ADDRESS_EDIT_START": "Editar dirección",
   "ADDRESS_EDIT_STOP": "Finalizar edición de dirección",
   "LAYERGROUP_SENTINEL": "Sentinel Hub",
-  "LAYER_SENTINEL_TRUE_COLOR": "Color Real"
+  "LAYER_SENTINEL_TRUE_COLOR": "Color Real",
+  "LAYERGROUP_LOCAL_WFS": "Capas WFS locales",
+  "LAYER_LOCAL_WFS_PARCELS": "Parcelas (originales)",
+  "LAYER_LOCAL_WFS_PARCELS_05": "Parcelas (simplif. 0.5m)",
+  "LAYER_LOCAL_WFS_PARCELS_1": "Parcelas (simplif. 1m)",
+  "LAYER_LOCAL_WFS_PARCELS_2": "Parcelas (simplif. 2m)"
 }

@@ -182,6 +182,11 @@
   "ADDRESS_EDIT_START": "Uredi naslov",
   "ADDRESS_EDIT_STOP": "Končaj urejanje naslova",
   "LAYERGROUP_SENTINEL": "Sentinel Hub",
-  "LAYER_SENTINEL_TRUE_COLOR": "Resnične barve"
+  "LAYER_SENTINEL_TRUE_COLOR": "Resnične barve",
+  "LAYERGROUP_LOCAL_WFS": "Lokalni WFS sloji",
+  "LAYER_LOCAL_WFS_PARCELS": "Parcele (originalne)",
+  "LAYER_LOCAL_WFS_PARCELS_05": "Parcele (poenostavl. 0.5m)",
+  "LAYER_LOCAL_WFS_PARCELS_1": "Parcele (poenostavl. 1m)",
+  "LAYER_LOCAL_WFS_PARCELS_2": "Parcele (poenostavl. 2m)"
 
 }
