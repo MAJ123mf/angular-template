@@ -187,5 +187,6 @@
   "LAYER_LOCAL_WFS_PARCELS": "Parcels (original)",
   "LAYER_LOCAL_WFS_PARCELS_05": "Parcels (simplified 0.5m)",
   "LAYER_LOCAL_WFS_PARCELS_1": "Parcels (simplified 1m)",
-  "LAYER_LOCAL_WFS_PARCELS_2": "Parcels (simplified 2m)"  
+  "LAYER_LOCAL_WFS_PARCELS_2": "Parcels (simplified 2m)",
+  "LAYERGROUP_LOCAL_WFS_LOD": "Parcels - smart display (LOD)"
 }

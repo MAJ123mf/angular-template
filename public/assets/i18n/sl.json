@@ -187,6 +187,7 @@
   "LAYER_LOCAL_WFS_PARCELS": "Parcele (originalne)",
   "LAYER_LOCAL_WFS_PARCELS_05": "Parcele (poenostavl. 0.5m)",
   "LAYER_LOCAL_WFS_PARCELS_1": "Parcele (poenostavl. 1m)",
-  "LAYER_LOCAL_WFS_PARCELS_2": "Parcele (poenostavl. 2m)"
+  "LAYER_LOCAL_WFS_PARCELS_2": "Parcele (poenostavl. 2m)",
+  "LAYERGROUP_LOCAL_WFS_LOD": "Parcele - pametni prikaz (LOD)"
 
 }
