@@ -181,13 +181,13 @@
   "ADDRESS_SELECT_STOP": "Ustavi izbiranje naslova",
   "ADDRESS_EDIT_START": "Uredi naslov",
   "ADDRESS_EDIT_STOP": "Končaj urejanje naslova",
-  "LAYERGROUP_SENTINEL": "Sentinel Hub",
+  "LAYERGROUP_SENTINEL": "Sentinel-2 satelitski posnetki",
   "LAYER_SENTINEL_TRUE_COLOR": "Resnične barve",
-  "LAYERGROUP_LOCAL_WFS": "Lokalni WFS sloji",
-  "LAYER_LOCAL_WFS_PARCELS": "Parcele (originalne)",
-  "LAYER_LOCAL_WFS_PARCELS_05": "Parcele (poenostavl. 0.5m)",
-  "LAYER_LOCAL_WFS_PARCELS_1": "Parcele (poenostavl. 1m)",
-  "LAYER_LOCAL_WFS_PARCELS_2": "Parcele (poenostavl. 2m)",
-  "LAYERGROUP_LOCAL_WFS_LOD": "Parcele - pametni prikaz (LOD)"
+  "LAYERGROUP_LOCAL_WFS": "Parcele - analiza poenostavitev",
+  "LAYER_LOCAL_WFS_PARCELS": "Parcele - originalne",
+  "LAYER_LOCAL_WFS_PARCELS_05": "Parcele - poenostavitev 0.5 m",
+  "LAYER_LOCAL_WFS_PARCELS_1": "Parcele - poenostavitev 1 m",
+  "LAYER_LOCAL_WFS_PARCELS_2": "Parcele - poenostavitev 2 m",
+  "LAYERGROUP_LOCAL_WFS_LOD": "Parcele - samodejni LOD prikaz"
 
 }

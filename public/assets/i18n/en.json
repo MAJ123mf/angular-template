@@ -181,12 +181,12 @@
   "ADDRESS_SELECT_STOP": "Stop selecting address",
   "ADDRESS_EDIT_START": "Edit address",
   "ADDRESS_EDIT_STOP": "Finish editing address",
-  "LAYERGROUP_SENTINEL": "Sentinel Hub",
+  "LAYERGROUP_SENTINEL": "Sentinel-2 Satellite Imagery",
   "LAYER_SENTINEL_TRUE_COLOR": "True Color",
-  "LAYERGROUP_LOCAL_WFS": "Local WFS layers",
-  "LAYER_LOCAL_WFS_PARCELS": "Parcels (original)",
-  "LAYER_LOCAL_WFS_PARCELS_05": "Parcels (simplified 0.5m)",
-  "LAYER_LOCAL_WFS_PARCELS_1": "Parcels (simplified 1m)",
-  "LAYER_LOCAL_WFS_PARCELS_2": "Parcels (simplified 2m)",
-  "LAYERGROUP_LOCAL_WFS_LOD": "Parcels - smart display (LOD)"
+  "LAYERGROUP_LOCAL_WFS": "Parcels - Simplification Analysis",
+  "LAYER_LOCAL_WFS_PARCELS": "Parcels - Original",
+  "LAYER_LOCAL_WFS_PARCELS_05": "Parcels - Simplification 0.5 m",
+  "LAYER_LOCAL_WFS_PARCELS_1": "Parcels - Simplification 1 m",
+  "LAYER_LOCAL_WFS_PARCELS_2": "Parcels - Simplification 2 m",
+  "LAYERGROUP_LOCAL_WFS_LOD": "Parcels - Automatic LOD Display"
 }

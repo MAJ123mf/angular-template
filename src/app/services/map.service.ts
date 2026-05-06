@@ -1068,7 +1068,7 @@ export class MapService {
   addMousePositionControl() {
   const mousePositionControl = new MousePosition({
     coordinateFormat: (coord) => {
-      return coord ? `EPSG: 3794  ${Math.round(coord[0])}, ${Math.round(coord[1])}` : '';
+      return coord ? `D96/TM    ${Math.round(coord[0])}, ${Math.round(coord[1])}` : '';
     },
     projection: 'EPSG:3794',
   });

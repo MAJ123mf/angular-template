@@ -181,12 +181,12 @@
   "ADDRESS_SELECT_STOP": "Detener selección de dirección",
   "ADDRESS_EDIT_START": "Editar dirección",
   "ADDRESS_EDIT_STOP": "Finalizar edición de dirección",
-  "LAYERGROUP_SENTINEL": "Sentinel Hub",
-  "LAYER_SENTINEL_TRUE_COLOR": "Color Real",
-  "LAYERGROUP_LOCAL_WFS": "Capas WFS locales",
-  "LAYER_LOCAL_WFS_PARCELS": "Parcelas (originales)",
-  "LAYER_LOCAL_WFS_PARCELS_05": "Parcelas (simplif. 0.5m)",
-  "LAYER_LOCAL_WFS_PARCELS_1": "Parcelas (simplif. 1m)",
-  "LAYER_LOCAL_WFS_PARCELS_2": "Parcelas (simplif. 2m)",
-  "LAYERGROUP_LOCAL_WFS_LOD": "Parcelas - visualización inteligente (LOD)"
+  "LAYERGROUP_SENTINEL": "Imágenes satelitales Sentinel-2",
+  "LAYER_SENTINEL_TRUE_COLOR": "Color real",
+  "LAYERGROUP_LOCAL_WFS": "Parcelas - análisis de simplificación",
+  "LAYER_LOCAL_WFS_PARCELS": "Parcelas - originales",
+  "LAYER_LOCAL_WFS_PARCELS_05": "Parcelas - simplificación 0,5 m",
+  "LAYER_LOCAL_WFS_PARCELS_1": "Parcelas - simplificación 1 m",
+  "LAYER_LOCAL_WFS_PARCELS_2": "Parcelas - simplificación 2 m",
+  "LAYERGROUP_LOCAL_WFS_LOD": "Parcelas - visualización LOD automática"
 }
