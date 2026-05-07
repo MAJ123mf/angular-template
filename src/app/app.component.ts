@@ -65,7 +65,10 @@ export class AppComponent {
   isDarkTheme = false;
   private allLayersLoaded = false;
   private tableHeightBeforeCollapse = 60; // shranimo pred collapse
-
+  private highlightedParcelId: string | null = null;
+  private highlightedBuildingId: string | null = null;
+  private highlightedRoadId: string | null = null;
+  private highlightedAddressId: string | null = null;
 
   constructor(
     public authService: AuthService, 
@@ -238,32 +241,61 @@ showHelp() {
     }
   }
 
+
   handleEditParcel(parcel: any) {
     console.log('Parcel selected for edit:', parcel);
     this.selectedType = 'parcel';
     this.parcelForm.setUpdate(parcel);
-    this.mapService.highlightParcelOnMap(parcel);
+
+    if (this.highlightedParcelId === String(parcel.id)) {
+      this.mapService.clearHighlight();
+      this.highlightedParcelId = null;
+    } else {
+      this.mapService.highlightParcelOnMap(parcel);
+      this.highlightedParcelId = String(parcel.id);
+    }
   }
 
   handleEditBuilding(building: any) {
     console.log('Building selected for edit:', building);
     this.selectedType = 'building';
     this.buildingForm.setUpdate(building);
-    this.mapService.highlightBuildingOnMap(building);    
+    
+    if (this.highlightedBuildingId === String(building.id)) {
+      this.mapService.clearHighlight();
+      this.highlightedBuildingId = null;
+    } else {
+      this.mapService.highlightBuildingOnMap(building);
+      this.highlightedBuildingId = String(building.id);
+    }
   }  
 
   handleEditRoad(road: any) {
     console.log('Road selected for edit:', road);
     this.selectedType = 'road';
     this.roadForm.setUpdate(road);
-    this.mapService.highlightRoadOnMap(road); 
+    
+    if (this.highlightedRoadId === String(road.id)) {
+      this.mapService.clearHighlight();
+      this.highlightedRoadId = null;
+    } else {
+      this.mapService.highlightRoadOnMap(road);
+      this.highlightedRoadId = String(road.id);
+    }
   }
 
   handleEditAddress(address: any) {
     console.log('Address selected for edit:', address);
     this.selectedType = 'address';
     this.addressForm.setUpdate(address);
-    this.mapService.highlightAddressOnMap(address); 
+    
+    if (this.highlightedAddressId === String(address.id)) {
+      this.mapService.clearHighlight();
+      this.highlightedAddressId = null;
+    } else {
+      this.mapService.highlightAddressOnMap(address);
+      this.highlightedAddressId = String(address.id);
+    }
   }
 
   toggleLeft() {
@@ -294,4 +326,6 @@ showHelp() {
     document.documentElement.setAttribute('data-theme', this.currentTheme);
     localStorage.setItem('geosg_theme', this.currentTheme);
   }
+
+
 }

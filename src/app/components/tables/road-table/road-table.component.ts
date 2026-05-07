@@ -136,8 +136,11 @@ export class RoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+
   setIzbira(value: 'all' | 'one') {
+    console.log('setIzbira called:', value, 'izbira before:', this.izbira);
     this.izbira = value;
+    console.log('izbira after:', this.izbira);
     this.loadRoads();
   }
 
@@ -181,7 +184,10 @@ export class RoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
       console.warn('[drawRoadGeometry] geom_geojson manjka!');
       return;
     }
+    this.inputId = road.id;
+    this.setIzbira('one');
     this.mapService.addOneRoadGeoJsonToLayer(road.geom_geojson);
+    this.mapService.zoomToGeoJson(road.geom_geojson);  
   }
 
 

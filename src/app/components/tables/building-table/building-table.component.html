@@ -1,9 +1,9 @@
 <div class="kontrolna-vrstica">
   <div class="izbira-del">
-    <INPUT type="radio" id="all" name="izbira" value="all" checked (click)="setIzbira('all')">  
+    <input type="radio" id="all" name="izbira" [(ngModel)]="izbira" value="all" (click)="setIzbira('all')">  
     <label for="all">{{ 'BUILDING_TABLE_SELECT_ALL' | translate }}</label> 
     &nbsp; &nbsp; &nbsp;
-    <INPUT type="radio" id="one" name="izbira" value="one" (click)="setIzbira('one')"> 
+    <input type="radio" id="one" name="izbira" [(ngModel)]="izbira" value="one" (click)="setIzbira('one')"> 
     <label for="one">{{ 'BUILDING_TABLE_SELECT_ONE' | translate }}</label> 
     &nbsp; &nbsp; &nbsp;
     <label for="e_izb">{{ 'BUILDING_TABLE_ID' | translate }}</label>

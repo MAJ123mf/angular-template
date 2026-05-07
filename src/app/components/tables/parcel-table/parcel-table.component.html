@@ -1,9 +1,9 @@
 <div class="kontrolna-vrstica">
   <div class="izbira-del">
-    <input type="radio" id="all" name="izbira" value="naloži vse" checked (click)="setIzbira('all')">
+    <input type="radio" id="all" name="izbira" [(ngModel)]="izbira" value="all" (click)="setIzbira('all')">
     <label for="all">{{ 'PARCEL_TABLE_SELECT_ALL' | translate }}</label>
     &nbsp;&nbsp;&nbsp;
-    <input type="radio" id="one" name="izbira" value="naloži enega" (click)="setIzbira('one')">
+    <input type="radio" id="one" name="izbira" [(ngModel)]="izbira" value="one" (click)="setIzbira('one')">
     <label for="one">{{ 'PARCEL_TABLE_SELECT_ONE' | translate }}</label>
     &nbsp;&nbsp;&nbsp;
     <label for="fname">{{ 'PARCEL_TABLE_ID' | translate }}</label>
@@ -52,6 +52,3 @@
     </tbody>
   </table> 
 </div>
-
-
-

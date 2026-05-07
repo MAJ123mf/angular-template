@@ -1016,6 +1016,8 @@ export class MapService {
         center: [506231,152039],
         zoom: 3,
         projection: epsg3794,
+        minResolution: 0.005,   // ← zoom in omejitev
+        maxResolution: 10,   // ← zoom out omejitev
       }),
       layers: [
         this.baseLayersGroup, 
@@ -2025,6 +2027,24 @@ stopSentinelAutoRefresh(): void {
     clearInterval(this.sentinelRefreshInterval);
     this.sentinelRefreshInterval = null;
     console.log('[MapService] Sentinel osveževanje ustavljeno');
+  }
+}
+
+// odznači označeno parcelo ali stavbo ali cesto ali naslov, ko kliknemo gumb CANCEL v tabeli
+public clearHighlight(): void {
+  this.highlightSource.clear();
+}
+
+// ko kliknem na hiperpovetavo v tabeli, da se mi prikaže parcela ali stavba ali cesta ali naslov na karti, želim, da se karta približa tej geometriji. Ta funkcija to omogoča.
+public zoomToGeoJson(geojsonStr: string): void {
+  const format = new GeoJSON();
+  const features = format.readFeatures(geojsonStr, {
+    featureProjection: 'EPSG:3794'
+  });
+  if (features.length === 0) return;
+  const extent = features[0].getGeometry()?.getExtent();
+  if (extent) {
+    this.map.getView().fit(extent, { duration: 600, maxZoom: 7 });
   }
 }
 

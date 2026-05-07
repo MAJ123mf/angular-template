@@ -172,7 +172,10 @@ export class BuildingTableComponent implements OnInit, AfterViewInit, OnDestroy 
       console.warn('[drawBuildingGeometry] geom_geojson manjka!');
       return;
     }
+    this.inputId = building.id;                                     
+    this.setIzbira('one');  
     this.mapService.addBuildingsGeoJsonToLayer(building.geom_geojson);
+    this.mapService.zoomToGeoJson(building.geom_geojson); 
   }
 
 

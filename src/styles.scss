@@ -176,6 +176,18 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   }
 
 
+  // Placeholder barva v dark temi
+  .form-control::placeholder {
+    color: #aaaaaa !important;
+    opacity: 1 !important;
+  }
+
+  textarea.form-control::placeholder {
+    color: #aaaaaa !important;
+    opacity: 1 !important;
+  }
+
+
   // Vnosna polja
   .form-control {
     background-color: var(--input-bg) !important;
@@ -536,6 +548,18 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   padding: 0.25rem 0.5rem;
   font-size: 0.875rem;
   border-radius: 3px;
+}
+
+// barva ozadja ob izpisu koordinat
+.ol-mouse-position {
+  background-color: rgba(255, 255, 255, 0.6) !important;
+  padding: 2px 8px !important;
+  border-radius: 4px !important;
+  font-size: 13px !important;
+  color: #333333 !important;
+  width: max-content !important;
+  right: 8px !important;
+  top: 8px !important;
 }
 
 // Privzete barve (brez data-theme atributa)

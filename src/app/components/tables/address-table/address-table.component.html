@@ -1,14 +1,15 @@
 <div class="kontrolna-vrstica">
   <div class="izbira-del">
-    <INPUT type="radio" id="all" name="izbira" value="all" checked (click)="setIzbira('all')">  
+    <input type="radio" id="all" name="izbira" [(ngModel)]="izbira" value="all" (click)="setIzbira('all')">  
     <label for="all">{{ 'ADDRESS_TABLE_SELECT_ALL' | translate }}</label> 
     &nbsp; &nbsp; &nbsp;
-    <INPUT type="radio" id="one" name="izbira" value="one" (click)="setIzbira('one')"> 
+    <input type="radio" id="one" name="izbira" [(ngModel)]="izbira" value="one" (click)="setIzbira('one')"> 
     <label for="one">{{ 'ADDRESS_TABLE_SELECT_ONE' | translate }}</label> 
     &nbsp; &nbsp; &nbsp;
     <label for="fname">{{ 'ADDRESS_TABLE_ID' | translate }}</label>
     <input type="text" id="e_izb" name="e_izb" size="3" [value]="inputId" (input)="onInputIdChange($event)">
   </div>
+
   <div class="iskanje-del">
     <label for="fiu">{{ 'ADDRESS_TABLE_FILTER_LABEL' | translate }}</label>
     <input type="text" id="fiu" name="flu" size="25" [(ngModel)]="filterImeUlice" [placeholder]="'ADDRESS_TABLE_FILTER_PLACEHOLDER' | translate">

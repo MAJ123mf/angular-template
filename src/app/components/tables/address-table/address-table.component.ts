@@ -183,7 +183,10 @@ export class AddressTableComponent implements OnInit, AfterViewInit, OnDestroy {
       console.warn('[drawAddressGeometry] geom_geojson manjka!');
       return;
     }
+    this.inputId = address.id;                                         // ← 1. najprej ID
+    this.setIzbira('one'); 
     this.mapService.addOneAddressGeoJsonToLayer(address.geom_geojson);
+    this.mapService.zoomToGeoJson(address.geom_geojson);  
   }
 
 

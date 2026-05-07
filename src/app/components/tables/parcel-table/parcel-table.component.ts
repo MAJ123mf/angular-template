@@ -138,6 +138,7 @@ export class ParcelTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+
   setUpdate(parcel: any) {
     this.editParcel.emit(parcel);
   }
@@ -160,13 +161,17 @@ export class ParcelTableComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+
   drawParcelGeometry(parcel: any) {
     console.log('[drawParcelGeometry] Parcel:', parcel);
     if (!parcel?.geom_geojson) {
       console.warn('[drawParcelGeometry] geom_geojson manjka!');
       return;
     }
-    this.mapService.addParcelsGeoJsonToLayer(parcel.geom_geojson);
+    this.inputId = parcel.id;                                         // ← 1. najprej ID
+    this.setIzbira('one');                                           // ← 2. potem setIzbira (loadParcels bo imel pravi inputId)
+    this.mapService.addParcelsGeoJsonToLayer(parcel.geom_geojson);  // ← 3. nariši geometrijo
+    this.mapService.zoomToGeoJson(parcel.geom_geojson);            // ← 4. zoom na geometrijo
   }
 
 
