@@ -89,6 +89,12 @@ handleKeyboardEvent(event: KeyboardEvent) {
   if (event.altKey && event.shiftKey && event.key.toLowerCase() === 'e') {
     event.preventDefault();
     console.log('[App.Component.ts]] Alt + Shift + e detected!');
+
+  if (!this.authService.canExport()) {
+    this.statusText = 'Nimaš pravice za izvoz podatkov.';
+    return;
+  }
+
     this.downloadGpkg();
   }
 

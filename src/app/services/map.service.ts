@@ -343,6 +343,7 @@ export class MapService {
   // zadnji dodan layer Santinel WMS                                                                                                                 // 23.4.2026
   createSentinelLayers(): LayerGroup {
     const sentinelTrueColor = new TileLayer({
+      zIndex: 0,  // ← najnižji, v ozadju
       properties: { title: 'Sentinel True Color' },
       source: new TileWMS({
         url: 'https://services.sentinel-hub.com/ogc/wms/d7f63811-1331-4885-b890-a038e4b7f9aa',
@@ -373,6 +374,7 @@ export class MapService {
 
    // WFS layer: NEP_KATASTRSKE_OBCINE
     const ko = new VectorLayer({
+      zIndex: 3,  
       properties: { title: 'Katastrske Občine' },
       source: new VectorSource({
         format: new GeoJSON(),
@@ -403,6 +405,7 @@ export class MapService {
 
 
     const wfs_parcele = new VectorLayer({
+      zIndex: 3,  
       properties: { title: 'Parcele' },
       source: new VectorSource({
         format: new GeoJSON(),
@@ -434,6 +437,7 @@ export class MapService {
 
 
     const wfs_stavbe = new VectorLayer({
+      zIndex: 3,  
       properties: { title: 'Stavbe' },
       source: new VectorSource({
         format: new GeoJSON(),
@@ -465,6 +469,7 @@ export class MapService {
 
 
     const wfs_obcine = new VectorLayer({
+      zIndex: 3,  
       properties: { title: 'RPE Občine' },
       source: new VectorSource({
         format: new GeoJSON(),
@@ -1020,13 +1025,13 @@ export class MapService {
         maxResolution: 10,   // ← zoom out omejitev
       }),
       layers: [
+        this.sentinelLayersGroup,
         this.baseLayersGroup, 
         this.WFSLayersGroup, 
         this.localWFSLayersGroup,  
         this.localWFSLayersLODGroup,
         this.myLayersGroup, 
-        this.myWorkingLayersGroup,
-        this.sentinelLayersGroup 
+        this.myWorkingLayersGroup
       ],
       target: undefined
     }); 

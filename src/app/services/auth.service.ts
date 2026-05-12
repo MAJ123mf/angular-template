@@ -47,15 +47,6 @@ export class AuthService {
       });
     }
 
-  
-  
-  // #initCsrfToken() {
-  //   this.http.get(this.settingsService.API_URL+'core/csrf/', { withCredentials: true })
-  //     .subscribe(() => console.log('[AuthService] CSRF token pridobljen'));
-  // }
-
-
-
 
   checkIsLoggedInInServer(): Observable<any> {
     console.log('[AuthService] Checking login status...');
@@ -85,8 +76,6 @@ export class AuthService {
       })
     );
   }
-
-
 
   public ensureCanEdit(): boolean {
     if (this.hasGroup('editors', 'admins')) {
@@ -130,10 +119,13 @@ export class AuthService {
     );
   }
 
-
-
   hasGroup(...groups: string[]): boolean {
     return groups.some(group => this.userGroups.includes(group));
+  }
+
+  // Preveri ali ima uporabnik pravico za izvoz podatkov
+  public canExport(): boolean {
+    return this.hasGroup('izvozniki', 'admins');
   }
 
 }
