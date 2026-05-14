@@ -188,6 +188,7 @@
   "LAYER_LOCAL_WFS_PARCELS_05": "Parcele - poenostavitev 0.5 m",
   "LAYER_LOCAL_WFS_PARCELS_1": "Parcele - poenostavitev 1 m",
   "LAYER_LOCAL_WFS_PARCELS_2": "Parcele - poenostavitev 2 m",
-  "LAYERGROUP_LOCAL_WFS_LOD": "Parcele - samodejni LOD prikaz"
+  "LAYERGROUP_LOCAL_WFS_LOD": "Parcele - samodejni LOD prikaz",
+  "LAYER_LOCAL_WFS_LOD_KO": "Katastrske občine"
 
 }

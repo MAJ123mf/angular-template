@@ -18,7 +18,8 @@ export class GeoService {
 
   downloadGeoPackage(): Observable<Blob> {
     return this.http.get(`${this.baseUrl}`, {
-      responseType: 'blob'
+      responseType: 'blob',
+      withCredentials: true 
     });
   }
 }

@@ -188,5 +188,6 @@
   "LAYER_LOCAL_WFS_PARCELS_05": "Parcels - Simplification 0.5 m",
   "LAYER_LOCAL_WFS_PARCELS_1": "Parcels - Simplification 1 m",
   "LAYER_LOCAL_WFS_PARCELS_2": "Parcels - Simplification 2 m",
-  "LAYERGROUP_LOCAL_WFS_LOD": "Parcels - Automatic LOD Display"
+  "LAYERGROUP_LOCAL_WFS_LOD": "Parcels - Automatic LOD Display",
+  "LAYER_LOCAL_WFS_LOD_KO": "Cadastral Communities"
 }

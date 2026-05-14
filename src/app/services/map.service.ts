@@ -228,6 +228,7 @@ export class MapService {
         localWfsLODLayers[1]?.set('title', this.languageService.instant('LAYER_LOCAL_WFS_PARCELS_05'));
         localWfsLODLayers[2]?.set('title', this.languageService.instant('LAYER_LOCAL_WFS_PARCELS_1'));
         localWfsLODLayers[3]?.set('title', this.languageService.instant('LAYER_LOCAL_WFS_PARCELS_2'));
+        localWfsLODLayers[4]?.set('title', this.languageService.instant('LAYER_LOCAL_WFS_LOD_KO'));
     }
     
     // Moji WMS sloji
@@ -693,15 +694,41 @@ export class MapService {
             })
         });
 
+
+        // Katastrske občine - prikaži ko parcele niso več vidne (nad 1:25.000)
+        const katastrskeCbcine = new VectorLayer({
+            minResolution: 6.61,        // od 1:25.000 naprej (ko parcele izginejo)
+            // brez maxResolution = prikaži do maksimalnega oddaljenja
+            properties: { title: 'Katastrske občine' },
+            source: new VectorSource({
+                format: new GeoJSON(),
+                url: this.settingsService.GEOSERVER_URL +
+                    'wfs?service=WFS&version=2.0.0&request=GetFeature&' +
+                    'typeName=ne:ko&' +
+                    'srsName=EPSG:3794&outputFormat=application/json'
+            }),
+            style: (feature: any, resolution: number) => {
+                return new Style({
+                    stroke: new Stroke({ color: '#8B4513', width: 1.5 }),
+                    fill: new Fill({ color: 'rgba(139, 69, 19, 0.05)' }),
+                    text: new Text({
+                        text: feature.get('NAZIV') || '',
+                        font: 'bold 12px Arial,sans-serif',
+                        fill: new Fill({ color: '#5C2D00' }),
+                        stroke: new Stroke({ color: '#ffffff', width: 2 }),
+                        overflow: true,
+                        placement: 'point',
+                    }),
+                });
+            }
+        });
+
         return new LayerGroup({
             properties: { title: 'Parcele - pametni prikaz (LOD)' },
             visible: false,
-            layers: [parcelsOriginal, parcelsSimpl05, parcelsSimpl1, parcelsSimpl2]
+            layers: [parcelsOriginal, parcelsSimpl05, parcelsSimpl1, parcelsSimpl2, katastrskeCbcine]
         });
     }
-
-
-
 
 
 

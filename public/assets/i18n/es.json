@@ -188,5 +188,6 @@
   "LAYER_LOCAL_WFS_PARCELS_05": "Parcelas - simplificación 0,5 m",
   "LAYER_LOCAL_WFS_PARCELS_1": "Parcelas - simplificación 1 m",
   "LAYER_LOCAL_WFS_PARCELS_2": "Parcelas - simplificación 2 m",
-  "LAYERGROUP_LOCAL_WFS_LOD": "Parcelas - visualización LOD automática"
+  "LAYERGROUP_LOCAL_WFS_LOD": "Parcelas - visualización LOD automática",
+  "LAYER_LOCAL_WFS_LOD_KO": "Comunidades Catastrales"
 }
