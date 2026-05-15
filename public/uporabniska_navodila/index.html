@@ -144,6 +144,15 @@
             font-weight: bold;
         }
 
+        .section h4 {
+            font-size: 1.2rem;
+            color: var(--text);
+            margin-top: 1.2rem;
+            margin-bottom: 0.1 rem;
+            font-weight: 600;
+        }
+
+
         /* Step cards */
         .step {
             background: var(--bg);
@@ -557,6 +566,42 @@
     color: var(--text-light);
 }
 
+.ai-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 1rem 2rem;
+    background: linear-gradient(135deg, #7B1FA2 0%, #E91E63 100%);
+    color: white;
+    text-decoration: none;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: 0.2px;
+    box-shadow: 0 0 0 rgba(233,30,99,0.45);
+    transition: all 0.25s ease;
+    animation: aiPulse 2s infinite;
+}
+
+.ai-button:hover {
+    transform: translateY(-2px) scale(1.04);
+}
+
+@keyframes aiPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(233,30,99,0.45);
+    }
+
+    70% {
+        box-shadow: 0 0 0 14px rgba(233,30,99,0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(233,30,99,0);
+    }
+}
+
+
     </style>
 </head>
 <body>
@@ -659,7 +704,7 @@
 
         <h3>Prikaz slojev</h3>
         <p> Na kartografskem prikazu (zgoraj desno) je na voljo gumb »<b>Sloji</b>« , ki omogoča upravljanje vidnosti prostorskih slojev. <br>
-			Posamezne sloje lahko vklapljate in izklapljate s potrditvenimi polji, prav tako pa upravljate skupine slojev (npr. WMS GURS, WFS GURS, lastni in delovni sloji). Za prikaz posameznega sloja mora biti izbran sloj in njegova nadrejena skupina.
+			Posamezne sloje lahko vklapljate in izklapljate s potrditvenimi polji, prav tako pa upravljate skupine slojev. Za prikaz posameznega sloja mora biti izbran sloj in njegova nadrejena skupina.
 		</p>
 		<p>
 		Podrobnejša razlaga posameznih slojev je na voljo v zavihku <strong>"Upravljanje slojev"</strong>.
@@ -718,14 +763,24 @@
             <p>V tabeli se prikažejo vse parcele iz baze katerih podatki so predstavljeni po stolpcih: ID, Parc. št., KO, Površina, Geom WKT.</p>
         </div>
 
+
         <div class="step">
             <span class="step-number">2</span>
             <h4>Izbira načina prikaza podatkov v tabeli</h4>
+
             <p>Nad tabelo sta na voljo dva izbirna gumba:</p>
+
             <ul style="margin-left: 2rem; margin-top: 0.5rem;">
                 <li><strong>Izberi vse:</strong> Prikaže vse parcele</li>
                 <li><strong>Izberi eno:</strong> Prikaže samo parcelo z določenim ID (vnesite ID v polje)</li>
             </ul>
+
+            <p>
+                ID posamezne parcele je v tabeli prikazan kot modra podčrtana povezava.
+                Ob kliku nanj se kartografski prikaz samodejno približa izbrani parceli, ostale parcele pa se začasno skrijejo.
+                Hkrati se način prikaza samodejno preklopi na <strong>Izberi eno</strong>, ID izbrane parcele pa se vpiše v polje <strong>ID</strong> nad tabelaričnim prikazom podatkov.
+                Za ponovni prikaz vseh parcel preklopite nazaj na možnost <strong>Izberi vse</strong>.
+            </p>
         </div>
 
         <div class="info-box tip">
@@ -765,18 +820,26 @@
         </div>
 
         <h3>Urejanje obstoječe parcele</h3>
-		<div class="step">
-			<span class="step-number">1</span>
-			<h4>Izberite parcelo</h4>
-			<p>
-				Parcelo lahko izberete na dva načina: v tabeli s klikom na gumb
-				<span class="btn-example success">Uredi</span>
-				ali neposredno na karti z orodjem
-				<img src="images/izberi.png" alt="Ikona za izbor objekta" class="tool-icon-inline">
-				<strong>"Izberi parcelo"</strong>.
-				Ne glede na izbran način se podatki o parceli naložijo v obrazec.
-			</p>
-		</div>
+
+        <div class="step">
+            <span class="step-number">1</span>
+            <h4>Izberite parcelo</h4>
+
+            <p>
+                Parcelo lahko izberete na dva načina: v tabeli s klikom na gumb
+                <span class="btn-example success">Uredi</span>
+                ali neposredno na karti z orodjem
+                <img src="images/izberi.png" alt="Ikona za izbor objekta" class="tool-icon-inline">
+                <strong>"Izberi parcelo"</strong>.
+            </p>
+
+            <p>
+                Ob izbiri se kartografski prikaz samodejno približa izbrani parceli, parcela pa se na karti označi z vijolično obrobo.
+                Hkrati se njeni atributi in geometrija samodejno prenesejo v obrazec za urejanje.
+                Za odstranitev označitve ponovno kliknite isti gumb
+                <span class="btn-example success">Uredi</span>.
+            </p>
+        </div>
 
         <div class="step">
             <span class="step-number">2</span>
@@ -799,7 +862,7 @@
         <div class="step">
             <span class="step-number">3</span>
             <h4>Shrani spremembe</h4>
-            <p>Za posodobitev geometrije v bazi podatkov izberite akcijski gumb: <span class="btn-example primary">Posodobi</span>. <br> Spremembe na parceli se shranijo v bazo. <br><br> KAJ SE ZGODI, ČE KLIKNEMO VSTAVI?</p>
+            <p>Za posodobitev geometrije v bazi podatkov izberite akcijski gumb: <span class="btn-example primary">Posodobi</span>. <br> Spremembe na parceli se shranijo v bazo. </p>
         </div>
 
         <h3>Brisanje parcele</h3>
@@ -833,15 +896,24 @@
 			<p>V tabeli se prikažejo vse stavbe iz baze (stolpci: ID, Št. stavbe, KO, Opis, Površina, Geom WKT).</p>
 		</div>
 	
-		<div class="step">
-			<span class="step-number">2</span>
-			<h4>Izbira načina prikaza podatkov v tabeli</h4>
-			<p>Nad tabelo sta na voljo dva izbirna gumba:</p>
-			<ul style="margin-left: 2rem; margin-top: 0.5rem;">
-				<li><strong>Izberi vse:</strong> Prikaže vse stavbe</li>
-				<li><strong>Izberi eno:</strong> Prikaže samo stavbo z določenim ID (vnesite ID v polje)</li>
-			</ul>
-		</div>
+        <div class="step">
+            <span class="step-number">2</span>
+            <h4>Izbira načina prikaza podatkov v tabeli</h4>
+
+            <p>Nad tabelo sta na voljo dva izbirna gumba:</p>
+
+            <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                <li><strong>Izberi vse:</strong> Prikaže vse stavbe</li>
+                <li><strong>Izberi eno:</strong> Prikaže samo stavbo z določenim ID (vnesite ID v polje)</li>
+            </ul>
+
+            <p>
+                ID posamezne stavbe je v tabeli prikazan kot modra podčrtana povezava.
+                Ob kliku nanj se kartografski prikaz samodejno približa izbrani stavbi, ostale stavbe pa se začasno skrijejo.
+                Hkrati se način prikaza samodejno preklopi na <strong>Izberi eno</strong>, ID izbrane stavbe pa se vpiše v polje <strong>ID</strong> nad tabelaričnim prikazom podatkov.
+                Za ponovni prikaz vseh stavb preklopite nazaj na možnost <strong>Izberi vse</strong>.
+            </p>
+        </div>
 	
 		<div class="info-box tip">
 			<strong class="icon-tip">Iskanje stavbe po atributih</strong>
@@ -880,19 +952,27 @@
 			<p>Kliknite gumb <span class="btn-example primary">Vstavi</span>. Ob ustreznih uporabniških pravicah se stavba shrani v podatkovno bazo in prikaže v tabeli. Hkrati postane del vektorskega sloja, ki prikazuje to vrsto prostorskih podatkov.</p>
 		</div>
 	
-		<h3>Urejanje obstoječe stavbe</h3>
-		<div class="step">
-			<span class="step-number">1</span>
-			<h4>Izberi stavbo </h4>
-			<p>
-				Stavbo lahko izberete na dva načina:
-				v tabeli s klikom na gumb <span class="btn-example success">Uredi</span>
-				ali neposredno na karti z orodjem
-				<img src="images/izberi.png" alt="Ikona za izbor objekta" class="tool-icon-inline">
-				<strong>"Izberi stavbo"</strong>.
-				Po izbiri se podatki samodejno naložijo v obrazec.
-			</p>
-		</div>
+        <h3>Urejanje obstoječe stavbe</h3>
+
+        <div class="step">
+            <span class="step-number">1</span>
+            <h4>Izberite stavbo</h4>
+
+            <p>
+                Stavbo lahko izberete na dva načina: v tabeli s klikom na gumb
+                <span class="btn-example success">Uredi</span>
+                ali neposredno na karti z orodjem
+                <img src="images/izberi.png" alt="Ikona za izbor objekta" class="tool-icon-inline">
+                <strong>"Izberi stavbo"</strong>.
+            </p>
+
+            <p>
+                Ob izbiri se kartografski prikaz samodejno približa izbrani stavbi, stavba pa se na karti označi z vijolično obrobo.
+                Hkrati se njeni atributi in geometrija samodejno prenesejo v obrazec za urejanje.
+                Za odstranitev označitve ponovno kliknite isti gumb
+                <span class="btn-example success">Uredi</span>.
+            </p>
+        </div>
 	
 		<div class="step">
 			<span class="step-number">2</span>
@@ -953,14 +1033,23 @@
 		</div>
 	
 		<div class="step">
-			<span class="step-number">2</span>
-			<h4>Izbira načina prikaza podatkov v tabeli</h4>
-			<p>Nad tabelo sta na voljo dva izbirna gumba:</p>
-			<ul style="margin-left: 2rem; margin-top: 0.5rem;">
-				<li><strong>Izberi vse:</strong> Prikaže vse ceste</li>
-				<li><strong>Izberi eno:</strong> Prikaže samo cesto z določenim ID (vnesite ID v polje)</li>
-			</ul>
-		</div>
+            <span class="step-number">2</span>
+            <h4>Izbira načina prikaza podatkov v tabeli</h4>
+
+            <p>Nad tabelo sta na voljo dva izbirna gumba:</p>
+
+            <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                <li><strong>Izberi vse:</strong> Prikaže vse ceste</li>
+                <li><strong>Izberi eno:</strong> Prikaže samo cesto z določenim ID (vnesite ID v polje)</li>
+            </ul>
+
+            <p>
+                ID posamezne ceste je v tabeli prikazan kot modra podčrtana povezava.
+                Ob kliku nanj se kartografski prikaz samodejno približa izbrani cesti, ostale ceste pa se začasno skrijejo.
+                Hkrati se način prikaza samodejno preklopi na <strong>Izberi eno</strong>, ID izbrane ceste pa se vpiše v polje <strong>ID</strong> nad tabelaričnim prikazom podatkov.
+                Za ponovni prikaz vseh cest preklopite nazaj na možnost <strong>Izberi vse</strong>.
+            </p>
+        </div>
 	
 		<div class="info-box tip">
 			<strong class="icon-tip">Iskanje ceste po atributih</strong>
@@ -999,19 +1088,27 @@
 			<p>Kliknite gumb <span class="btn-example primary">Vstavi</span>. Ob ustreznih uporabniških pravicah se cesta shrani v podatkovno bazo in prikaže v tabeli. Hkrati postane del vektorskega sloja, ki prikazuje to vrsto prostorskih podatkov.</p>
 		</div>
 	
-		<h3>Urejanje obstoječe ceste</h3>
-		<div class="step">
-			<span class="step-number">1</span>
-			<h4>Izberi cesto</h4>
-			<p>
-				Cesto lahko izberete na dva načina:
-				v tabeli s klikom na gumb <span class="btn-example success">Uredi</span>
-				ali neposredno na karti z orodjem
-				<img src="images/izberi.png" alt="Ikona za izbor objekta" class="tool-icon-inline">
-				<strong>"Izberi cesto"</strong>.
-				Po izbiri se podatki samodejno naložijo v obrazec.
-			</p>
-		</div>
+        <h3>Urejanje obstoječe ceste</h3>
+
+        <div class="step">
+            <span class="step-number">1</span>
+            <h4>Izberite cesto</h4>
+
+            <p>
+                Cesto lahko izberete na dva načina: v tabeli s klikom na gumb
+                <span class="btn-example success">Uredi</span>
+                ali neposredno na karti z orodjem
+                <img src="images/izberi.png" alt="Ikona za izbor objekta" class="tool-icon-inline">
+                <strong>"Izberi cesto"</strong>.
+            </p>
+
+            <p>
+                Ob izbiri se kartografski prikaz samodejno približa izbrani cesti, cesta pa se na karti označi z vijolično obrobo.
+                Hkrati se njeni atributi in geometrija samodejno prenesejo v obrazec za urejanje.
+                Za odstranitev označitve ponovno kliknite isti gumb
+                <span class="btn-example success">Uredi</span>.
+            </p>
+        </div>
 	
 		<div class="step">
 			<span class="step-number">2</span>
@@ -1072,15 +1169,24 @@
 			<p>V tabeli se prikažejo vsi naslovi iz baze (stolpci: ID, Ulica, Hišna številka, Poštna številka, Pošta, Geom WKT).</p>
 		</div>
 		
-		<div class="step">
-			<span class="step-number">2</span>
-			<h4>Izbira načina prikaza podatkov v tabeli</h4>
-			<p>Nad tabelo sta na voljo dva izbirna gumba:</p>
-			<ul style="margin-left: 2rem; margin-top: 0.5rem;">
-				<li><strong>Izberi vse:</strong> Prikaže vse naslove</li>
-				<li><strong>Izberi eno:</strong> Prikaže samo naslove z določenim ID (vnesite ID v polje)</li>
-			</ul>
-		</div>
+        <div class="step">
+            <span class="step-number">2</span>
+            <h4>Izbira načina prikaza podatkov v tabeli</h4>
+
+            <p>Nad tabelo sta na voljo dva izbirna gumba:</p>
+
+            <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                <li><strong>Izberi vse:</strong> Prikaže vse naslove</li>
+                <li><strong>Izberi eno:</strong> Prikaže samo naslov z določenim ID (vnesite ID v polje)</li>
+            </ul>
+
+            <p>
+                ID posameznega naslova je v tabeli prikazan kot modra podčrtana povezava.
+                Ob kliku nanj se kartografski prikaz samodejno približa izbranemu naslovu, ostali naslovi pa se začasno skrijejo.
+                Hkrati se način prikaza samodejno preklopi na <strong>Izberi eno</strong>, ID izbranega naslova pa se vpiše v polje <strong>ID</strong> nad tabelaričnim prikazom podatkov.
+                Za ponovni prikaz vseh naslovov preklopite nazaj na možnost <strong>Izberi vse</strong>.
+            </p>
+        </div>
 	
 		<div class="info-box tip">
 			<strong class="icon-tip">Iskanje naslova po atributih</strong>
@@ -1120,19 +1226,27 @@
 			<p>Kliknite gumb <span class="btn-example primary">Vstavi</span>. Ob ustreznih uporabniških pravicah se naslov shrani v podatkovno bazo in prikaže v tabeli. Hkrati postane del vektorskega sloja, ki prikazuje to vrsto prostorskih podatkov.</p>
 		</div>
 	
-		<h3>Urejanje obstoječega naslova</h3>
-		<div class="step">
-			<span class="step-number">1</span>
-			<h4>Izberi naslov</h4>
-			<p>
-				Naslov lahko izberete na dva načina:
-				v tabeli s klikom na gumb <span class="btn-example success">Uredi</span>
-				ali neposredno na karti z orodjem
-				<img src="images/izberi.png" alt="Ikona za izbor objekta" class="tool-icon-inline">
-				<strong>"Izberi naslov"</strong>.
-				Po izbiri se podatki samodejno naložijo v obrazec.
-			</p>
-		</div>
+        <h3>Urejanje obstoječega naslova</h3>
+
+        <div class="step">
+            <span class="step-number">1</span>
+            <h4>Izberite naslov</h4>
+
+            <p>
+                Naslov lahko izberete na dva načina: v tabeli s klikom na gumb
+                <span class="btn-example success">Uredi</span>
+                ali neposredno na karti z orodjem
+                <img src="images/izberi.png" alt="Ikona za izbor objekta" class="tool-icon-inline">
+                <strong>"Izberi naslov"</strong>.
+            </p>
+
+            <p>
+                Ob izbiri se kartografski prikaz samodejno približa izbranemu naslovu, naslov pa se na karti označi z vijolično obrobo.
+                Hkrati se njegovi atributi in geometrija samodejno prenesejo v obrazec za urejanje.
+                Za odstranitev označitve ponovno kliknite isti gumb
+                <span class="btn-example success">Uredi</span>.
+            </p>
+        </div>
 	
 		<div class="step">
 			<span class="step-number">2</span>
@@ -1174,12 +1288,26 @@
     <section id="sloji" class="section">
         <h2>Sloji in upravljanje slojev</h2>
 
-        <p>Kontrola "Sloji" v zgornjem desnem kotu kartografskega prikaza omogoča vklapljanje in izklapljanje posameznih prostorskih slojev ter skupin slojev.
-		Za prikaz posameznega sloja mora biti označen tako sloj kot tudi njegova nadrejena skupina. Ob privzetem zagonu aplikacije so vsi posamezni sloji vključeni, vendar je aktivna samo zadnja skupina slojev.
-		Zato ob vstopu v aplikacijo vidimo le delovne sloje. Spodnja slika prikazuje to začetno stanje ter pregled vseh slojev, ki so na voljo v aplikaciji.</p>
+        <p>Kontrola »Sloji« v zgornjem desnem kotu kartografskega prikaza omogoča vklapljanje in izklapljanje posameznih prostorskih slojev ter skupin slojev. 
+            Za prikaz posameznega sloja morata biti hkrati vključena tako sloj kot tudi njegova nadrejena skupina. Ob privzetem zagonu aplikacije so posamezni sloji označeni kot vključeni,
+             vendar sta aktivni samo skupini »Delovni sloji« in »Uvoženi sloji«, zato so ob vstopu v aplikacijo prikazani le sloji iz teh dveh skupin. 
+             Spodnji sliki prikazujeta začetno stanje kontrole slojev ter pregled vseh slojev, ki so na voljo v aplikaciji.
+        </p>
 
-        <img src="images/img_layers.png" alt="Kontrola slojev" style="width: 240px; margin: 1.5rem auto; display: block; border-radius: 8px; border: 2px solid var(--border); box-shadow: 0 4px 12px var(--shadow);">
+        <div style="display: flex; justify-content: center; gap: 1rem; margin: 1.5rem 0; flex-wrap: wrap; align-items: flex-start;">
+
+            <img src="images/img_layers.png" 
+                alt="Kontrola slojev 1" 
+                style="max-height: 400px; width: auto; border-radius: 8px; border: 2px solid var(--border); box-shadow: 0 4px 12px var(--shadow);">
+
+            <img src="images/img_layerstwo.png" 
+                alt="Kontrola slojev 2" 
+                style="max-height: 540px; width: auto; border-radius: 8px; border: 2px solid var(--border); box-shadow: 0 4px 12px var(--shadow);">
+
+        </div>
+
 		<br>
+
 		<h3>Vklop in upravljanje slojev (korak za korakom)</h3>
 		
 		<div class="step">
@@ -1273,7 +1401,7 @@
 			</ul>
 			<div class="info-box tip" style="margin-top: 1rem;">
 				<strong>💡 Namen in uporaba WFS GURS slojev</strong>
-				WFS GURS sloji se uporabljajo za natančen pregled posameznih prostorskih objektov (entitet) in <b>njihovih atributov</b> ter za kontrolo podatkov v primerjavi z lastnimi sloji.
+				WFS GURS sloji se uporabljajo za natančen pregled posameznih prostorskih objektov (entitet) in <b>njihovih atributov</b> ter za kontrolo podatkov v primerjavi s sloji GeoSG.
 				V aplikaciji so namenjeni izključno prikazu in niso namenjeni urejanju, saj je urejanje omogočeno na delovnih (vektorskih) slojih.
 			</div>
 			
@@ -1283,14 +1411,66 @@
             </div>
         </div>
 
+
+        <div class="step">
+            <span class="step-number">5</span>
+            <h4>Parcele – samodejni LOD prikaz</h4>
+
+            <p>
+                Ta sklop omogoča samodejno prilagajanje prikaza parcel glede na trenutno merilo karte.
+                Pri večjih merilih se uporablja izvorni sloj parcel, pri manjših merilih pa ustrezno poenostavljene različice.
+                Preklapljanje med sloji poteka samodejno glede na razrede meril, predstavljene v preglednici 3.
+                Sloj, ki ustreza trenutnemu merilu prikaza, je v seznamu slojev prikazan temneje, medtem ko so ostali sloji prikazani svetleje, kar uporabniku omogoča prepoznavo trenutno aktivne stopnje poenostavitve.
+            </p>
+
+            <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                <li><strong>Parcele – originalne:</strong> prikaz pri večjih merilih, kjer je potrebna visoka geometrijska natančnost</li>
+                <li><strong>Parcele – poenostavitev 0,5 m:</strong> prikaz pri nekoliko manjših merilih</li>
+                <li><strong>Parcele – poenostavitev 1 m:</strong> prikaz pri srednje majhnih merilih</li>
+                <li><strong>Parcele – poenostavitev 2 m:</strong> prikaz pri manjših merilih, kjer podrobna oblika parcel ni več bistvena</li>
+            </ul>
+
+            <div class="info-box tip" style="margin-top: 1rem;">
+                <strong>💡 Namen in uporaba</strong>
+                Samodejni LOD prikaz zmanjšuje količino prikazanih in prenesenih podatkov pri manjših merilih, s čimer izboljšuje preglednost karte in učinkovitost delovanja geoportala.
+                Ko prikaz parcel pri zelo majhnih merilih ni več smiseln, se prikaz parcel samodejno nadomesti s prikazom katastrskih občin.
+            </div>
+        </div>
+
+<div class="step">
+    <span class="step-number">6</span>
+    <h4>Parcele – analiza poenostavitev</h4>
+
+    <p>
+        Ta sklop vsebuje izvorni sloj parcel ter njegove poenostavljene različice, pripravljene z različnimi tolerancami poenostavitve.
+        Namenjen je raziskovalni in vizualni primerjavi vpliva poenostavljanja geometrij na prikaz parcel, količino prenesenih podatkov in odzivnost sistema.
+        Za razliko od samodejnega LOD prikaza lahko uporabnik tukaj posamezne sloje poljubno vklaplja ločeno ali hkrati ter jih primerja pri istem merilu prikaza.
+    </p>
+
+    <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+        <li><strong>Parcele – originalne:</strong> izvorni sloj parcel brez poenostavitve</li>
+        <li><strong>Parcele – poenostavitev 0,5 m:</strong> parcele, poenostavljene s toleranco 0,5 m</li>
+        <li><strong>Parcele – poenostavitev 1 m:</strong> parcele, poenostavljene s toleranco 1 m</li>
+        <li><strong>Parcele – poenostavitev 2 m:</strong> parcele, poenostavljene s toleranco 2 m</li>
+    </ul>
+
+    <div class="info-box tip" style="margin-top: 1rem;">
+        <strong>💡 Namen in uporaba</strong>
+        Prikaz je namenjen primerjavi vpliva različnih stopenj poenostavitve pri enakem merilu prikaza.
+        Posamezni sloji so namenoma prikazani v različnih barvah, kar omogoča lažje opazovanje razlik med izvornimi in poenostavljenimi geometrijami.
+    </div>
+</div>
+
+
+
+
         <div class="step">
 			<span class="step-number">3</span>
-			<h4>Lastni WMS sloji (GeoServer)</h4>
-		
+			<h4>GeoSG WMS sloji (GeoServer)</h4>
+        
 			<p>
-			<strong>Lastni WMS sloji:</strong> To so sloji, ki jih GeoServer servira iz PostgreSQL/PostGIS baze portala GeoSG. 
-			Predstavljajo rastrski prikaz podatkov, ki se dinamično generira na strežniku. Prikazujejo drugačno stanje kot podatki GURS, saj so lahko glede na izvorne podatke, ti urejeni, dodani ali izbrisani.
-			</p>
+			<strong>GeoSG WMS sloji:</strong> To so sloji, ki jih GeoServer servira iz PostgreSQL/PostGIS baze portala GeoSG. 
+			Predstavljajo rastrski prikaz podatkov, ki se dinamično generira na strežniku. Prikazujejo stanje podatkov v bazi geoportala GeoSG, ki se lahko razlikuje od referenčnih podatkov GURS, saj so bili podatki lahko dodani, urejeni ali izbrisani.
 		
 			<ul style="margin-left: 2rem; margin-top: 0.5rem;">
 				<li><strong>Parcele:</strong> podatki o parcelah iz vaše baze</li>
@@ -1314,8 +1494,8 @@
             </p>
 		
 			<div class="info-box tip" style="margin-top: 1rem;">
-				<strong>💡 Namen in uporaba lastnih WMS slojev</strong>
-				Lastni WMS sloji omogočajo hiter vizualni pregled podatkov iz baze portala GeoSG, brez prenosa geometrije. 
+				<strong>💡 Namen in uporaba GeoSG WMS slojev</strong>
+				GeoSG WMS sloji omogočajo hiter vizualni pregled podatkov iz baze portala GeoSG, brez prenosa geometrije. 
 				Primerni so za prikaz večjih območij ali kot referenčni sloji, kadar informacija o atributih ni potrebna.
 			</div>
 		</div>	
@@ -1323,10 +1503,10 @@
 
         <div class="step">
 			<span class="step-number">4</span>
-			<h4>Delovni sloji (vektorski)</h4>
+			<h4>GeoSG delovni sloji</h4>
 		
 			<p>
-			<strong>Vektorski sloji iz baze GeoSG:</strong> To so sloji, ki se nalagajo neposredno iz PostgreSQL/PostGIS baze geoportala GeoSG kot vektorski podatki. 
+			<strong>GeoSG delovni vektorski sloji:</strong> To so sloji, ki se nalagajo neposredno iz PostgreSQL/PostGIS baze geoportala GeoSG kot vektorski podatki. 
 				Vsebujejo geometrijo in pripadajoče atribute, kar omogoča interakcijo z objekti.
 				Delovni vektorski sloji predstavljajo osnovni delovni nivo aplikacije, saj omogočajo neposredno delo s podatki. 
 			</p>
@@ -1344,7 +1524,31 @@
 				Vse aktivne operacije nad podatki v aplikaciji potekajo na teh slojih.
 			</div>
 		</div>
-		<br>
+
+        <div class="step">
+            <span class="step-number">5</span>
+            <h4>Sentinel-2 satelitski posnetki</h4>
+
+            <p>
+            Aplikacija omogoča tudi prikaz aktualnih satelitskih posnetkov Sentinel-2 v obliki WMS sloja. 
+            Posnetki so pridobljeni prek storitve Sentinel Hub, ki omogoča dostop do satelitskih podatkov programa Copernicus Evropske vesoljske agencije (ESA).
+            Sloj je namenjen vizualnemu pregledu dejanskega stanja prostora ter primerjavi z drugimi prostorskimi podatki v aplikaciji.
+            </p>
+
+            <p>V tem naboru je na voljo naslednji sloj:</p>
+
+            <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                <li>
+                    <strong>Resnične barve:</strong> prikaz površja v naravnih barvah na podlagi kombinacije spektralnih pasov satelita Sentinel-2
+                </li>
+            </ul>
+
+            <p>
+            Posnetki se praviloma osvežujejo vsakih nekaj dni, zato je v večini primerov prikazano stanje staro manj kot en teden, odvisno od oblačnosti in razpoložljivosti satelitskih podatkov.
+            </p>
+        </div>
+        <br>
+
 
         <div class="info-box warning">
             <strong>⚠️ Zmogljivost</strong>
@@ -1401,15 +1605,21 @@
         </table> <br> 
 
         <h3>Vrstni red slojev</h3>
-        <p>Sloji se prikazujejo v naslednjem vrstnem redu (od spodaj navzgor):</p>
+        <p>
+        Sloji so na kartografskem prikazu izrisani po naslednjem vrstnem redu (od zgoraj navzdol). Sloji na vrhu se izrišejo nad sloji, ki so nižje na seznamu.
+        </p>
+
         <ol style="margin-left: 2rem; line-height: 2;">
-            <li><strong>Podlaga</strong> (OSM, Google satelit…) – najspodaj</li>
-            <li><strong>WMS GURS</strong> (referenčni sloji GURS)</li>
-            <li><strong>WFS GURS</strong> (vektorski sloji GURS)</li>
-            <li><strong>Moji WMS sloji</strong> (iz GeoServerja)</li>
-            <li><strong>Moji vektorski sloji</strong> (iz baze)</li>
-			<li><strong>Uvoženi sloji</strong> (GeoPackage, Shapefile, KML)</li>
-            <li><strong>Highlight sloj</strong> (označeni objekti - magenta obroba) – na vrhu</li>
+            <li><strong>Označeni/izbrani objekti za urejanje</strong> (začasni prikaz objektov z magenta obrobo; ni samostojen podatkovni sloj)</li>
+            <li><strong>GeoSG delovni vektorski sloji</strong> (direktni vektorski prikaz podatkov za izbor in urejanje)</li>
+            <li><strong>Uvoženi sloji</strong> (začasno uvoženi uporabniški sloji: GeoPackage, Shapefile, KML)</li>
+            <li><strong>GeoSG WMS sloji</strong> (rastrski prikaz podatkov GeoSG prek GeoServer WMS storitve)</li>
+            <li><strong>Parcele – samodejni LOD prikaz</strong> (samodejno preklapljanje poenostavljenih GeoSG slojev glede na merilo)</li>
+            <li><strong>Parcele – analiza poenostavitev</strong> (primerjalni prikaz poenostavljenih GeoSG vektorskih slojev)</li>
+            <li><strong>WFS GURS</strong> (referenčni vektorski sloji GURS z atributi)</li>
+            <li><strong>WMS GURS</strong> (referenčni rastrski sloji GURS)</li>
+            <li><strong>Sentinel-2 satelitski posnetki</strong> (Copernicus/ESA satelitski WMS sloji)</li>
+            <li><strong>Podlaga</strong> (OSM, Google satelit in druge kartografske podlage)</li>
         </ol>
     </section>
 	
@@ -1473,7 +1683,7 @@
 		<p>
 		Po uvozu se sloji samodejno dodajo v seznam slojev na desni strani, kjer so na dnu prikazani v ločeni skupini <strong>"Uvoženi sloji"</strong>.
 		</p>
-		    <img src="images/img_uvoz2.png" alt="Uvoženi sloj na karti" style="width: 1100px; margin: 1.5rem auto; display: block; border-radius: 8px; border: 2px solid var(--border); box-shadow: 0 4px 12px var(--shadow);">
+		    <img src="images/img_uvoz2.png" alt="Uvoženi sloj na karti" style="width: 1000px; margin: 1.5rem auto; display: block; border-radius: 8px; border: 2px solid var(--border); box-shadow: 0 4px 12px var(--shadow);">
         <div class="info-box warning">
             <strong class="icon-warn">Koordinatni sistem</strong>
             Aplikacija deluje v koordinatnem sistemu <b>EPSG:3794 (D96/TM – uradni koordinatni sistem v Sloveniji)</b>. Uvožene datoteke se samodejno pretvorijo v ta sistem. Če datoteka ne vsebuje informacije o projekciji (npr. Shapefile brez <code>.prj</code>), se privzeto predpostavi EPSG:4326 (WGS84).
@@ -1487,7 +1697,7 @@
         <div class="info-box">
             <strong>Uvoženi sloji so začasni</strong>
             Uvoženi sloji so vidni samo v trenutni seji brskalnika. Po osvežitvi strani (<kbd>F5</kbd>) se izgubijo. Za trajno shranjevanje podatkov uporabite funkcijo CRUD (vnos v bazo) ali izvoz GeoPackage.
-        </div>
+        </div> <br> 
 		
 		<h3>Izvoz podatkov v GeoPackage</h3>
 		<p>
@@ -1508,6 +1718,84 @@
 			<strong class="icon-warn">Pozor</strong>
 			Če snap ni uporabljen, lahko pride do netočnih geometrij (npr. prekrivanja ali prazni prostori med objekti).
 		</div> <br> 
+
+        <h3>Prikaz koordinat kurzorja miške</h3>
+
+        <p>
+        V zgornjem desnem delu kartografskega prikaza je omogočen sprotni prikaz koordinat položaja kurzorja miške. 
+        Koordinate se samodejno posodabljajo ob premikanju kurzorja po karti in so prikazane v koordinatnem sistemu <strong> D96/TM (EPSG:3794)</strong>, ki predstavlja uradni koordinatni sistem Republike Slovenije. 
+        Funkcionalnost omogoča natančnejšo prostorsko orientacijo ter lažje določanje položajev prostorskih objektov.
+        </p>
+
+        <img src="images/kurzor_koordinate.png" 
+            alt="Prikaz koordinat kurzorja miške" 
+            style="width: 80%; display: block; margin: 1.5rem auto; border-radius: 8px; border: 2px solid var(--border); box-shadow: 0 4px 12px var(--shadow);">
+            
+            
+        <h3>Dinamično grafično merilo</h3>
+
+        <p>
+        Kartografski prikaz vsebuje grafično merilo, ki prikazuje trenutno razdaljo na zemljevidu.
+        Merilo se samodejno prilagaja stopnji povečave oziroma pomanjšave zemljevida.
+        </p>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: start; margin: 1.5rem 0;">
+            <div>
+                <img src="images/merilo_malo.png" 
+                    alt="Grafično merilo pri oddaljenem pogledu" 
+                    style="width: 100%; height: 390px; object-fit: cover; object-position: top; border-radius: 8px; border: 2px solid var(--border); box-shadow: 0 4px 12px var(--shadow);">
+                
+                <p style="text-align: center; color: var(--text-light); margin-top: 0.5rem;">
+                    Prikaz merila pri oddaljenem pogledu.
+                </p>
+            </div>
+
+            <div>
+                <img src="images/merilo_vlko.png" 
+                    alt="Grafično merilo pri približanem pogledu" 
+                    style="width: 100%; height: 410px; object-fit: cover; object-position: 50% 25%; border-radius: 8px; border: 2px solid var(--border); box-shadow: 0 4px 12px var(--shadow);">
+
+                <p style="text-align: center; color: var(--text-light); margin-top: 0.5rem;">
+                    Prikaz merila pri približanem pogledu.
+                </p>
+            </div>
+        </div>
+
+        <div class="info-box tip">
+            <strong class="icon-tip">Opomba</strong>
+            Grafično merilo se samodejno spreminja glede na povečavo zemljevida.
+        </div> <br> 
+
+
+        <h3>Dinamični prikaz oznak glede na merilo</h3>
+
+        <p>
+        Atributne oznake prostorskih objektov se prikazujejo samo pri približanem pogledu na karto.
+        Pri bolj oddaljenem prikazu se oznake samodejno skrijejo zaradi boljše preglednosti zemljevida.
+        </p>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: start; margin: 1.5rem 0;">
+            <div>
+                <img src="images/z_napisi.png" 
+                    alt="Prikaz oznak pri približanem pogledu" 
+                    style="width: 85%; display: block; margin: 0 auto; border-radius: 8px; border: 2px solid var(--border); box-shadow: 0 4px 12px var(--shadow);">
+
+                <p style="text-align: center; color: var(--text-light); margin-top: 0.5rem;">
+                    Prikaz oznak pri približanem pogledu.
+                </p>
+            </div>
+
+            <div>
+                <img src="images/brez_napisov.png" 
+                    alt="Skritje oznak pri oddaljenem pogledu" 
+                    style="width: 85%; display: block; margin: 0 auto; border-radius: 8px; border: 2px solid var(--border); box-shadow: 0 4px 12px var(--shadow);">
+
+                <p style="text-align: center; color: var(--text-light); margin-top: 0.5rem;">
+                    Skritje oznak pri oddaljenem pogledu.
+                </p>
+            </div>
+        </div>
+
 
         <h3>Statusna vrstica</h3>
         <p>Na dnu aplikacije je prikazana <strong>zelena statusna vrstica</strong>, ki prikazuje trenutno stanje aplikacije in njene odgovore. Primer odgovora je na spodnji sliki, še nekaj možnih sporočil pa je razvidnih iz tabele, ki sliki sledi.</p>
@@ -1652,13 +1940,16 @@
 			<h4>Preverite status prijave</h4>
 			<p>Po uspešni prijavi se v statusni vrstici prikaže vaše uporabniško ime in pripadajoča uporabniška skupina.</p>
 		</div>
-	
 
-		<div class="info-box">
-			<strong>Prijava</strong>
-			Če prijava ni uspešna, preverite pravilnost uporabniškega imena in gesla. 
-			V primeru težav z dostopom se obrnite na razvijalca aplikacije.
-		</div>
+        <div class="info-box">
+            <strong>Prijava</strong>
+            Če prijava ni uspešna, preverite pravilnost uporabniškega imena in gesla. 
+            V primeru težav z dostopom se obrnite na razvijalca aplikacije. <br><br>
+
+            Za registracijo novega uporabniškega računa ali pridobitev dodatnih pravic 
+            kontaktirajte ponudnika storitve prek kontaktnih podatkov, navedenih v zavihku 
+            <b>»O programu«</b>, ki je dostopen v navigacijskem meniju geoportala.
+        </div>
 	
 		<div class="info-box warning">
 			<strong class="icon-warn">Pomembno</strong>
@@ -1685,13 +1976,13 @@
         </div>
         <br>
         <h3>Večjezičnost</h3>
-        <p>Geoportal GeoSG podpira tri jezike uporabniškega vmesnika:</p>
+        <p>Geoportal GeoSG podpira tri jezike uporabniškega vmesnika, uporabniškega priročnika ter informativne spletne strani »O programu«:</p>
         <ul style="margin-left: 2rem; line-height: 2;">
             <li>🇸🇮 <strong>SL</strong> — slovenščina (privzeti jezik)</li>
             <li>🇬🇧 <strong>EN</strong> — angleščina</li>
             <li>🇪🇸 <strong>ESP</strong> — španščina</li>
         </ul>
-        <p style="margin-top: 1rem;">Jezik uporabnik zamenja s klikom na ustrezen gumb v navigacijski vrstici. Po izbiri jezika se posodobijo vsi ključni elementi uporabniškega vmesnika, kot so meniji, obrazci, gumbi, namigi (tooltipi), sistemska sporočila in naslovi slojev v kontroli slojev.</p>
+        <p style="margin-top: 1rem;">Jezik uporabnik zamenja s klikom na ustrezen gumb v navigacijski vrstici. Po izbiri jezika se posodobijo vsi ključni elementi uporabniškega vmesnika, kot so meniji, obrazci, gumbi, namigi (tooltipi), sistemska sporočila in naslovi slojev v kontroli slojev. Uporabniška navodila se ob odprtju prilagodijo glede na izbran delavni jezik.</p>
         <br>
         <h3>Barvne teme</h3>
         <p>Geoportal omogoča izbiro med tremi barvnimi temami uporabniškega vmesnika. Temo zamenjate s klikom na gumb v navigacijski vrstici na katerem je privzeto prikazan simbol lune: 🌙 <br> Gumb prikazuje temo geoportala na katero preklaplate.</p>
@@ -1724,15 +2015,12 @@
         </table>
 
         <div>
-            <h3>Primer svetle teme: </h3>
-            <img src="images/tema-svetla.PNG" alt="Svetla tema" style="width: 100%; border-radius: 8px; margin: 1.5rem 0; border: 2px solid var(--border); box-shadow: 0 4px 12px var(--shadow);">
-            <br>
-            <h3>Primer temne teme: </h3>
-            <br>
+            <h4>Primer svetle teme: </h4>
+            <img src="images/tema-svetla.png" alt="Svetla tema" style="width: 100%; border-radius: 8px; margin: 1.5rem 0; border: 2px solid var(--border); box-shadow: 0 4px 12px var(--shadow);">
+            <h4>Primer temne teme: </h4>
             <img src="images/tema-temna.png" alt="Temna tema" style="width: 100%; border-radius: 8px; margin: 1.5rem 0; border: 2px solid var(--border); box-shadow: 0 4px 12px var(--shadow);">
-            <h3>Primer alternativne teme: </h3>
-            <br>
-            <img src="images/tema-custom.PNG" alt="Custom tema" style="width: 100%; border-radius: 8px; margin: 1.5rem 0; border: 2px solid var(--border); box-shadow: 0 4px 12px var(--shadow);">
+            <h4>Primer alternativne teme: </h4>
+            <img src="images/tema-custom.png" alt="Custom tema" style="width: 100%; border-radius: 8px; margin: 1.5rem 0; border: 2px solid var(--border); box-shadow: 0 4px 12px var(--shadow);">
 
         </div>
 
@@ -1751,6 +2039,37 @@
     <!-- FAQ / POMOČ -->
     <section id="pomoc" class="section">
         <h2>Pogosta vprašanja (FAQ)</h2>
+
+        <div class="info-box tip" style="background: linear-gradient(135deg, #E3F2FD 0%, #F1F8E9 100%); border-left: 5px solid var(--primary); padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 14px var(--shadow);">
+            <strong style="font-size: 1.15rem; color: var(--secondary);">🤖 AI pomočnik GeoSG</strong>
+
+            <p style="margin-top: 0.6rem; color: var(--text);">
+                Za hitrejši odgovor lahko uporabniki namesto neposrednega vprašanja ponudniku storitve uporabijo 
+                <b>AI pomočnika GeoSG</b>, ki je posebej prilagojen za pomoč pri uporabi geoportala.
+            </p>
+
+            <p style="margin-top: 0.6rem; color: var(--text);">
+                    AI pomočnik je prilagojen posebej za pomoč pri uporabi geoportala GeoSG in odgovarja na vprašanja, povezana z uporabo sistema. 
+                    Pomaga lahko pri dodajanju, urejanju in brisanju prostorskih podatkov, delu s sloji, prijavi, izvozu podatkov ter drugih funkcionalnostih geoportala. 
+                    Namenjen je uporabniški podpori in ne razlagi izvorne kode ali tehnične implementacije sistema. 
+                    Več informacij o tehničnem ozadju sistema in dostopu do razvojnih orodij je na voljo v razdelku <b>»Pomembne povezave«</b> na koncu tega poglavja.
+            </p>
+
+            <div style="text-align: center; margin-top: 1.5rem;">
+                <a href="https://chatgpt.com/g/g-69fdb5e513588191ab4c99bfa1e27ec8-geosg-pomocnik"
+                target="_blank"
+                class="ai-button">
+                
+                Odpri AI pomočnika GeoSG
+                </a>
+            </div>
+
+            <p style="margin-top: 1rem; color: var(--text); font-size: 0.95rem;">
+                Če uporabniku bolj ustreza klasičen način iskanja pomoči, lahko odgovor poišče med spodnjimi pogostimi vprašanji
+                ali se obrne neposredno na ponudnika storitve.
+            </p>
+        </div>
+        <br>
 
 		<div class="faq-item">
 			<div class="faq-question">Kako lahko spremenim geometrijo obstoječe parcele?</div>
@@ -1879,8 +2198,8 @@
 </div>
 
 <div class="footer">
-    <p>&copy; 2025 GeoSG GIS Aplikacija | Razvil: Maj Čapelnik</p>
-    <p style="margin-top: 0.5rem; font-size: 0.9rem;">Verzija: 1.0 | Zadnja posodobitev: Februar 2025</p>
+    <p>&copy; 2026 GeoSG GIS Aplikacija | Razvil: Maj Čapelnik</p>
+    <p style="margin-top: 0.5rem; font-size: 0.9rem;">Verzija: 2.0 | Zadnja posodobitev: April 2025</p>
 </div>
 
 <script>

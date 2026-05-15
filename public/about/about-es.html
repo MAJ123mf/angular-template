@@ -1,0 +1,204 @@
+<!DOCTYPE HTML>
+<!--
+	Strata by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+	Adaptado por Maj Čapelnik para el propósito del trabajo de fin de máster.
+-->
+<html>
+	<head>
+		<title>Acerca de GeoSG</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+	</head>
+	<body class="is-preload">
+
+		<header id="header">
+			<div class="inner">
+				<a href="#" class="image avatar"><img src="images/js.jpg" alt="Fotografía del autor" /></a>
+				<h1><strong>Soy Maj Čapelnik</strong>,<br />
+				futuro máster en ingeniería<br />de geodesia y geoinformática<br />
+				y principal creador de este geoportal.</h1>
+			</div>
+		</header>
+
+		<div id="main">
+
+			<section id="one">
+				<header class="major">
+					<h1>GeoSG <img src="images/logoGeoSG_poln.png" alt="Logo GeoSG" class="geosg-logo" /></h1>
+				</header>
+
+				<p>
+					GeoSG es un geoportal de investigación y desarrollo destinado a la visualización, gestión y análisis de datos espaciales del área del municipio catastral de Slovenj Gradec. El sistema fue desarrollado en el marco de un trabajo de fin de máster como plataforma WebGIS demostrativa, que representa el resultado de la investigación de enfoques arquitectónicos, cartográficos y de datos modernos en el desarrollo de aplicaciones GIS web.<br>
+					El geoportal combina la visualización cartográfica interactiva, la edición de entidades espaciales, la comunicación mediante REST API y la integración de tecnologías GIS de código abierto en una arquitectura modular unificada. El valor especial del sistema reside en la conexión de la visualización cartográfica, los datos de atributos y las operaciones espaciales en un entorno de trabajo único, que permite una gestión eficiente, transparente e intuitiva de la información espacial. Al igual que en el funcionamiento del geoportal colaboran numerosos componentes de la aplicación, todo el sistema se basa en la integración mutua de varias tecnologías de código abierto que juntas forman una solución WebGIS tecnológicamente moderna, escalable y potente.
+				</p>
+
+				<ul class="actions">
+					<li>
+						<a href="#" 
+						class="button primary" 
+						onclick="window.close(); return false;">
+						Cerrar ayuda
+						</a>
+					</li>
+					<li><a href="about-sl.html" class="button">Prevedi v SL</a></li>
+					<li><a href="about-en.html" class="button">Translate to EN</a></li>
+				</ul>
+			</section>
+
+			<section id="two">
+				<h2>Arquitectura tecnológica del geoportal</h2>
+
+				<p>
+					El sistema se basa en una <span style="text-decoration: underline;"><strong>arquitectura multinivel</strong></span>
+					que incluye una interfaz de usuario
+					<span style="text-decoration: underline;"><strong>Angular</strong></span>,
+					una capa de aplicación <span style="text-decoration: underline;"><strong>Django REST</strong></span>,
+					<span style="text-decoration: underline;"><strong>GeoServer</strong></span> para la distribución de datos espaciales y una base de datos espacial
+					<span style="text-decoration: underline;"><strong>PostgreSQL/PostGIS</strong></span>.
+					Los servicios individuales están organizados en contenedores
+					<span style="text-decoration: underline;"><strong>Docker</strong></span>,
+					lo que permite una clara separación de responsabilidades entre los componentes y su eficaz interconexión en un entorno WebGIS unificado y estable.
+				</p>
+
+				<p>
+					La comunicación entre las distintas partes del sistema se realiza a través de
+					<span style="text-decoration: underline;"><strong>REST API</strong></span>
+					y los servicios GIS estándar
+					<span style="text-decoration: underline;"><strong>WMS</strong></span> y
+					<span style="text-decoration: underline;"><strong>WFS</strong></span>,
+					que permiten el intercambio, la distribución y la visualización eficientes de datos espaciales.
+					La visualización cartográfica se basa en la biblioteca
+					<span style="text-decoration: underline;"><strong>OpenLayers</strong></span>,
+					que permite interacciones avanzadas con el mapa directamente en la interfaz de usuario.
+				</p>
+
+				<p>
+					La integración mutua de las tecnologías utilizadas permite el funcionamiento coordinado de la visualización cartográfica, el procesamiento de datos del lado del servidor y la base de datos espacial, lo que representa uno de los elementos clave de la funcionalidad del geoportal y permite el establecimiento de una solución WebGIS tecnológicamente moderna, escalable y potente.
+				</p>
+			</section>
+
+			<section id="three">
+				<h2>Funcionalidades del geoportal</h2>
+
+				<p>
+					GeoSG permite la gestión integral de datos espaciales a través de un entorno GIS web interactivo que combina la visualización cartográfica, los datos de atributos y las herramientas de edición de entidades espaciales en una experiencia de usuario unificada.
+				</p>
+
+				<p>
+					El sistema admite la visualización, introducción, edición y eliminación de datos espaciales para distintos tipos de entidades, como parcelas, edificios, carreteras y direcciones. El usuario puede crear y editar geometrías directamente en el mapa mediante herramientas cartográficas interactivas.<br>
+					El geoportal también permite la búsqueda avanzada, el filtrado y la localización de entidades espaciales, la sincronización de la visualización cartográfica con los datos de atributos y la visualización flexible de capas cartográficas. Todos los cambios en los datos espaciales introducidos o editados se almacenan permanentemente en una base de datos centralizada, lo que garantiza que la información del sistema esté actualizada y sea coherente. Más concretamente, el geoportal ofrece al usuario las siguientes funcionalidades principales:
+				</p>
+
+				<ul>
+					<li>exploración sencilla de datos espaciales mediante visualización cartográfica interactiva,</li>
+					<li>desplazamiento, zoom y navegación rápidos en el mapa,</li>
+					<li>dibujo interactivo, edición, marcado visual y eliminación de objetos espaciales directamente en el mapa sin necesidad de utilizar programas GIS de escritorio,</li>
+					<li>compatibilidad con el ajuste automático (snapping) a geometrías existentes al dibujar y editar objetos espaciales,</li>
+					<li>visualización de datos de atributos de objetos espaciales seleccionados en el mapa,</li>
+					<li>sincronización de la visualización cartográfica, las tablas y los formularios en un entorno de usuario unificado,</li>
+					<li>búsqueda avanzada, filtrado y localización rápida de parcelas, edificios, direcciones y otras entidades espaciales,</li>
+					<li>ajuste automático de la visualización de etiquetas de atributos de objetos en el mapa según la escala de visualización,</li>
+					<li>visualización flexible de capas cartográficas con la posibilidad de activar y desactivar vistas de contenido individuales,</li>
+					<li>visualización simultánea de diferentes capas cartográficas para facilitar el análisis espacial,</li>
+					<li>conmutación automática entre diferentes niveles de geometrías simplificadas de la capa WFS de parcelas según la escala de visualización del mapa actual,</li>
+					<li>almacenamiento permanente de los datos espaciales introducidos y editados por el usuario en una base de datos centralizada,</li>
+					<li>actualización automática de las capas cartográficas WMS de GeoSG en función de los cambios en los datos del sistema,</li>
+					<li>compatibilidad con los servicios GIS estándar WMS y WFS y posibilidad de utilizar las capas WMS de GeoSG creadas en otras aplicaciones GIS y sistemas de información,</li>
+					<li>importación y exportación de datos espaciales en formatos GIS estándar para su posterior uso en otros programas GIS,</li>
+					<li>acceso al sistema a través de un navegador web sin necesidad de instalar software adicional,</li>
+					<li>interfaz de usuario multilingüe, página web informativa del programa y manual de usuario con compatibilidad con los idiomas esloveno, inglés y español,</li>
+					<li>guardado automático del idioma de la interfaz de usuario seleccionado y del tema visual mediante el almacenamiento local del navegador (Local Storage),</li>
+					<li>adaptación automática del idioma de la página web informativa y del manual de usuario según el idioma seleccionado actualmente en el entorno de usuario,</li>
+					<li>página web informativa del programa y manual de usuario integrado, optimizados también para su uso en dispositivos móviles,</li>
+					<li>temas visuales adaptables para la interfaz de usuario y cambio de tamaño dinámico de las distintas partes de la interfaz de usuario,</li>
+					<li>visualización de las coordenadas de posición del cursor y ajuste dinámico de la escala gráfica según el nivel de zoom del mapa,</li>
+					<li>interfaz de usuario intuitiva para facilitar el trabajo incluso a usuarios menos experimentados,</li>
+					<li>posibilidad de uso básico del geoportal sin necesidad de iniciar sesión,</li>
+					<li>uso de cuentas de usuario e inicio de sesión para acceder a funcionalidades avanzadas del geoportal,</li>
+					<li>conservación del estado de inicio de sesión del usuario entre actualizaciones de página y visitas posteriores a la aplicación sin necesidad de volver a iniciar sesión,</li>
+					<li>funcionamiento coordinado del inicio de sesión del usuario en varias pestañas del mismo navegador web,</li>
+					<li>gestión de cuentas de usuario y derechos de acceso según el rol de cada usuario, con la posibilidad de ajustar fácilmente los permisos a través del entorno Django Admin por parte de las personas autorizadas.</li>
+				</ul>
+
+				<p>
+					El geoportal permite así un trabajo eficiente tanto con datos de atributos como con datos geométricos, y representa una solución GIS web moderna para la gestión y visualización de información espacial.
+				</p>
+			</section>
+
+			<section id="research">
+				<h2>Aspecto investigador del geoportal</h2>
+				<p>Como ya se ha mencionado, GeoSG no fue desarrollado únicamente como un sistema GIS web demostrativo, sino que también tiene valor investigador, ya que aborda y analiza diferentes enfoques para el desarrollo de soluciones WebGIS modernas. La investigación se orientó, entre otras cosas, a la comparación de diferentes enfoques arquitectónicos, la conexión de tecnologías GIS de código abierto y su integración en un entorno GIS web unificado, modular y escalable.</p>
+				<p>En el trabajo de fin de máster se hizo especial hincapié en la investigación de la simplificación de geometrías espaciales con el objetivo de mejorar el rendimiento, la claridad y la capacidad de respuesta de la visualización cartográfica cuando se trabaja con grandes cantidades de datos espaciales. Además, el componente investigador incluyó una comparación de diferentes enfoques para implementar servicios Django REST API y un análisis de su idoneidad para el desarrollo de sistemas GIS web modernos.</p>
+				<p>Los resultados de la investigación están directamente incorporados en el funcionamiento del geoportal y son parcialmente visibles para el usuario a través de las capas cartográficas especializadas "Parcelas – análisis de simplificaciones" y "Parcelas – visualización LOD automática", que muestran diferentes niveles de geometrías de parcelas simplificadas según la escala de visualización. El aspecto investigador de la implementación del servicio Django REST API se presenta adicionalmente a través del acceso a la documentación de la API Swagger y Redoc, disponible para el usuario en el manual de usuario bajo la pestaña FAQ en la sección "Enlaces importantes". Este acceso directo a la documentación de la API de desarrollo en geoportales de producción no es habitual, pero en GeoSG se ha habilitado intencionalmente debido al carácter investigador y demostrativo del sistema.</p>
+				<p>Para obtener una visión más detallada de los enfoques de investigación, la implementación del sistema y los resultados de la investigación, le invitamos a leer el trabajo de fin de máster, disponible en: <strong>xlinkx</strong></p>
+			</section>
+
+			<section id="four">
+				<h2>Agradecimientos y contexto académico</h2>
+
+				<p>
+					El geoportal GeoSG surgió como resultado del conocimiento adquirido durante mi intercambio estudiantil en la Escuela Técnica Superior de Ingeniería Geodésica, Cartográfica y Topográfica de la Universitat Politècnica de València. Durante mi estancia en dicha facultad, cursé las asignaturas <i>Web Development and Geoportals</i> y <i>Geospatial Content Managers and Smart Cities</i>, que ampliaron y profundizaron significativamente mi comprensión de las tecnologías y sistemas WebGIS modernos.<br />
+					Un agradecimiento especial al profesor J. Gaspar Mora Navarro, quien durante mi intercambio estudiantil aumentó aún más mi entusiasmo por este campo y me proporcionó los conocimientos fundamentales en los que se basan este trabajo de fin de máster y el desarrollo del geoportal GeoSG.
+				</p>
+				<p>
+					Agradezco a la Facultad de Ingeniería Civil y Geodesia de la Universidad de Ljubljana la formación de calidad, los sólidos conocimientos de geodesia y geoinformática y el apoyo en la elaboración del trabajo de fin de máster, proporcionando los recursos técnicos e infraestructurales necesarios para el desarrollo y alojamiento del geoportal.<br />
+					Agradezco sinceramente a mi director Jernej Tekavec su orientación experta y su apoyo en la realización del trabajo de fin de máster, y a mi codirector Matija Gerčer sus valiosos consejos y su ayuda para comprender mejor los temas tratados.
+				</p>
+
+				<div class="box alt">
+					<div class="row">
+						<div class="col-12" style="margin-bottom: -2em;">
+							<a href="https://www.fgg.uni-lj.si/" target="_blank">
+								<span class="image fit">
+									<img src="images/fulls/fgg_logo.jpg" alt="Logo UL FGG" />
+								</span>
+							</a>
+						</div>
+
+						<div class="col-12">
+							<a href="https://www.upv.es/" target="_blank">
+								<span class="image fit2">
+									<img src="images/fulls/logo_c_upv.jpg" alt="Logo UPV" />
+								</span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</section>
+
+		</div>
+
+		<footer id="footer">
+			<div class="inner">
+				Director: <b>Prof. Asist. Dr. Jernej Tekavec</b><br />
+				Codirector: <b>Asist. Matija Gerčer, Máster</b>
+
+				<ul class="icons">
+					<li><a href="https://github.com/MAJ123mf" class="icon brands fa-github"><span class="label">Github</span></a></li>
+					<li><a href="mailto:maj.capelnik@gmail.com?subject=GeoSG%20contacto" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+				</ul>
+
+				<ul class="copyright">
+					<li>&copy; GeoSG</li>
+					<li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+				</ul>
+
+				<p>
+					La fotografía muestra el casco histórico de Slovenj Gradec.<br />
+					Fuente de la imagen: slovenia.info
+				</p>
+			</div>
+		</footer>
+
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/jquery.poptrox.min.js"></script>
+		<script src="assets/js/browser.min.js"></script>
+		<script src="assets/js/breakpoints.min.js"></script>
+		<script src="assets/js/util.js"></script>
+		<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

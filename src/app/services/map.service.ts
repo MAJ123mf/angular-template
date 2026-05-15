@@ -1049,7 +1049,7 @@ export class MapService {
         zoom: 3,
         projection: epsg3794,
         minResolution: 0.005,   // ← zoom in omejitev
-        maxResolution: 10,   // ← zoom out omejitev
+        maxResolution: 20,   // ← zoom out omejitev
       }),
       layers: [
         this.sentinelLayersGroup,

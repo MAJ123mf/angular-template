@@ -1,0 +1,204 @@
+<!DOCTYPE HTML>
+<!--
+	Strata by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+	Prirejen s strani Maj Čapelnik za namen mag. naloge.
+-->
+<html>
+	<head>
+		<title>O programu GeoSG</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+	</head>
+	<body class="is-preload">
+
+		<header id="header">
+			<div class="inner">
+				<a href="#" class="image avatar"><img src="images/js.jpg" alt="Fotografija avtorja" /></a>
+				<h1><strong>Sem Maj Čapelnik</strong>,<br />
+				bodoči mag. inž. geod. in geoinf.<br />
+				ter glavni avtor tega geoportala.</h1>
+			</div>
+		</header>
+
+		<div id="main">
+
+			<section id="one">
+				<header class="major">
+					<h1>GeoSG <img src="images/logoGeoSG_poln.png" alt="GeoSG logo" class="geosg-logo" /></h1>
+				</header>
+
+				<p>
+					GeoSG je raziskovalno-razvojni geoportal, namenjen prikazu, upravljanju in analizi prostorskih podatkov območja katastrske občine Slovenj Gradec. Sistem je bil razvit v okviru magistrske naloge kot demonstracijska WebGIS platforma, ki predstavlja rezultat raziskovanja sodobnih arhitekturnih, kartografskih in podatkovnih pristopov pri razvoju spletnih GIS-aplikacij.<br>
+					Geoportal združuje interaktivni kartografski prikaz, urejanje prostorskih entitet, komunikacijo prek REST API ter integracijo odprtokodnih GIS tehnologij v enotno modularno arhitekturo. Posebna vrednost sistema je v povezovanju kartografskega prikaza, atributnih podatkov in prostorskih operacij v enotno delovno okolje, ki omogoča učinkovito, pregledno in intuitivno upravljanje prostorskih informacij. Tako kot pri delovanju geoportala med seboj sodelujejo številne komponente aplikacije, tudi celoten sistem temelji na medsebojni integraciji več odprtokodnih tehnologij, ki skupaj tvorijo tehnološko sodobno, razširljivo in zmogljivo WebGIS rešitev.
+				</p>
+
+				<ul class="actions">
+					<li>
+						<a href="#" 
+						class="button primary" 
+						onclick="window.close(); return false;">
+						Zapri pomoč
+						</a>
+					</li>
+					<li><a href="about-en.html" class="button">Translate to EN</a></li>
+					<li><a href="about-es.html" class="button">Traducir a ES</a></li>
+				</ul>
+			</section>
+
+			<section id="two">
+				<h2>Tehnološka arhitektura geoportala</h2>
+
+				<p>
+					Sistem temelji na <span style="text-decoration: underline;"><strong>večnivojski arhitekturi</strong></span>, 
+					ki vključuje 
+					<span style="text-decoration: underline;"><strong>Angular</strong></span> uporabniški vmesnik, 
+					<span style="text-decoration: underline;"><strong>Django REST</strong></span> aplikacijski sloj, 
+					<span style="text-decoration: underline;"><strong>GeoServer</strong></span> za distribucijo prostorskih podatkov ter 
+					<span style="text-decoration: underline;"><strong>PostgreSQL/PostGIS</strong></span> podatkovno bazo. 
+					Posamezne storitve so organizirane v 
+					<span style="text-decoration: underline;"><strong>Docker</strong></span> vsebnikih, 
+					kar omogoča jasno ločitev odgovornosti med komponentami ter njihovo učinkovito medsebojno povezovanje v enotno in stabilno WebGIS okolje.
+				</p>
+
+				<p>
+					Komunikacija med posameznimi deli sistema poteka prek 
+					<span style="text-decoration: underline;"><strong>REST API</strong></span> 
+					ter standardnih GIS storitev 
+					<span style="text-decoration: underline;"><strong>WMS</strong></span> in 
+					<span style="text-decoration: underline;"><strong>WFS</strong></span>, 
+					ki omogočajo učinkovito izmenjavo, distribucijo in prikaz prostorskih podatkov. 
+					Kartografski prikaz temelji na knjižnici 
+					<span style="text-decoration: underline;"><strong>OpenLayers</strong></span>, 
+					ki omogoča napredne interakcije s karto neposredno v uporabniškem vmesniku.
+				</p>
+
+				<p>
+					Medsebojna integracija uporabljenih tehnologij omogoča usklajeno delovanje kartografskega prikaza, strežniške obdelave podatkov in prostorske podatkovne baze, kar predstavlja enega ključnih elementov funkcionalnosti geoportala ter omogoča vzpostavitev tehnološko sodobne, razširljive in zmogljive WebGIS rešitve.
+				</p>
+			</section>
+
+			<section id="three">
+				<h2>Funkcionalnosti geoportala</h2>
+
+				<p>
+					GeoSG omogoča celovito upravljanje prostorskih podatkov prek interaktivnega spletnega GIS okolja, ki združuje kartografski prikaz, atributne podatke in orodja za urejanje prostorskih entitet v enotno uporabniško izkušnjo.
+				</p>
+
+				<p>
+					Sistem podpira prikaz, vnos, urejanje in brisanje prostorskih podatkov za različne tipe entitet, kot so parcele, stavbe, ceste in naslovi. Uporabnik lahko geometrije ustvarja in ureja neposredno na karti z uporabo interaktivnih kartografskih orodij. <br>
+					Geoportal omogoča tudi napredno iskanje, filtriranje in lociranje prostorskih entitet, sinhronizacijo kartografskega prikaza z atributnimi podatki ter prilagodljiv prikaz kartografskih slojev. Vse spremembe vnesenih ali urejenih prostorskih podatkov se trajno shranjujejo v centralizirano podatkovno bazo, kar zagotavlja ažurnost in konsistentnost informacij v sistemu. Natančneje geoportal uporabniku omogoča naslednje pomembnejše funkcionalnosti:
+				</p>
+
+				<ul>
+					<li>enostavno pregledovanje prostorskih podatkov prek interaktivnega kartografskega prikaza,</li>
+					<li>hitro premikanje, približevanje in orientacija po karti,</li>
+					<li>interaktivno risanje, urejanje, vizualno označevanje in brisanje prostorskih objektov neposredno na karti brez uporabe namiznih GIS programov,</li>
+					<li>podporo samodejnemu pripenjanju (snapping) na obstoječe geometrije pri risanju in urejanju prostorskih objektov,</li>
+					<li>izpis atributnih podatkov za izbrane prostorske objekte na karti,</li>
+					<li>sinhronizacijo kartografskega prikaza, tabel in obrazcev v enotnem uporabniškem okolju,</li>
+					<li>napredno iskanje, filtriranje ter hitro lociranje parcel, stavb, naslovov in drugih prostorskih entitet,</li>
+					<li>samodejno prilagajanje prikaza atributnih oznak objektov na karti glede na merilo prikaza,</li>
+					<li>prilagodljiv prikaz kartografskih slojev z možnostjo vklopa in izklopa posameznih vsebinskih prikazov,</li>
+					<li>sočasni prikaz različnih kartografskih slojev za lažjo prostorsko analizo,</li>
+					<li>samodejno preklapljanje med različnimi stopnjami poenostavljenih geometrij WFS sloja parcel glede na trenutno merilo prikaza karte,</li>
+					<li>trajno shranjevanje uporabniško vnesenih in urejenih prostorskih podatkov v centralizirano podatkovno bazo,</li>
+					<li>samodejno posodabljanje kartografskih GeoSG WMS slojev na podlagi sprememb podatkov v sistemu,</li>
+					<li>podporo standardnim GIS storitvam WMS in WFS ter možnost uporabe ustvarjenih GeoSG WMS slojev v drugih GIS aplikacijah in informacijskih sistemih,</li>
+					<li>uvoz in izvoz prostorskih podatkov v standardnih GIS formatih za nadaljnjo uporabo v drugih GIS programih,</li>
+					<li>dostop do sistema prek spletnega brskalnika brez potrebe po dodatni namestitvi programske opreme,</li>
+					<li>večjezični uporabniški vmesnik, informativna spletna stran programa in uporabniška navodila s podporo slovenskemu, angleškemu in španskemu jeziku,</li>
+					<li>samodejno shranjevanje izbranega jezika uporabniškega vmesnika in vizualne teme z uporabo brskalniške hrambe Local Storage,</li>
+					<li>samodejno prilagajanje jezika informativne spletne strani in uporabniških navodil glede na trenutno izbran jezik uporabniškega okolja,</li>
+					<li>informativna spletna stran programa in integrirana uporabniška navodila, optimizirana tudi za uporabo na mobilnih napravah,</li> 
+					<li>prilagodljive vizualne teme uporabniškega vmesnika ter dinamično spreminjanje velikosti posameznih delov uporabniškega vmesnika,</li>
+					<li>prikaz koordinat položaja kurzorja ter dinamično prilagajanje grafičnega merila glede na stopnjo povečave karte,</li>	
+					<li>intuitiven uporabniški vmesnik za lažje delo tudi manj izkušenih uporabnikov,</li>
+					<li>možnost osnovne uporabe geoportala tudi brez prijave v sistem,</li>
+					<li>uporabo uporabniških računov in prijavo v sistem za dostop do naprednejših funkcionalnosti geoportala,</li>
+					<li>ohranjanje uporabniškega prijavnega stanja med osveževanjem strani in ponovnim obiskom aplikacije brez potrebe po ponovni prijavi,</li>
+				    <li>usklajeno delovanje uporabniške prijave med več zavihki istega spletnega brskalnika,</li>
+					<li>upravljanje uporabniških računov in dostopnih pravic glede na vlogo posameznega uporabnika ter možnost enostavnega prilagajanja dovoljenj prek administrativnega okolja Django Admin s strani pooblaščenih oseb.</li>
+				</ul>
+
+				<p>
+					Geoportal tako omogoča učinkovito delo tako z atributnimi kot tudi z geometrijskimi podatki ter predstavlja sodobno spletno GIS rešitev za upravljanje in vizualizacijo prostorskih informacij.
+				</p>
+			</section>
+
+			<section id="research">
+				<h2>Raziskovalni vidik geoportala</h2>
+				<p>Kot je bilo že omenjeno, GeoSG ni bil razvit zgolj kot demonstracijski spletni GIS sistem, temveč ima tudi raziskovalno vrednost, saj obravnava in analizira različne pristope razvoja sodobnih WebGIS rešitev. Raziskovanje je bilo med drugim usmerjeno v primerjavo različnih arhitekturnih pristopov, povezovanje odprtokodnih GIS tehnologij ter njihovo integracijo v enotno, modularno in razširljivo spletno GIS okolje.</p>
+				<p>Poseben poudarek magistrske naloge je bil namenjen tudi raziskovanju poenostavljanja prostorskih geometrij z namenom izboljšanja zmogljivosti, preglednosti in odzivnosti kartografskega prikaza pri delu z večjimi količinami prostorskih podatkov. Poleg tega je raziskovalni del obsegal tudi primerjavo različnih pristopov implementacije Django REST API storitev ter analizo njihove primernosti za razvoj sodobnih spletnih GIS sistemov.</p>
+				<p>Rezultati raziskovanja so neposredno vključeni v delovanje geoportala ter so uporabniku delno vidni prek specializiranih kartografskih slojev »Parcele – analiza poenostavitev« in »Parcele – samodejni LOD prikaz«, ki prikazujeta različne stopnje poenostavljenih geometrij parcel glede na merilo prikaza. Raziskovalni vidik implementacije Django REST API storitev je dodatno predstavljen tudi prek dostopa do Swagger in Redoc API dokumentacije, ki sta uporabniku na voljo med uporabniškimi navodili v zavihku FAQ pod razdelkom »Pomembne povezave«. Takšen neposreden dostop do razvojne API dokumentacije v produkcijskih geoportalih ni običajen, v okviru GeoSG pa je namenoma omogočen zaradi raziskovalnega in demonstracijskega značaja sistema.</p>
+				<p>Za podrobnejši vpogled v raziskovalne pristope, implementacijo sistema in rezultate raziskovanja, vas vabim k branju magistrske naloge, dostopne na: <strong>xlinkx</strong></p>
+			</section>
+
+			<section id="four">
+				<h2>Zahvala in akademski kontekst nastanka projekta</h2>
+
+				<p>
+					Geoportal GeoSG je nastal kot rezultat znanja, pridobljenega med mojo študijsko izmenjavo na School of Geodetic, Cartographic and Topographic Engineering Univerze Politècnica de València. V okviru gostovanja na omenjeni fakulteti sem obiskoval predmeta <i>Web Development and Geoportals</i> ter <i>Geospatial Content Managers and Smart Cities</i>, ki sta pomembno razširila in poglobila moje razumevanje sodobnih WebGIS tehnologij in sistemov.<br />
+					Posebna zahvala gre profesorju J. Gaspar Mora Navarro, ki me je med mojim študijskim gostovanjem dodatno navdušil nad obravnavanim področjem ter mi podal temeljna znanja, na katerih temelji ta magistrska naloga in razvoj geoportala GeoSG.
+				</p>
+				<p>
+					Zahvaljujem se Fakulteti za gradbeništvo in geodezijo Univerze v Ljubljani za kakovosten študij, trdno geodetsko-geoinformatijsko znanje ter za podporo pri izdelavi magistrske naloge z zagotavljanjem tehničnih in infrastrukturnih virov, potrebnih za razvoj in gostovanje geoportala.<br />
+					Iskreno se zahvaljujem mentorju Jerneju Tekavcu za strokovno usmerjanje in podporo pri izvedbi magistrske naloge ter somentorju Matiji Gerčerju za koristne nasvete in pomoč pri boljšem razumevanju obravnavane tematike.
+				</p>
+
+				<div class="box alt">
+					<div class="row">
+						<div class="col-12" style="margin-bottom: -2em;">
+							<a href="https://www.fgg.uni-lj.si/" target="_blank">
+								<span class="image fit">
+									<img src="images/fulls/fgg_logo.jpg" alt="Logotip UL FGG" />
+								</span>
+							</a>
+						</div>
+
+						<div class="col-12">
+							<a href="https://www.upv.es/" target="_blank">
+								<span class="image fit2">
+									<img src="images/fulls/logo_c_upv.jpg" alt="Logotip UPV" />
+								</span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</section>
+
+		</div>
+
+		<footer id="footer">
+			<div class="inner">
+				Mentor: <b>doc. dr. Jernej Tekavec, univ. dipl. inž. geod.</b><br />
+				Somentor: <b>asist. Matija Gerčer, mag. inž. rač. in inf.</b>
+
+				<ul class="icons">
+					<li><a href="https://github.com/MAJ123mf" class="icon brands fa-github"><span class="label">Github</span></a></li>
+					<li><a href="mailto:maj.capelnik@gmail.com?subject=GeoSG%20kontakt" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+				</ul>
+
+				<ul class="copyright">
+					<li>&copy; GeoSG</li>
+					<li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+				</ul>
+
+				<p>
+					Fotografija prikazuje slovenjgraško mestno jedro.<br />
+					Vir slike: slovenia.info
+				</p>
+			</div>
+		</footer>
+
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/jquery.poptrox.min.js"></script>
+		<script src="assets/js/browser.min.js"></script>
+		<script src="assets/js/breakpoints.min.js"></script>
+		<script src="assets/js/util.js"></script>
+		<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

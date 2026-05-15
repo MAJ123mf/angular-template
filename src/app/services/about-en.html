@@ -1,0 +1,204 @@
+<!DOCTYPE HTML>
+<!--
+	Strata by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+	Adapted by Maj Čapelnik for the purpose of the master's thesis.
+-->
+<html>
+	<head>
+		<title>About GeoSG</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+	</head>
+	<body class="is-preload">
+
+		<header id="header">
+			<div class="inner">
+				<a href="#" class="image avatar"><img src="images/js.jpg" alt="Author photo" /></a>
+				<h1><strong>I am Maj Čapelnik</strong>,<br />
+				a future MSc engineer<br />of geodesy and geoinformatics<br />
+				and the main creator of this geoportal.</h1>
+			</div>
+		</header>
+
+		<div id="main">
+
+			<section id="one">
+				<header class="major">
+					<h1>GeoSG <img src="images/logoGeoSG_poln.png" alt="GeoSG logo" class="geosg-logo" /></h1>
+				</header>
+
+				<p>
+					GeoSG is a research and development geoportal designed for the display, management and analysis of spatial data in the area of the cadastral municipality of Slovenj Gradec. The system was developed as part of a master's thesis as a demonstrational WebGIS platform, representing the outcome of research into modern architectural, cartographic and data-driven approaches in the development of web GIS applications.<br>
+					The geoportal combines interactive cartographic display, editing of spatial entities, communication via REST API, and the integration of open-source GIS technologies into a unified modular architecture. A particular strength of the system lies in connecting cartographic display, attribute data and spatial operations within a single working environment, enabling efficient, transparent and intuitive management of spatial information. Just as many application components collaborate in the operation of the geoportal, the entire system is built on the mutual integration of several open-source technologies that together form a technologically modern, scalable and powerful WebGIS solution.
+				</p>
+
+				<ul class="actions">
+					<li>
+						<a href="#" 
+						class="button primary" 
+						onclick="window.close(); return false;">
+						Close help
+						</a>
+					</li>
+					<li><a href="about-sl.html" class="button">Prevedi v SL</a></li>
+					<li><a href="about-es.html" class="button">Traducir a ES</a></li>
+				</ul>
+			</section>
+
+			<section id="two">
+				<h2>Technological architecture of the geoportal</h2>
+
+				<p>
+					The system is based on a <span style="text-decoration: underline;"><strong>multi-tier architecture</strong></span>
+					that includes an
+					<span style="text-decoration: underline;"><strong>Angular</strong></span> user interface,
+					a <span style="text-decoration: underline;"><strong>Django REST</strong></span> application layer,
+					<span style="text-decoration: underline;"><strong>GeoServer</strong></span> for the distribution of spatial data, and a
+					<span style="text-decoration: underline;"><strong>PostgreSQL/PostGIS</strong></span> spatial database.
+					The individual services are organized in
+					<span style="text-decoration: underline;"><strong>Docker</strong></span> containers,
+					which provides a clear separation of responsibilities between components and enables their effective interconnection within a unified and stable WebGIS environment.
+				</p>
+
+				<p>
+					Communication between the individual parts of the system takes place via
+					<span style="text-decoration: underline;"><strong>REST API</strong></span>
+					and standard GIS services
+					<span style="text-decoration: underline;"><strong>WMS</strong></span> and
+					<span style="text-decoration: underline;"><strong>WFS</strong></span>,
+					which enable efficient exchange, distribution and display of spatial data.
+					The cartographic display is based on the
+					<span style="text-decoration: underline;"><strong>OpenLayers</strong></span> library,
+					which enables advanced interactions with the map directly in the user interface.
+				</p>
+
+				<p>
+					The mutual integration of the technologies used enables the coordinated operation of the cartographic display, server-side data processing and the spatial database, which represents one of the key elements of the geoportal's functionality and enables the establishment of a technologically modern, scalable and powerful WebGIS solution.
+				</p>
+			</section>
+
+			<section id="three">
+				<h2>Geoportal functionalities</h2>
+
+				<p>
+					GeoSG enables comprehensive management of spatial data through an interactive web GIS environment that combines cartographic display, attribute data and tools for editing spatial entities into a unified user experience.
+				</p>
+
+				<p>
+					The system supports the display, entry, editing and deletion of spatial data for various types of entities, such as parcels, buildings, roads and addresses. Users can create and edit geometries directly on the map using interactive cartographic tools.<br>
+					The geoportal also enables advanced search, filtering and location of spatial entities, synchronisation of the cartographic display with attribute data, and flexible display of cartographic layers. All changes to entered or edited spatial data are permanently stored in a centralised database, ensuring that information in the system remains up-to-date and consistent. More specifically, the geoportal provides users with the following key functionalities:
+				</p>
+
+				<ul>
+					<li>easy browsing of spatial data via interactive cartographic display,</li>
+					<li>fast panning, zooming and navigation on the map,</li>
+					<li>interactive drawing, editing, visual marking and deletion of spatial objects directly on the map without the use of desktop GIS software,</li>
+					<li>support for automatic snapping to existing geometries when drawing and editing spatial objects,</li>
+					<li>display of attribute data for selected spatial objects on the map,</li>
+					<li>synchronisation of the cartographic display, tables and forms within a unified user environment,</li>
+					<li>advanced search, filtering and quick location of parcels, buildings, addresses and other spatial entities,</li>
+					<li>automatic adjustment of the display of attribute labels of objects on the map according to the display scale,</li>
+					<li>flexible display of cartographic layers with the option to enable and disable individual content views,</li>
+					<li>simultaneous display of different cartographic layers for easier spatial analysis,</li>
+					<li>automatic switching between different levels of simplified WFS parcel layer geometries based on the current map display scale,</li>
+					<li>permanent storage of user-entered and edited spatial data in a centralised database,</li>
+					<li>automatic updating of GeoSG WMS cartographic layers based on changes to data in the system,</li>
+					<li>support for standard GIS services WMS and WFS and the possibility of using created GeoSG WMS layers in other GIS applications and information systems,</li>
+					<li>import and export of spatial data in standard GIS formats for further use in other GIS programs,</li>
+					<li>access to the system via a web browser without the need for additional software installation,</li>
+					<li>multilingual user interface, informational programme webpage and user manual with support for Slovenian, English and Spanish,</li>
+					<li>automatic saving of the selected user interface language and visual theme using browser Local Storage,</li>
+					<li>automatic adaptation of the language of the informational webpage and user manual based on the currently selected language of the user environment,</li>
+					<li>informational programme webpage and integrated user manual, also optimised for use on mobile devices,</li>
+					<li>adaptable visual themes for the user interface and dynamic resizing of individual parts of the user interface,</li>
+					<li>display of cursor position coordinates and dynamic adjustment of the graphic scale according to the map zoom level,</li>
+					<li>intuitive user interface for easier use even by less experienced users,</li>
+					<li>possibility of basic use of the geoportal without logging in,</li>
+					<li>use of user accounts and login for access to advanced geoportal functionalities,</li>
+					<li>preservation of user login state between page refreshes and return visits to the application without the need to log in again,</li>
+					<li>coordinated operation of user login across multiple tabs of the same web browser,</li>
+					<li>management of user accounts and access rights based on the role of each user, with the possibility of easy adjustment of permissions through the Django Admin environment by authorised persons.</li>
+				</ul>
+
+				<p>
+					The geoportal thus enables efficient work with both attribute and geometric data and represents a modern web GIS solution for the management and visualisation of spatial information.
+				</p>
+			</section>
+
+			<section id="research">
+				<h2>Research aspect of the geoportal</h2>
+				<p>As already mentioned, GeoSG was not developed merely as a demonstrational web GIS system, but also carries research value, as it addresses and analyses various approaches to the development of modern WebGIS solutions. The research was, among other things, directed at comparing different architectural approaches, connecting open-source GIS technologies, and integrating them into a unified, modular and scalable web GIS environment.</p>
+				<p>Special emphasis in the master's thesis was also placed on researching the simplification of spatial geometries with the aim of improving the performance, clarity and responsiveness of the cartographic display when working with larger quantities of spatial data. In addition, the research component included a comparison of different approaches to implementing Django REST API services and an analysis of their suitability for the development of modern web GIS systems.</p>
+				<p>The results of the research are directly incorporated into the operation of the geoportal and are partially visible to the user through the specialised cartographic layers "Parcels – simplification analysis" and "Parcels – automatic LOD display", which show different levels of simplified parcel geometries based on the display scale. The research aspect of the Django REST API service implementation is further presented through access to Swagger and Redoc API documentation, available to users in the user manual under the FAQ tab in the "Important links" section. Such direct access to development API documentation in production geoportals is not common, but has been intentionally enabled within GeoSG due to the research and demonstrational nature of the system.</p>
+				<p>For a more detailed insight into the research approaches, system implementation and research results, you are invited to read the master's thesis, available at: <strong>xlinkx</strong></p>
+			</section>
+
+			<section id="four">
+				<h2>Acknowledgements and academic context</h2>
+
+				<p>
+					The GeoSG geoportal was developed as a result of knowledge gained during my student exchange at the School of Geodetic, Cartographic and Topographic Engineering at the Universitat Politècnica de València. During my stay at that faculty, I attended the courses <i>Web Development and Geoportals</i> and <i>Geospatial Content Managers and Smart Cities</i>, which significantly broadened and deepened my understanding of modern WebGIS technologies and systems.<br />
+					Special thanks go to Professor J. Gaspar Mora Navarro, who during my student exchange further inspired my enthusiasm for this field and provided me with the foundational knowledge on which this master's thesis and the development of the GeoSG geoportal are based.
+				</p>
+				<p>
+					I would like to thank the Faculty of Civil and Geodetic Engineering of the University of Ljubljana for the quality education, solid geodetic and geoinformatics knowledge, and for the support in the preparation of the master's thesis by providing the technical and infrastructural resources needed for the development and hosting of the geoportal.<br />
+					I sincerely thank my supervisor Jernej Tekavec for his expert guidance and support in carrying out the master's thesis, and my co-supervisor Matija Gerčer for his valuable advice and assistance in better understanding the topics covered.
+				</p>
+
+				<div class="box alt">
+					<div class="row">
+						<div class="col-12" style="margin-bottom: -2em;">
+							<a href="https://www.fgg.uni-lj.si/" target="_blank">
+								<span class="image fit">
+									<img src="images/fulls/fgg_logo.jpg" alt="UL FGG logo" />
+								</span>
+							</a>
+						</div>
+
+						<div class="col-12">
+							<a href="https://www.upv.es/" target="_blank">
+								<span class="image fit2">
+									<img src="images/fulls/logo_c_upv.jpg" alt="UPV logo" />
+								</span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</section>
+
+		</div>
+
+		<footer id="footer">
+			<div class="inner">
+				Supervisor: <b>Assist. Prof. Jernej Tekavec, PhD</b><br />
+				Co-supervisor: <b>Assist. Matija Gerčer, MSc</b>
+
+				<ul class="icons">
+					<li><a href="https://github.com/MAJ123mf" class="icon brands fa-github"><span class="label">Github</span></a></li>
+					<li><a href="mailto:maj.capelnik@gmail.com?subject=GeoSG%20contact" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+				</ul>
+
+				<ul class="copyright">
+					<li>&copy; GeoSG</li>
+					<li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+				</ul>
+
+				<p>
+					The photograph shows the historic town centre of Slovenj Gradec.<br />
+					Image source: slovenia.info
+				</p>
+			</div>
+		</footer>
+
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/jquery.poptrox.min.js"></script>
+		<script src="assets/js/browser.min.js"></script>
+		<script src="assets/js/breakpoints.min.js"></script>
+		<script src="assets/js/util.js"></script>
+		<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

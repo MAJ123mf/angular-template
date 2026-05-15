@@ -125,7 +125,7 @@ export class AuthService {
 
   // Preveri ali ima uporabnik pravico za izvoz podatkov
   public canExport(): boolean {
-    return this.hasGroup('izvozniki', 'admins');
+    return this.hasGroup('izvozniki', 'editors', 'admins');
   }
 
 }

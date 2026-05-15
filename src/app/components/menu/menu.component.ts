@@ -46,8 +46,17 @@ export class MenuComponent {
   }
 
   openAbout() {
-  window.open('/about/index.html', '_blank');
-}
+    const lang = this.languageService.getCurrentLanguage();
+
+    const aboutFiles: Record<string, string> = {
+      'sl': '/about/about-sl.html',
+      'en': '/about/about-en.html',
+      'es': '/about/about-es.html',
+    };
+
+    const url = aboutFiles[lang] ?? aboutFiles['sl'];
+    window.open(url, '_blank');
+  }
 
   openHelp() {
   const lang = this.languageService.getCurrentLanguage();
