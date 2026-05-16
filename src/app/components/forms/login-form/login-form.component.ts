@@ -17,6 +17,7 @@ import { ApiService } from '../../../services/api.service';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../../../services/auth.service';
 import { MatDialogRef } from '@angular/material/dialog';   // za login modalno okno, da se bo zaprlo
+import { SettingsService } from '../../../services/settings.service';
 
 
 @Component({
@@ -44,7 +45,8 @@ export class LoginFormComponent {
   constructor(
     private dialogRef: MatDialogRef<LoginFormComponent>,    // da se bo login okno zaprlo
     private apiService:ApiService, 
-    private authService: AuthService
+    private authService: AuthService,
+    public settingsService: SettingsService
   ){}
 
 

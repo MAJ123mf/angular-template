@@ -10,12 +10,15 @@ import { SettingsService } from './settings.service';
 
 @Injectable({ providedIn: 'root' })
 export class ParcelService {
-  private baseUrl   = this.settingsService.API_URL+`parcels/parcels/`;                                  // API_URL='localhost:8000/' ali kaj drugega
-  private insertUrl = this.settingsService.API_URL+`parcels/parcels_view/insert2/`;                     // nastavljeno je v settings.service.ts
-  private updateUrl = this.settingsService.API_URL+`parcels/parcels_view/update/`;  
+    private baseUrl: string;
+    private insertUrl: string;
+    private updateUrl: string; 
 
-  constructor(public settingsService:SettingsService, private http: HttpClient) {}                    // OSNOVE: Če hočemo uporabljat nastavitve iz settings.service.ts z ukazom this.settingsService.API_URL moramo tu vključit SettingsService
-
+  constructor(public settingsService:SettingsService, private http: HttpClient) {                    // OSNOVE: Če hočemo uporabljat nastavitve iz settings.service.ts z ukazom this.settingsService.API_URL moramo tu vključit SettingsService
+    this.baseUrl   = this.settingsService.API_URL + `parcels/parcels/`;
+    this.insertUrl = this.settingsService.API_URL + `parcels/parcels_view/insert2/`;
+    this.updateUrl = this.settingsService.API_URL + `parcels/parcels_view/update/`;
+  } 
   /** Pridobi vse parcele */
   getAll(): Observable<Parcel[]> {
     console.log('ParcelService: pridobivam vse parcele');
@@ -58,6 +61,7 @@ export class ParcelService {
 
 
   /** Posodobi obstoječo parcelo */
+  /** Posodobi obstoječo parcelo */
   update(id: number, parcel: {
     parc_st: string;
     sifko: string;
@@ -65,7 +69,7 @@ export class ParcelService {
     geom: string;
   }): Observable<any> {
     console.log(`ParcelService: posodabljam parcelo z ID=${id}/`, parcel);
-    return this.http.post(`${this.updateUrl}${id}/`, parcel).pipe(
+    return this.http.put(`${this.baseUrl}${id}/`, parcel).pipe(
       tap(res => console.log('Odgovor po posodobitvi parcele:', res))
     );
   }

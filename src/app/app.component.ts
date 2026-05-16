@@ -235,14 +235,11 @@ showHelp() {
   refreshTable() {
     if (this.selectedType === 'parcel') {
       this.parcelTable?.loadParcels();
-    }
-    if (this.selectedType === 'building') {
+    } else if (this.selectedType === 'building') {
       this.buildingTable?.loadBuildings();
-    }
-    if (this.selectedType === 'road') {
+    } else if (this.selectedType === 'road') {
       this.roadTable?.loadRoads();
-    }
-    if (this.selectedType === 'address') {
+    } else if (this.selectedType === 'address') {
       this.addressTable?.loadAddresses();
     }
   }

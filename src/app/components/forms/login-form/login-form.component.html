@@ -32,8 +32,10 @@
             </div>
 
             <div class="text-align-center" style="margin-top: 8px;">
+
                 <button mat-raised-button color="accent" 
-                    matTooltip="Prijava s kvalificiranim digitalnim potrdilom"
+                    [matTooltip]="settingsService.mode === 1 ? 'Ni razvojnem strežniku ni strežniškega certifikata' : 'Prijava s kvalificiranim digitalnim potrdilom'"
+                    [disabled]="settingsService.mode === 1"
                     (click)="loginWithCertificate()">
                     Prijava s certifikatom
                 </button>

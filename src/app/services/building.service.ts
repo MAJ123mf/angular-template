@@ -10,11 +10,15 @@ import { SettingsService } from './settings.service';
 
 @Injectable({ providedIn: 'root' })
 export class BuildingService {
-  private baseUrl   = this.settingsService.API_URL+`buildings/buildings/`;                // API_URL='localhost:8000/' ali kaj drugega
-  private insertUrl = this.settingsService.API_URL+`building/building_view/insert2/`;  
-  private updateUrl = this.settingsService.API_URL+`building/building_view/update/`;  
+  private baseUrl: string;                // API_URL='localhost:8000/' ali kaj drugega
+  private insertUrl: string;
+  private updateUrl: string;
 
-  constructor(public settingsService:SettingsService, private http: HttpClient) {}
+  constructor(public settingsService:SettingsService, private http: HttpClient) {
+    this.baseUrl   = this.settingsService.API_URL+`buildings/buildings/`;                // API_URL='localhost:8000/' ali kaj drugega
+    this.insertUrl = this.settingsService.API_URL+`building/building_view/insert2/`;  
+    this.updateUrl = this.settingsService.API_URL+`building/building_view/update/`;  
+  }
 
   /** Pridobi vse stavbe */
   getAll(): Observable<Building[]> {
@@ -62,20 +66,20 @@ export class BuildingService {
 
 
 
-  /** Posodobi obstoječo stavbo */
-  update(id: string, building: {
-    id: string;
-    description: String;
-    sifko: number;
-    st_stavbe: number;
-    area: number;
-    geom: string;
-  }): Observable<any> {
-    console.log(`BuildingService: posodabljam stavbo z ID=${id}/`, building);
-    return this.http.post(`${this.updateUrl}${id}/`, building).pipe(
-      tap(res => console.log('Odgovor po posodobitvi stavbe:', res))
-    );
-  }
+/** Posodobi obstoječo stavbo */
+update(id: string, building: {
+  id: string;
+  description: String;
+  sifko: number;
+  st_stavbe: number;
+  area: number;
+  geom: string;
+}): Observable<any> {
+  console.log(`BuildingService: posodabljam stavbo z ID=${id}/`, building);
+  return this.http.put(`${this.baseUrl}${id}/`, building, { withCredentials: true }).pipe(
+    tap(res => console.log('Odgovor po posodobitvi stavbe:', res))
+  );
+}
 
 
   /** Izbriši stavbo */

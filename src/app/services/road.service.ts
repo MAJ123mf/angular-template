@@ -19,10 +19,13 @@ export interface RoadPayload {
 
 @Injectable({ providedIn: 'root' })
 export class RoadService {
-  private baseUrl = this.settingsService.API_URL+`roads/roads/`;
-  private insertUrl= this.settingsService.API_URL+`roads/roads_view/insert2/`;
+  private baseUrl: string;
+  private insertUrl: string;
 
-  constructor(public settingsService:SettingsService,  private http: HttpClient) {}
+  constructor(public settingsService:SettingsService,  private http: HttpClient) {
+    this.baseUrl = this.settingsService.API_URL+`roads/roads/`;
+    this.insertUrl= this.settingsService.API_URL+`roads/roads_view/insert2/`;
+  }
 
   /** Pridobi vse ceste */
   getAll(): Observable<Road[]> {                                         // metoda za pridobivanje vseh cest
